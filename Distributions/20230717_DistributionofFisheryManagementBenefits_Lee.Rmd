@@ -62,7 +62,7 @@ BibOptions(check.entries = FALSE,
            bib.style = "authoryear",
            cite.style = "authoryear",
            longnamesfirst = FALSE,
-           max.names = 1,
+           max.names = 2,
            style = "markdown")
 myBib <- ReadBib("./Distribution.bib", check = FALSE)
 
@@ -91,7 +91,8 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 - Open science emphasis `r Cite(myBib, "bastille_improving_2020")`
 
 - Used within Mid-Atlantic Fishery Management Council's Ecosystem Process `r Cite(myBib, "muffley_there_2020")`
- 
+ - Inline cite `r Citet(myBib, "muffley_there_2020")`
+
 
 -->
 
@@ -124,21 +125,21 @@ Typically use datastreams primarily designed for assessing stocks of fish, **not
 
 
 ```{r data-overview}
-data_overview <- data.frame("Data Sources" = c("Dealer",
-                                               "Vessel Logbook",
+data_overview <- data.frame("Data Sources" = c("Vessel Permit Applications",
+                                               "Fishing Vessel Trip Reports",
+                                               "Seafood Dealer",
                                                "Observer",
-                                               "Vessel Permits",
                                                "Rights Allocations and Transfers",
                                                "Operator Permits"),
-"Data Collected" = c("Landings; Revenue; Location of Buyer",
-                               "Estimated Catch; Effort; Fishing Location; Gear; Number of Crew; Captain identifier",
-                               "Trip-level variable costs; Haul-level catch (Sample)",
-                               "Hailing Port; Principal Port; Mailing Addresses; Fishery Types; Ownership (firms and people)",
-                                "Days-at-Sea; Quota; Lease Values; Transfer Values",
-                               "Date of Birth; Mailing Address"))
+"Data Collected" = c("Hailing Port; Principal Port; Mailing Addresses; Fishery Types; Ownership (firms and people)",
+                    "Estimated Catch; Effort; Fishing Location; Gear; Number of Crew; Captain identifier",
+                     "Landings; Revenue; Location of Buyer",
+                    "Trip-level variable costs; Haul-level catch (Sample)",
+                    "Days-at-Sea holdings; Quota holdings; Lease Values; Transfer Values",
+                    "Date of Birth; Mailing Address"))
 knitr::kable(data_overview, linesep = "",
       col.names = c("Data Sources","Data Collected"),
-      caption = "Ongoing Data Collections at NEFSC",
+      caption = "Ongoing Data Collections in the Region",
       #align = 'c',
       booktabs = T) %>%
   kable_styling(font_size = 14) %>%
@@ -225,7 +226,7 @@ Occasional and One-time
 
 .contrib[
 https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey
-`r Cite(myBib, "Henry2014")` and `r Cite(myBib, "cutler2022tracking")`
+`r Citet(myBib, "Henry2014")` and `r Citet(myBib, "cutler2022tracking")`
 ]
 
 ]
@@ -299,7 +300,7 @@ https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
 - **Lessons Learned** : 
 ]
 .pull-right[
-![Recreational Valuation typically uses a Choice Experiment survey](./images/Fluke2022-survey-instrument.png)
+<img src="./images/Fluke2022-survey-instrument.png" alt="Recreational Valuation typically uses a Choice Experiment survey" width="400" height="auto" />
 
 .contrib[
 A sample page from the 2022 Survey used to value fishing opportunities for Summer Flounder (Fluke) in the region.
@@ -322,15 +323,15 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
 - People and groups that did not qualify
     - No fishing history
     - No documented fishing history
-- "Subsistence" Recreational users
+- "Subsistence" Recreational users (underserved community?)
     - Likely lower income
     - Likely minority
     - Less likely to participate in fishery management process
     - Recreational measures sometimes have a "Trophy" (2 small fish, plus 1 very large).  The benefits of this are likely to accrue to affluent anglers.
     - Recreational measures sometimes that differ by mode (for-hire vs other).  This *may* shift benefits to affluent anglers or for-hire operators.  
 - People who don't show up to Council meetings
-  - Low expected gains from attending a costly meeting `r Cite(myBib, "turner2005meetings")`
-  - 
+  - Low expected gains `r Cite(myBib, "turner2005meetings")`
+  - Can't afford the cost 
 
 ---
 ## Are there types of socioeconomic data related to equity that the Council is using/relying on in decision making?
@@ -345,10 +346,28 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
   - Politically expedient `r Cite(myBib, "holzer2015property")`
   - Has participation and equity implications that 
       - Are long-lasting
-      - Reinforced by Council process (See `r Cite(myBib, "turner2005meetings")`)
+      - Reinforced by Council process (See `r Citet(myBib, "turner2005meetings")`)
 
 
 ---
+
+
+---
+# Other thoughts
+
+- Framed as "Distribution of Fishery Management Benefits", but what about the costs?
+  - What are they?
+  - Are they borne equitably?
+  - Day-to-Day costs are split between public and private sector 
+      - Going to meetings, 
+      - Providing fishery management advice,
+      - At-sea monitoring of catch,
+      - Technology R&D. 
+  - "Rare" costs also seem to be split
+      - Fishery Disasters,
+      - Rebuilding from overfished
+
+
 
 ## Acknowledgement Slide
 
