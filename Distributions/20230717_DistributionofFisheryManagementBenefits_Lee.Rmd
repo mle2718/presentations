@@ -183,10 +183,8 @@ More \* means more assumptions and data processing.]
     - Sex, Hair color, eye color, DoB, Height, Weight, headshot
   - No Race, ethnicity, household status
 - Owner information
-  - 
+  
 
-
----
 
 
 ---
@@ -206,6 +204,7 @@ Occasional and One-time
 - Recreational Valuation Surveys
 - American Seafood Harvesters Marketing Practices Survey
 ]
+---
 
 ## Crew Socioeconomic Survey
 
