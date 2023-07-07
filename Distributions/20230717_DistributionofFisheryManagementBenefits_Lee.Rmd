@@ -1,5 +1,5 @@
 ---
-title: "Distribution of Fishery Management Benefits: <br /> Northeast Fisheries"
+title: "[DRAFT] Distribution of Fishery Management Benefits: <br /> Northeast Fisheries"
 subtitle: "Presentation for the National Academies <br /> 17-18 July 2023"
 author: "Min-Yang Lee<br /> Northeast Fisheries Science Center"
 output:
@@ -44,11 +44,8 @@ knitr::opts_chunk$set(echo = F,
                       message = F)
 #Plotting and data libraries
 library(tidyverse)
-library(tidyr)
 library(here)
 library(kableExtra)
-library(readxl)
-library(data.table)
 library(DT)
 library(widgetframe)
 
@@ -121,19 +118,11 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 - Are there differences in data/information needs for initially setting up a permit or allocation system vs monitoring changes in a fishery over time? 
 
 ---
-##  Ongoing Data Collections
+##  High-Frequency Data Collections
 .pull-left[
-- Most of the socioeconomic analysis uses datastreams primarily designed for assessing stocks of fish, **not** purpose-built collections for socioeconomic analysis
-- Supports analysis at level of the: 
-  - Vessel or Dealer 
-  - Firm  (collections of vessels)
-  - Community 
-      - Land based, like Ports, counties, or States
-      - At-Sea
-  - Individual (Captain)
-]
+Typically use datastreams primarily designed for assessing stocks of fish, **not** purpose-built collections for socioeconomic analysis
 
-.pull-right[
+
 ```{r data-overview}
 data_overview <- data.frame("Data Sources" = c("Dealer",
                                                "Vessel Logbook",
@@ -143,13 +132,13 @@ data_overview <- data.frame("Data Sources" = c("Dealer",
                                                "Operator Permits"),
 "Data Collected" = c("Landings; Revenue; Location of Buyer",
                                "Estimated Catch; Effort; Fishing Location; Gear; Number of Crew; Captain identifier",
-                               "Trip-level variable costs; Haul-level catch",
+                               "Trip-level variable costs; Haul-level catch (Sample)",
                                "Hailing Port; Principal Port; Mailing Addresses; Fishery Types; Ownership (firms and people)",
                                 "Days-at-Sea; Quota; Lease Values; Transfer Values",
                                "Date of Birth; Mailing Address"))
 knitr::kable(data_overview, linesep = "",
       col.names = c("Data Sources","Data Collected"),
-      caption = "Data Overview at NEFSC",
+      caption = "Ongoing Data Collections at NEFSC",
       #align = 'c',
       booktabs = T) %>%
   kable_styling(font_size = 14) %>%
@@ -165,14 +154,49 @@ knitr::kable(data_overview, linesep = "",
 ```
 ]
 
+.pull-right[
+- Supports analysis: 
+  - Vessel Level: Gross receipts, Operating Profits \*, Profits\*\*
+  - Firms: Gross receipts, Operating Profits \*, Profits\*\*
+  - Dealer: Gross purchases
+  - Captain: Gross fishing income\*\*\*, Net Fishing Income\*\*
+  - Community (Land or "At-Sea") 
+      - Gross receipts
+- Can be aggregated or disaggregated in
+  - Time
+  - Space
+  - By vessel attributes
+.contrib[
+More \* means more assumptions and data processing.]
+]
+
 
 ---
-## New Socioeconomic Data Collections in Northeast Region
+
+## A Bit More Detail About the High-Frequency Data Collections 
+
+- Crew information
+  - No crew registry or identifiers
+  - No crew demographics
+- Captain information
+  - Minimal Demographics  
+    - Sex, Hair color, eye color, DoB, Height, Weight, headshot
+  - No Race, ethnicity, household status
+- Owner information
+  - 
+
+
+---
+
+
+---
+## Low-Frequency Socioeconomic Data Collections in Northeast Region
 
 .pull-left[
 Regular
 
-- Crew Survey (2012/3, 2018/9, 2023)
+- Crew Socioeconomic Survey (2012/3, 2018/9, 2023)
+- Owner Socioeconomic Survey (2013/2014)
 - Cost survey (2011, 2012, 2015, 2023)
 ]
 
@@ -183,8 +207,8 @@ Occasional and One-time
 - American Seafood Harvesters Marketing Practices Survey
 ]
 
----
-## Crew Survey
+## Crew Socioeconomic Survey
+
 .pull-left[
 
 - Population: Crew that work on fishing vessels in the Northeast US.
@@ -202,12 +226,35 @@ Occasional and One-time
 
 .contrib[
 https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey
+`r Cite(myBib, "Henry2014")` and `r Cite(myBib, "cutler2022tracking")`
 ]
 
 ]
 .pull-right[
 Crew Survey Planned locations for 2023
 ![The Crew Survey will be be in ports from Beals, ME to Wanchese, NC in 2023](http://www.fisheries.noaa.gov/s3/2023-06/crewsurvey-june1.png)
+
+]
+
+
+
+---
+## Owner Socioeconomic Survey
+
+Gather data to inform the development of social indicators that fall under the broad performance measures of financial viability, distributional outcomes, governance, stewardship, and well-being `r Cite(myBib, "Cutler2017")`. 
+
+.pull-left[
+- Population: Owners of a fishing vessel with a Northeast US fishing permit
+- Collect Vessel and Owner information
+    - Primary landing port and mooring port, fishery
+    - Marital status, age, educational attainment
+    - Race and language at home
+    - Years in the industry, family history
+- Can (cannot?) link back to vessels
+- **Issue** : Survey Fatigue
+- **Issue** : 
+]
+.pull-right[
 
 ]
 
@@ -282,7 +329,9 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
     - Less likely to participate in fishery management process
     - Recreational measures sometimes have a "Trophy" (2 small fish, plus 1 very large).  The benefits of this are likely to accrue to affluent anglers.
     - Recreational measures sometimes that differ by mode (for-hire vs other).  This *may* shift benefits to affluent anglers or for-hire operators.  
-
+- People who don't show up to Council meetings
+  - Low expected gains from attending a costly meeting `r Cite(myBib, "turner2005meetings")`
+  - 
 
 ---
 ## Are there types of socioeconomic data related to equity that the Council is using/relying on in decision making?
@@ -292,6 +341,13 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
 
 ---
 ## Are there differences in data/information needs for initially setting up a permit or allocation system vs monitoring changes in a fishery over time? 
+
+- Although common in US Fisheries, an initial allocation does not *need* to be based on fishing history.
+  - Politically expedient `r Cite(myBib, "holzer2015property")`
+  - Has participation and equity implications that 
+      - Are long-lasting
+      - Reinforced by Council process (See `r Cite(myBib, "turner2005meetings")`)
+
 
 ---
 
