@@ -62,7 +62,7 @@ BibOptions(check.entries = FALSE,
            bib.style = "authoryear",
            cite.style = "authoryear",
            longnamesfirst = FALSE,
-           max.names = 2,
+           max.names = 1,
            style = "markdown")
 myBib <- ReadBib("./Distribution.bib", check = FALSE)
 
@@ -168,7 +168,7 @@ knitr::kable(data_overview, linesep = "",
   - Space
   - By vessel attributes
 .contrib[
-More \* means more assumptions and data processing.]
+More \* = more assumptions and data processing.]
 ]
 
 
@@ -176,6 +176,9 @@ More \* means more assumptions and data processing.]
 
 ## A Bit More Detail About the High-Frequency Data Collections 
 
+
+
+.pull-left[
 - Crew information
   - No crew registry or identifiers
   - No crew demographics
@@ -184,7 +187,13 @@ More \* means more assumptions and data processing.]
     - Sex, Hair color, eye color, DoB, Height, Weight, headshot
   - No Race, ethnicity, household status
 - Owner information
-  
+
+
+<img src="./images/scatter_revage.png" alt="An Aging curve for Fishing Captains" width="300" height="auto"  />
+]
+.pull-right[
+<img src="./images/gini_and_income.png" alt="Gini Coefficient and Aggregate Captain Income" width="400" height="auto" />
+]
 
 
 
@@ -261,8 +270,8 @@ Gather data to inform the development of social indicators that fall under the b
 ---
 ## Cost Survey
 .pull-left[
-- Population: Firms with a Northeast US fishing permit
-- Enables a better understanding of firm level profits
+- Population: Firms with a fishing permit
+- A better understanding of firm level profits
 - Collect Fixed and Quasi-fixed costs
     - Vessel Repair/Maintenance & Upgrade/Improvement Costs
     - Vessel Fees and Insurance
@@ -287,23 +296,19 @@ https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
 ---
 ##  Recreational Valuation Surveys
 .pull-left[
-- Population: Recreational anglers in the Northeast US that target particular species 
+- Population: Licensed recreational anglers in the Northeast US that target particular species 
 - Examines effects of changes in numbers of landed and released fish on angler participation and utility
 - Used to set fishing regulations
 - Limited Demographics
-  - Male/Female
-  - Year of birth
-  - Highest Education level
-  - Household Income (brackets)
 - **Issue** : 
 - **Issue** : 
 - **Lessons Learned** : 
 ]
 .pull-right[
-<img src="./images/Fluke2022-survey-instrument.png" alt="Recreational Valuation typically uses a Choice Experiment survey" width="400" height="auto" />
+<img src="./images/Fluke2022-survey-instrument2.png" alt="The Summer Flounder valuation survey asked for Male/Female, Birth year, educational attainment, and household income" width="400" height="auto" />
 
 .contrib[
-A sample page from the 2022 Survey used to value fishing opportunities for Summer Flounder (Fluke) in the region.
+The Demographics Page from the 2022 Survey used to value fishing opportunities for Summer Flounder (Fluke) in the region.
 ]
 ]
 
@@ -316,6 +321,7 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
 
 ---
 ## Are there groups of people that you think are not being considered in current efforts but should be?
+Very uncertain about this
 
 - Future Generations
     - How will they afford to buy access rights from people who currently hold them?
@@ -343,7 +349,7 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
 ## Are there differences in data/information needs for initially setting up a permit or allocation system vs monitoring changes in a fishery over time? 
 
 - Although common in US Fisheries, an initial allocation does not *need* to be based on fishing history.
-  - Politically expedient `r Cite(myBib, "holzer2015property")`
+  - Politically expedient `r Cite(myBib, "holzer2015property")` for the federally managed stocks.
   - Has participation and equity implications that 
       - Are long-lasting
       - Reinforced by Council process (See `r Citet(myBib, "turner2005meetings")`)
@@ -366,8 +372,13 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
   - "Rare" costs also seem to be split
       - Fishery Disasters,
       - Rebuilding from overfished
+- Justification for prohibition on "permit splitting" is less compelling for fisheries managed with a hard ACL.
+  - Even less compelling for fisheries that are quota managed.
+- Data and Capacity are limiting our ability to do longitudinal studies related to equity.
+  -  Strategically add relevant socioeconomic fields to certain existing data collections
+  -  Informed by Owner and Crew surveys.
 
-
+---
 
 ## Acknowledgement Slide
 
@@ -378,15 +389,14 @@ A sample page from the 2022 Survey used to value fishing opportunities for Summe
 
 .contrib[
 ```{r refs, echo=FALSE, results="asis", eval=TRUE}
-PrintBibliography(myBib)
+PrintBibliography(myBib, .opts=list(max.names=3))
 ```
 ]
 
 
 ## Additional resources
+
 .pull-left[
-]
-.pull-right[
 * [Crew Survey Landing Page](https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey)
 
 * [Cost Survey Landing Page](https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/)
@@ -394,4 +404,5 @@ PrintBibliography(myBib)
 * [Performance Meaures Landings Page](https://apps-nefsc.fisheries.noaa.gov/socialsci/pm/index.php)
 
 ]
-
+.pull-right[
+]
