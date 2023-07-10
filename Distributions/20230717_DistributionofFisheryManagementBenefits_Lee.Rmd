@@ -203,10 +203,12 @@ knitr::kable(data_overview, linesep = "",
 - Owner information
 
 
-<img src="./images/scatter_revage.png" alt="An Aging curve for Fishing Captains" width="300" height="auto"  />
 ]
 .pull-right[
-<img src="./images/gini_and_income.png" alt="Gini Coefficient and Aggregate Captain Income" width="400" height="auto" />
+<img src="./images/scatter_revage.png" alt="An Aging curve for Fishing Captains" width="350" height="auto"  />
+
+
+<img src="./images/gini_and_income.png" alt="Gini Coefficient and Aggregate Captain Income" width="350" height="auto" />
 ]
 
 
@@ -218,13 +220,12 @@ knitr::kable(data_overview, linesep = "",
 Regular
 
 - Crew Socioeconomic Survey (2012/3, 2018/9, 2023)
-- Owner Socioeconomic Survey (2013/2014)
 - Cost survey (2011, 2012, 2015, 2023)
 ]
 
 .pull-right[
 Occasional and One-time
-
+- Owner Socioeconomic Survey (2013/2014)
 - Recreational Valuation Surveys
 - American Seafood Harvesters Marketing Practices Survey
 ]
