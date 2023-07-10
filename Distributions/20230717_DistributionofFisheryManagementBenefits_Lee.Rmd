@@ -265,26 +265,6 @@ Crew Survey Planned locations for 2023
 
 
 ---
-## Owner Socioeconomic Survey
-
-Gather data to inform the development of social indicators that fall under the broad performance measures of financial viability, distributional outcomes, governance, stewardship, and well-being `r Cite(myBib, "Cutler2017")`. 
-
-.pull-left[
-- Population: Owners of a fishing vessel with a Northeast US fishing permit in 2012
-- Collect Vessel and Owner information
-    - Primary landing port and mooring port, fishery
-    - Marital status, age, educational attainment
-    - Race and language at home
-    - Years in the industry, family history
-- Can (cannot?) link back to vessels
-- **Issue** : Survey Fatigue
-- **Issue** : No follow up planned
-]
-.pull-right[
-
-]
-
----
 ## Cost Survey
 .pull-left[
 - Population: Firms with a fishing permit
@@ -306,6 +286,26 @@ https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
 .pull-right[
 <img src="./images/trawl-all-payments-to-cr.png" alt="The Cost survey collects information such as total annual payments to the captain and crew" width="400" height="auto" />
 <img src="./images/trawl-all-overhead-costs.png" alt="The Cost survey collects information such as total annual overhead costs" width="400" height="auto" />
+]
+
+---
+## Owner Socioeconomic Survey
+
+Gather data to inform the development of social indicators that fall under the broad performance measures of financial viability, distributional outcomes, governance, stewardship, and well-being `r Cite(myBib, "Cutler2017")`. 
+
+.pull-left[
+- Population: Owners of a fishing vessel with a Northeast US fishing permit in 2012
+- Collect Vessel and Owner information
+    - Primary landing port and mooring port, fishery
+    - Marital status, age, educational attainment
+    - Race and language at home
+    - Years in the industry, family history
+- Can (cannot?) link back to vessels
+- **Issue** : Survey Fatigue
+- **Issue** : No follow up planned
+]
+.pull-right[
+
 ]
 
 ---
