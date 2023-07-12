@@ -9,6 +9,7 @@
     <script src="libs/kePrint/kePrint.js"></script>
     <link href="libs/lightable/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="libs/EDAB_theme3_508_SOE_16by9.css" type="text/css" />
+    <link rel="stylesheet" href="libs/ml_simple_themes.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -66,7 +67,6 @@ in-line cite with:  &lt;a name=cite-carr2020expected&gt;&lt;/a&gt;([Carr-Harris 
  - Inline cite 
 
 
---&gt;
 
 
 
@@ -79,7 +79,7 @@ in-line cite with:  &lt;a name=cite-carr2020expected&gt;&lt;/a&gt;([Carr-Harris 
 - Identify methodologies the agency could use to assess the relative distribution of benefits from federal commercial and for-hire fishery management based on available information.
 
 Not going to include this slide, just for reference.
----
+
 ## Some Questions
 
 - What initiatives, if any, related to new socioeconomic data collection have been undertaken within your region?
@@ -92,19 +92,30 @@ Not going to include this slide, just for reference.
 
 Not going to include this slide, just for reference.
 
----
-# Identify potential obstacles: 
+--&gt;
 
+## Data and Information Availability
+.pull-left[
+What do we have? Not alot.
 
-&lt;img src="./images/SBEs_at_NOAA.png" alt="Approximately 1\% of the NOAA workforce are social scientists" width="auto" height="300"  /&gt;
+Why: 
+- Systematic under-investment in our ability to collect and analyse socioeconomic information
+- Not well understood by leadership  
+- Not well understood by people who would use this information
+]
+.pull-right[
+&lt;img src="./images/SBEs_at_NOAA.png" alt="Approximately 1\% of the NOAA workforce are social scientists" width="auto" height="250"  /&gt;
 
-- At Fisheries, there are approximately 15 social scientists and 50 economists.  Economists have the tools to tell only a small part of any equity story.
+- At Fisheries, there are approximately 15 social scientists and 50 economists.  Economists have the tools to tell a small part of any equity story.
 
 - No Senior Executive Service Social Scientists at NOAA.
 
 .contrib[
 &lt;a name=cite-Kast2023&gt;&lt;/a&gt;[Kast et al. (2023)](#bib-Kast2023)
 ]
+
+]
+
 
 
 
@@ -151,25 +162,6 @@ Datastreams primarily designed for assessing stocks of fish and repurposed for e
 &lt;/table&gt;
 ]
 
-.pull-right[
-- Supports analysis at the level of the  
-  - Fishing Vessel, Fishing Firm, Seafood Dealer 
-  - Captain\* 
-- Can be aggregated or disaggregated in
-  - Time
-  - Space
-    - Communities
-    - Communities At-Sea
-  - By vessel, firm, or captain attributes
-.contrib[
-\* With increasingly tenuous assumptions and data processing.]
-]
-
-
----
-
-## A Bit More Detail About the High-Frequency Data Collections 
-
 .pull-left[
 - Crew information
   - No crew registry or identifiers
@@ -179,36 +171,49 @@ Datastreams primarily designed for assessing stocks of fish and repurposed for e
     - Sex, DoB, photo
   - No Race, ethnicity, household status
 - Owner information
-
-
+  - Firm name
+  - Person's name
 ]
-.pull-right[
-&lt;img src="./images/scatter_revage.png" alt="An Aging curve for Fishing Captains" width="350" height="auto"  /&gt;
 
-
-&lt;img src="./images/gini_and_income.png" alt="Gini Coefficient and Aggregate Captain Income" width="350" height="auto" /&gt;
-]
 
 
 
 ---
-## Low-Frequency Socioeconomic Data Collections in Northeast Region
-
-.pull-left[
-Regular
-
+# Purpose-Built Socioeconomic Data Collections in Northeast Region
+- Cost survey (2011/2012, 2015, 2023)
 - Crew Socioeconomic Survey (2012/3, 2018/9, 2023)
-- Cost survey (2011, 2012, 2015, 2023)
-]
-
-.pull-right[
-Occasional and One-time
 - Owner Socioeconomic Survey (2013/2014)
 - Recreational Valuation Surveys
-- American Seafood Harvesters Marketing Practices Survey
-]
----
+- Voices from the Fisheries\*
+- .grayed_out[Recreational Expenditure Survey\*]
+- .grayed_out[American Seafood Harvesters Marketing Practices Survey\*]
 
+.contrib[
+\* National Projects
+]
+
+---
+## Cost Survey
+.pull-left[
+- Population: Firms with a fishing permit
+- A better understanding of firm level profits
+    - Vessel Repair/Maintenance &amp; Upgrade/Improvement Costs 
+    - Vessel Fees and Insurance 
+    - Overhead Costs
+    - Crew Payments
+    - Quota Costs
+- **Issue** : Voluntary with no incentives -&gt; low response rates
+.contrib[
+https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
+]
+]
+
+.pull-right[
+&lt;img src="./images/trawl-all-payments-to-cr.png" alt="The Cost survey collects information such as total annual payments to the captain and crew" width="400" height="auto" /&gt;
+&lt;img src="./images/trawl-all-overhead-costs.png" alt="The Cost survey collects information such as total annual overhead costs" width="400" height="auto" /&gt;
+]
+
+---
 ## Crew Socioeconomic Survey
 
 .pull-left[
@@ -222,9 +227,8 @@ Occasional and One-time
     -  Views on fishery management
     -  Job satisfaction
     -  Well-being over time 
-- Can (cannot?) link back to vessels
-- **Issue** : 
-- **Issue** : 
+&lt;img src="./images/crew_demogs.png" alt="Crew Demographic Information" width="400" height="auto" /&gt;
+
 
 .contrib[
 https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey
@@ -241,35 +245,10 @@ Crew Survey Planned locations for 2023
 ]
 
 
-
----
-## Cost Survey
-.pull-left[
-- Population: Firms with a fishing permit
-- A better understanding of firm level profits
-&lt;!---    - Vessel Repair/Maintenance &amp; Upgrade/Improvement Costs ---&gt;
-&lt;!---     - Vessel Fees and Insurance ---&gt;
-    - Overhead Costs
-    - Crew Payments
-    - Quota Costs
-- Can (cannot?) link back to vessels
-- **Issue** : 
-- **Issue** : 
-
-.contrib[
-https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
-]
-]
-
-.pull-right[
-&lt;img src="./images/trawl-all-payments-to-cr.png" alt="The Cost survey collects information such as total annual payments to the captain and crew" width="400" height="auto" /&gt;
-&lt;img src="./images/trawl-all-overhead-costs.png" alt="The Cost survey collects information such as total annual overhead costs" width="400" height="auto" /&gt;
-]
-
 ---
 ## Owner Socioeconomic Survey
 
-Gather data to inform the development of social indicators that fall under the broad performance measures of financial viability, distributional outcomes, governance, stewardship, and well-being &lt;a name=cite-Cutler2017&gt;&lt;/a&gt;([Cutler et al., 2017](https://doi.org/10.7289/V52J68S4)). 
+Gather data to inform the development of social indicators that fall under the broad performance measures of financial viability, distributional outcomes, governance, stewardship, and well-being &lt;a name=cite-Cutler2017&gt;&lt;/a&gt;([Cutler et al., 2017](https://doi.org/10.7289/V5/TM-NEFSC-240)). 
 
 .pull-left[
 - Population: Owners of a fishing vessel with a Northeast US fishing permit in 2012
@@ -278,12 +257,13 @@ Gather data to inform the development of social indicators that fall under the b
     - Marital status, age, educational attainment
     - Race and language at home
     - Years in the industry, family history
-- Can (cannot?) link back to vessels
-- **Issue** : Survey Fatigue
 - **Issue** : No follow up planned
 ]
-.pull-right[
 
+
+.pull-right[
+&lt;img src="./images/owners1.png" alt="Owner survey included information about sustainability" width="auto" height="220" /&gt;
+&lt;img src="./images/owners_education.png" alt="Owner survey included information about Owner's Education" width="auto" height="220" /&gt;
 ]
 
 ---
@@ -293,9 +273,7 @@ Gather data to inform the development of social indicators that fall under the b
 - Examines effects of changes in numbers of landed and released fish on angler participation and utility
 - Used to set fishing regulations
 - Limited Demographics
-- **Issue** : Can't disaggregate "recreational anglers."
-- **Issue** : 
-- **Lessons Learned** : 
+- **Issue** : Focused on "hot" fisheries: Groundfish; Striped Bass; Summer Flounder
 ]
 .pull-right[
 &lt;img src="./images/Fluke2022-survey-instrument2.png" alt="The Summer Flounder valuation survey asked for Male/Female, Birth year, educational attainment, and household income" width="400" height="auto" /&gt;
@@ -305,12 +283,77 @@ The Demographics Page from the 2022 Survey used to value fishing opportunities f
 ]
 ]
 
+---
+## Voices Oral History Archives
+
+.pull-left[
+- Document the human experience as it relates to the changing environment, climate, oceans and coasts through firsthand oral history accounts
+- Population: Communities and groups that are underrepresented in fisheries and fisheries management using a power-sharing data collection approach
+    - crew
+    - shoreside workers
+    - immigrants
+    - processing workers
+    - small scale producers
+    - rural producers
+    - women
+]
+
+
+.pull-right[
+]
+
+---
+
+## Common Issues and Obstacles
+.pull-left[
+Under-resourced 
+ - Occasional Crew surveys
+ - Occasional Cost surveys
+ - Voices project being shuttered
+ - Very small staff with qualitative focus
+ 
+Under-Valued
+  - Importance of qualitative data not understood by Fisheries leadership
+  - "Nobody is going to use this information anyway."
+    - Minimal support from affiliated stakeholders 
+    - Decision makers don't know how to use qualitative info
+]
+
+.pull-right[
+Not trusted 
+  - "Destroying Fishermen and their Communities since 1976."
+  - "This information is going to be used against me." 
+]
+
+---
+
+## Common Issues and Obstacles
+- Logistics
+  - Office of Management and Budget 
+      - PRA Process is onerous
+      - Incentives for surveys are not permitted
+  - Survey Fatigue and Coordination
+  - Short-term funding to implement a survey does not lay the groundwork for a long-term partnership with fishing communities
+  - Data governance
+- Representativeness
+  - Language barriers for minority populations
+  - Scientific staff not diverse or at least similar to the community
 
 
 
 ---
 ## Are there socioeconomic data collection efforts have been tried and have failed?
+.pull-left[
+ - Vessel owners were upset at the inclusion of demographic questions during survey pretesting for 2022. Demographics section was removed 
+- Social Capital survey 
+  - not approved by OMB
+  - not boosted by Fisheries Leadership
+- Higher frequency cost survey (every 3 months)
+]
 
+.pull-right[
+]
+---
 
 
 ---
@@ -321,8 +364,8 @@ The Demographics Page from the 2022 Survey used to value fishing opportunities f
   - Undocumented
   - South-American (non-Hispanic)
   - Female
-  - Non-English speaking.
-  - Tenuous Firm-Labor relations
+  - Non-English speaking
+  - Have fragile labor relations
 - Shoreside infrastructure firms
 
 - Consumers
@@ -358,26 +401,13 @@ https://thepublicsradio.org/article/-clear-vengeance-workers-threatened-with-ter
   - Analyses of non-qualifying firms
 - More sophisticated or dissagregated metrics? 
     - Not really
-    - They know that we have limited ability to provide this information
+    - We have limited ability to provide this information
+- NE council has asked what we are doing on the EEJ front.
+  - We have the EEJ strategy.
+  - How do we implement? Who implements? 
 
 ---
-## Are there differences in data/information needs for initially setting up a permit or allocation system vs monitoring changes in a fishery over time? 
 
-- Although common in US Fisheries, an initial allocation does not *need* to be based on fishing history.
-  - Politically expedient &lt;a name=cite-holzer2015property&gt;&lt;/a&gt;([Holzer, 2015](#bib-holzer2015property)) for the federally managed stocks.
-  - Has participation and equity implications that 
-      - Are long-lasting
-      - Reinforced by Council process (See [Turner et al. (2005)](#bib-turner2005meetings))
-
----
-# Identify potential obstacles: 
-- Resources
-  - Timely funds
-  - Staffing and skills mix
-- Processing plant labor are often from a group that are hard to reach
-- Office of Management and Budget's PRA Process is onerous 
-
----
 # Other thoughts
 
 - Framed as "Distribution of Fishery Management Benefits", but what about the costs?
@@ -393,14 +423,16 @@ https://thepublicsradio.org/article/-clear-vengeance-workers-threatened-with-ter
       - Rebuilding from overfished
 - Justification for prohibition on "permit splitting" is less compelling for fisheries managed with a hard ACL.
   - Even less compelling for fisheries that are quota managed.
-- Data and Capacity are limiting our ability to do longitudinal studies related to equity.
-  -  Strategically add relevant socioeconomic fields to certain existing data collections
-  -  Informed by Owner and Crew surveys.
+- Although common in US Fisheries, an initial allocation does not *need* to be based on fishing history.
 
 ---
 
 ## Acknowledgement Slide
-
+- Greg Ardini
+- Trish Clay
+- Matt Cutler
+- Patricia Pinto da Silva
+- Samantha Werner
 
 
 ---
@@ -417,7 +449,7 @@ Vasta](#cite-Cutler2017) (2017). _An Overview of the Survey of
 Commercial Fishing Vessel Owners on the Socioeconomic Aspects in the
 Northeast and Mid-Atlantic_. NMFS-NE-240. Woods Hole, MA: National
 Oceanic and Atmospheric Administration, p. 34. DOI:
-[10.7289/V52J68S4](https://doi.org/10.7289%2FV52J68S4).
+[10.7289/V5/TM-NEFSC-240](https://doi.org/10.7289%2FV5%2FTM-NEFSC-240).
 
 &lt;a name=bib-cutler2022tracking&gt;&lt;/a&gt;[Cutler, M., A. Silva, L. Gentile,
 et al.](#cite-cutler2022tracking) (2022). "Tracking shifts in the
@@ -432,11 +464,6 @@ the Socio-economic Aspects of Commercial Fishing Crew in the
 Northeast_. NMFS-NE-230. Woods Hole, MA: Northeast Fisheries Science
 Center, p. 48. DOI:
 [10.7289/V52J68S4](https://doi.org/10.7289%2FV52J68S4).
-
-&lt;a name=bib-holzer2015property&gt;&lt;/a&gt;[Holzer,
-J.](#cite-holzer2015property) (2015). "Property rights and choice: the
-case of the fishery". In: _American Journal of Agricultural Economics_
-97.4, pp. 1175-1191.
 
 &lt;a name=bib-Kast2023&gt;&lt;/a&gt;[Kast, J., A. Krepp, and G.
 Eosco](#cite-Kast2023) (2023). _NOAA Federal Social, Behavioral, and
@@ -463,6 +490,36 @@ studies_ 72.1, pp. 247-268.
 ]
 .pull-right[
 ]
+
+
+
+---
+
+## A Bit More Detail About the High-Frequency Data Collections 
+
+.pull-right[
+- Supports analysis at the level of the  
+  - Fishing Vessel, Fishing Firm, Seafood Dealer 
+  - Captain\* 
+- Can be aggregated or disaggregated in
+  - Time
+  - Space
+    - Communities
+    - Communities At-Sea
+  - By vessel, firm, or captain attributes
+.contrib[
+\* With increasingly tenuous assumptions and data processing.]
+]
+
+.pull-right[
+&lt;img src="./images/scatter_revage.png" alt="An Aging curve for Fishing Captains" width="350" height="auto"  /&gt;
+
+
+&lt;img src="./images/gini_and_income.png" alt="Gini Coefficient and Aggregate Captain Income" width="350" height="auto" /&gt;
+]
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
