@@ -1,7 +1,7 @@
 ---
-title: "[DRAFT] Distribution of Fishery Management Benefits: <br /> Northeast Fisheries"
-subtitle: "Presentation for the National Academies <br /> 17-18 July 2023"
-author: "Min-Yang Lee<br /> Northeast Fisheries Science Center"
+title: "[DRAFT] Northeast Fisheries"
+subtitle: "Presentation for the National Academies Committee’s for Assessing Equity in the Distribution of Fisheries Management Benefits: Data and Information Availability"
+author: "Min-Yang Lee<br />Social Sciences Branch<br />   Northeast Fisheries Science Centery<br /> 17 July 2023"
 output:
   xaringan::moon_reader:
     css: ["default", "libs/EDAB_theme3_508_SOE_16by9.css", "libs/ml_simple_themes.css"]
@@ -121,14 +121,16 @@ Not going to include this slide, just for reference.
 
 -->
 
-## Data and Information Availability
+# Data and Information Availability
 .pull-left[
-What do we have? Not alot.
+What do we have? .opinion[*In my opinion*, not nearly enough.]
 
-Why: 
+.opinion[
+*In my opinion*, this is because 
 - Systematic under-investment in our ability to collect and analyse socioeconomic information
-- Not well understood by leadership  
-- Not well understood by people who would use this information
+- Not well-understood by leadership  
+- Not well-understood by people who would use this information
+]
 ]
 .pull-right[
 <img src="./images/SBEs_at_NOAA.png" alt="Approximately 1\% of the NOAA workforce are social scientists" width="auto" height="250"  />
@@ -147,22 +149,25 @@ Why:
 
 
 ---
-##  High-Frequency Data Collections
+##  Repurposing High-Frequency Data Collections
 .pull-left[
-Datastreams primarily designed for assessing stocks of fish and repurposed for economic analysis. Hard to examine distributions and only covers the harvest sector.
+Regtional datastreams primarily designed for monitoring catch and assessing stocks of fish 
+-  Repurposed for socioeconomic analysis
+-  Hard to examine distributions 
+-  Only covers the harvest sector
 
 
 ```{r data-overview}
 data_overview <- data.frame("Data Sources" = c("Vessel Permit Applications",
                                                "Fishing Vessel Trip Reports",
                                                "Seafood Dealer",
-                                               "Observer",
+                                               "Observer (Sample)",
                                                "Rights Allocations and Transfers",
                                                "Operator Permits"),
 "Data Collected" = c("Hailing Port; Principal Port; Mailing Addresses; Fishery Types; Ownership (firms and people)",
-                    "Estimated Catch; Effort; Fishing Location; Gear; Number of Crew; Captain identifier",
+                    "Estimated Catch; Effort; Fishing Location; Gear; Number of Crew; Captain identifier; Landing Port",
                      "Landings; Revenue; Location of Buyer",
-                    "Trip-level variable costs; Haul-level catch (Sample)",
+                    "Trip-level variable costs; Haul-level catch ",
                     "Days-at-Sea holdings; Quota holdings; Lease Values; Transfer Values",
                     "Date of Birth; Mailing Address"))
 knitr::kable(data_overview, linesep = "",
@@ -201,14 +206,13 @@ knitr::kable(data_overview, linesep = "",
 
 ---
 # Purpose-Built Socioeconomic Data Collections in Northeast Region
-- Cost survey (2011/2012, 2015, 2023)
-- Crew Socioeconomic Survey (2012/3, 2018/9, 2023)
-- Owner Socioeconomic Survey (2013/2014)
+- Cost survey: 2011, 2015, 2023
+- Crew Socioeconomic Survey: 2012, 2018/9, 2023
+- Owner Socioeconomic Survey: 2013
 - Recreational Valuation Surveys
 - Voices from the Fisheries\*
-- .grayed_out[Recreational Expenditure Survey\*]
 - .grayed_out[American Seafood Harvesters Marketing Practices Survey\*]
-
+- .grayed_out[Recreational Expenditure Survey\*]
 .contrib[
 \* National Projects
 ]
@@ -283,8 +287,8 @@ Gather data to inform the development of social indicators that fall under the b
 
 
 .pull-right[
-<img src="./images/owners1.png" alt="Owner survey included information about sustainability" width="auto" height="220" />
-<img src="./images/owners_education.png" alt="Owner survey included information about Owner's Education" width="auto" height="220" />
+<img src="./images/owners1.png" alt="Owner survey included information about sustainability" width="auto" height="230" />
+<img src="./images/owners_education.png" alt="Owner survey included information about Owner's Education" width="auto" height="230" />
 ]
 
 ---
@@ -309,7 +313,8 @@ The Demographics Page from the 2022 Survey used to value fishing opportunities f
 
 .pull-left[
 - Document the human experience as it relates to the changing environment, climate, oceans and coasts through firsthand oral history accounts
-- Population: Communities and groups that are underrepresented in fisheries and fisheries management using a power-sharing data collection approach
+- Population: Communities and groups that are underrepresented in fisheries and fisheries management 
+- Collected using a power-sharing data collection approach
     - crew
     - shoreside workers
     - immigrants
@@ -317,64 +322,37 @@ The Demographics Page from the 2022 Survey used to value fishing opportunities f
     - small scale producers
     - rural producers
     - women
+
 ]
 
 
 .pull-right[
+Used to:
+- Understand Equity and environmental Justice for minority groups
+  - Gullah Geechee
+  - Georgia black fishermen
+- Understand the role of women in fisheries
+- Understand disaster impacts
+  - Deepwater Horizon Oil spill
+  - Tsunami responses
+- Parameterize stock assessment models for Gulf of Mexico Red Grouper
 ]
 
----
 
-## Common Issues and Obstacles
-.pull-left[
-Under-resourced 
- - Occasional Crew surveys
- - Occasional Cost surveys
- - Voices project being shuttered
- - Very small staff with qualitative focus
- 
-Under-Valued
-  - Importance of qualitative data not understood by Fisheries leadership
-  - "Nobody is going to use this information anyway."
-    - Minimal support from affiliated stakeholders 
-    - Decision makers don't know how to use qualitative info
-]
-
-.pull-right[
-Not trusted 
-  - "Destroying Fishermen and their Communities since 1976."
-  - "This information is going to be used against me." 
-]
-
----
-
-## Common Issues and Obstacles
-- Logistics
-  - Office of Management and Budget 
-      - PRA Process is onerous
-      - Incentives for surveys are not permitted
-  - Survey Fatigue and Coordination
-  - Short-term funding to implement a survey does not lay the groundwork for a long-term partnership with fishing communities
-  - Data governance
-- Representativeness
-  - Language barriers for minority populations
-  - Scientific staff not diverse or at least similar to the community
-
-
+.warning[Voices funding scheduled to end at the end of FY2024.]
 
 ---
 ## Are there socioeconomic data collection efforts have been tried and have failed?
 .pull-left[
- - Vessel owners were upset at the inclusion of demographic questions during survey pretesting for 2022. Demographics section was removed 
+ - Vessel owners had strong, negative reactions to the demographic questions during survey pretesting for 2022. Demographics section was removed 
 - Social Capital survey 
   - not approved by OMB
-  - not boosted by Fisheries Leadership
+  - not championed by Fisheries Leadership
 - Higher frequency cost survey (every 3 months)
 ]
 
 .pull-right[
 ]
----
 
 
 ---
@@ -427,8 +405,49 @@ https://thepublicsradio.org/article/-clear-vengeance-workers-threatened-with-ter
   - We have the EEJ strategy.
   - How do we implement? Who implements? 
 
+
 ---
 
+## Common Issues and Obstacles
+.pull-left[
+Under-resourced 
+ - Occasional Crew surveys
+ - Occasional Cost surveys
+ - Voices project being shuttered
+ - Very small staff with qualitative focus
+ 
+Under-Valued
+  - Importance of qualitative data not understood by Fisheries leadership
+    - what else are going going to ask,their shoe size?
+  - Sentiment that nobody is going to use this information anyway.
+    - Minimal support from affiliated stakeholders 
+    - Decision makers don't know how to use qualitative info
+]
+
+.pull-right[
+Not trusted 
+  - "Destroying Fishermen and their Communities since 1976."
+  - This information is going to be used against me 
+]
+
+---
+
+## Common Issues and Obstacles
+- Logistics
+  - Office of Management and Budget 
+      - PRA Process is onerous
+      - Incentives for surveys are not permitted
+  - Survey Fatigue and Coordination
+  - Short-term funding to implement a survey does not lay the groundwork for a long-term partnership with fishing communities
+  - Data governance
+- Representativeness
+  - Language barriers for minority populations
+  - Scientific staff not diverse enough  
+      - In demographic characteristics `r Cite(myBib, c("ando2023environmental", "kuminoff2023new"))`
+      - In training 
+
+
+---
 # Other thoughts
 
 - Framed as "Distribution of Fishery Management Benefits", but what about the costs?
@@ -485,7 +504,7 @@ PrintBibliography(myBib, .opts=list(max.names=3))
 
 ## A Bit More Detail About the High-Frequency Data Collections 
 
-.pull-right[
+.pull-left[
 - Supports analysis at the level of the  
   - Fishing Vessel, Fishing Firm, Seafood Dealer 
   - Captain\* 
