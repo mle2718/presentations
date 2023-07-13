@@ -10,9 +10,7 @@ output: html_document
 </button>
  
  
-### Random Things
+### 2023
 
-*2023*
-
-<a href="https://mle2718.github.io/presentations/20230717_DistributionofFisheryManagementBenefits_Lee.html" target="_blank">National Academy of Sciences Presentation</a>
+<a href="https://mle2718.github.io/presentations/20230717_DistributionofFisheryManagementBenefits_Lee.html" target="_blank"> Distribution of Fishery Management Benefits. National Academy of Sciences. July 2023</a>
 
