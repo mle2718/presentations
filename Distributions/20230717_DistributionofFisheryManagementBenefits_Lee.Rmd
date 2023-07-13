@@ -1,7 +1,7 @@
 ---
 title: "[DRAFT] Northeast Fisheries"
-subtitle: "Presentation for the National Academies Committee’s for Assessing Equity in the Distribution of Fisheries Management Benefits: Data and Information Availability"
-author: "Min-Yang Lee<br />Social Sciences Branch<br />   Northeast Fisheries Science Centery<br /> 17 July 2023"
+subtitle: "Presentation to the National Academies Committee’s for Assessing Equity in the Distribution of Fisheries Management Benefits: Data and Information Availability"
+author: "Min-Yang Lee<br />Social Sciences Branch<br />   Northeast Fisheries Science Center<br /> 17 July 2023"
 output:
   xaringan::moon_reader:
     css: ["default", "libs/EDAB_theme3_508_SOE_16by9.css", "libs/ml_simple_themes.css"]
@@ -53,6 +53,8 @@ library(widgetframe)
 # presentations/docs in both the html output (search and replace)
 # and folder name
 # 20220316_MAFMCSSC_Gaichas_files/figure-html/
+
+imagefolder<-"20230717_DistributionofFisheryManagementBenefits_Lee"
 
 ```
 
@@ -126,20 +128,21 @@ Not going to include this slide, just for reference.
 What do we have? .opinion[*In my opinion*, not nearly enough.]
 
 .opinion[
-*In my opinion*, this is because 
-- Systematic under-investment in our ability to collect and analyse socioeconomic information
+*In my opinion*, this is due to  
+- Under-investment in our ability to collect and analyse socioeconomic information
 - Not well-understood by leadership  
 - Not well-understood by people who would use this information
+- Not well-communicated by our group
 ]
 ]
 .pull-right[
-<img src="./images/SBEs_at_NOAA.png" alt="Approximately 1\% of the NOAA workforce are social scientists" width="auto" height="250"  />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/SBEs_at_NOAA.png" alt="Approximately 1\% of the NOAA workforce are social scientists" width="auto" height="250"  />
 
 - At Fisheries, there are approximately 15 social scientists and 50 economists.  Economists have the tools to tell a small part of any equity story.
 
 - No Senior Executive Service Social Scientists at NOAA.
 
-.contrib[
+.footnote[
 `r Citet(myBib, "Kast2023")`
 ]
 
@@ -205,15 +208,19 @@ knitr::kable(data_overview, linesep = "",
 
 
 ---
-# Purpose-Built Socioeconomic Data Collections in Northeast Region
+## Purpose-Built Socioeconomic Data Collections in Northeast Region
 - Cost survey: 2011, 2015, 2023
+
 - Crew Socioeconomic Survey: 2012, 2018/9, 2023
+
 - Owner Socioeconomic Survey: 2013
 - Recreational Valuation Surveys
+
 - Voices from the Fisheries\*
+
 - .grayed_out[American Seafood Harvesters Marketing Practices Survey\*]
 - .grayed_out[Recreational Expenditure Survey\*]
-.contrib[
+.footnote[
 \* National Projects
 ]
 
@@ -227,48 +234,43 @@ knitr::kable(data_overview, linesep = "",
     - Overhead Costs
     - Crew Payments
     - Quota Costs
+- Implementation is funded by NMFS OST
 - **Issue** : Voluntary with no incentives -> low response rates
-.contrib[
+.footnote[
 https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
 ]
 ]
 
 .pull-right[
-<img src="./images/trawl-all-payments-to-cr.png" alt="The Cost survey collects information such as total annual payments to the captain and crew" width="400" height="auto" />
-<img src="./images/trawl-all-overhead-costs.png" alt="The Cost survey collects information such as total annual overhead costs" width="400" height="auto" />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/trawl-all-payments-to-cr.png" alt="The Cost survey collects information such as total annual payments to the captain and crew" width="400" height="auto" />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/trawl-all-overhead-costs.png" alt="The Cost survey collects information such as total annual overhead costs" width="400" height="auto" />
 ]
 
 ---
 ## Crew Socioeconomic Survey
 
 .pull-left[
-
-- Population: Crew that work on fishing vessels in the Northeast US.
+- Population: Crew of fishing vessels in the Northeast US.
 - Assess the social and economic well-being of commercial fishing vessel crews 
 <!--- - Better understand how management and environmental change affect important, socially vulnerable groups --->
 - Examine trends in:
     -  Commercial fishing vessel crew demographics
-    -  Participation and practices
     -  Views on fishery management
     -  Job satisfaction
-    -  Well-being over time 
-<img src="./images/crew_demogs.png" alt="Crew Demographic Information" width="400" height="auto" />
-
-
-.contrib[
-https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey
-]
-.contrib[
-`r Citet(myBib, "Henry2014")` and `r Citet(myBib, "cutler2022tracking")`
-]
+- Implementation funded by NMFS OST
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/crew_demogs.png" alt="Crew Demographic Information" width="300" height="auto" />
 
 ]
 .pull-right[
 Crew Survey Planned locations for 2023
-![The Crew Survey will be be in ports from Beals, ME to Wanchese, NC in 2023](http://www.fisheries.noaa.gov/s3/2023-06/crewsurvey-june1.png)
+<img src="http://www.fisheries.noaa.gov/s3/2023-06/crewsurvey-june1.png" alt="The Crew Survey will be be in ports from Beals, ME to Wanchese, NC in 2023" width="400" height="auto" />
 
 ]
+.footnote[
+`r Citet(myBib, c("Henry2014","cutler2022tracking"))`
 
+https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey
+]
 
 ---
 ## Owner Socioeconomic Survey
@@ -282,13 +284,14 @@ Gather data to inform the development of social indicators that fall under the b
     - Marital status, age, educational attainment
     - Race and language at home
     - Years in the industry, family history
+- Implementation was funded by NMFS OST
 - **Issue** : No follow up planned
 ]
 
 
 .pull-right[
-<img src="./images/owners1.png" alt="Owner survey included information about sustainability" width="auto" height="230" />
-<img src="./images/owners_education.png" alt="Owner survey included information about Owner's Education" width="auto" height="230" />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/owners_education.png" alt="Owner survey included information about Owner's Education" width="auto" height="230" />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/owners1.png" alt="Owner survey included information about sustainability" width="auto" height="230" />
 ]
 
 ---
@@ -301,10 +304,10 @@ Gather data to inform the development of social indicators that fall under the b
 - **Issue** : Focused on "hot" fisheries: Groundfish; Striped Bass; Summer Flounder
 ]
 .pull-right[
-<img src="./images/Fluke2022-survey-instrument2.png" alt="The Summer Flounder valuation survey asked for Male/Female, Birth year, educational attainment, and household income" width="400" height="auto" />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/Fluke2022-survey-instrument2.png" alt="The Summer Flounder valuation survey asked for Male/Female, Birth year, educational attainment, and household income" width="400" height="auto" />
 
-.contrib[
-The Demographics Page from the 2022 Survey used to value fishing opportunities for Summer Flounder (Fluke) in the region.
+.footnote[
+The Demographics Page from the 2022 Summer Flounder (Fluke) valuation survey.
 ]
 ]
 
@@ -331,10 +334,13 @@ Used to:
 - Understand Equity and environmental Justice for minority groups
   - Gullah Geechee
   - Georgia black fishermen
+
 - Understand the role of women in fisheries
+
 - Understand disaster impacts
   - Deepwater Horizon Oil spill
   - Tsunami responses
+  
 - Parameterize stock assessment models for Gulf of Mexico Red Grouper
 ]
 
@@ -345,9 +351,11 @@ Used to:
 ## Are there socioeconomic data collection efforts have been tried and have failed?
 .pull-left[
  - Vessel owners had strong, negative reactions to the demographic questions during survey pretesting for 2022. Demographics section was removed 
+ 
 - Social Capital survey 
   - not approved by OMB
   - not championed by Fisheries Leadership
+
 - Higher frequency cost survey (every 3 months)
 ]
 
@@ -359,6 +367,7 @@ Used to:
 ## Are there groups of people that you think are not being considered in current efforts but should be?
 - Crew
   - Low-Frequency surveying
+
 - Labor at Shoreside Infrastructure. In the Northeast US, they are frequently: 
   - Undocumented
   - South-American (non-Hispanic)
@@ -371,22 +380,25 @@ Used to:
 
 - First Nations (in the Northeast US)
 
-  .contrib[
+  .footnote[
 https://thepublicsradio.org/article/-clear-vengeance-workers-threatened-with-termination-at-new-bedford-seafood-plant]
 
 
 ---
-## Are there groups of people that you think are not being considered in current efforts but should be?
+## Are there groups of people that you think are not being considered in current efforts?
 - Future Generations
     - How will they afford to buy access rights from people who currently hold them?
     - How will groups that typically have poor access to capital markets find financing?
+
 - People and groups that did not qualify
     - No fishing history
     - No documented fishing history
+
 - "Subsistence" Recreational users (underserved community?)
     - Likely lower income and minority
     - Recreational measures sometimes have a "Trophy" (2 small fish, plus 1 very large).  The benefits of this are likely to accrue to affluent anglers.
     - Recreational measures sometimes that differ by mode (for-hire vs other).  This *may* shift benefits to affluent anglers or for-hire operators.  
+
 - People who don't show up to Council meetings
   - Low expected gains `r Cite(myBib, "turner2005meetings")`
   - Can't afford the cost 
@@ -398,9 +410,11 @@ https://thepublicsradio.org/article/-clear-vengeance-workers-threatened-with-ter
   - Gear
   - Vessel size
   - Analyses of non-qualifying firms
+  
 - More sophisticated or dissagregated metrics? 
     - Not really
     - We have limited ability to provide this information
+
 - NE council has asked what we are doing on the EEJ front.
   - We have the EEJ strategy.
   - How do we implement? Who implements? 
@@ -440,6 +454,7 @@ Not trusted
   - Survey Fatigue and Coordination
   - Short-term funding to implement a survey does not lay the groundwork for a long-term partnership with fishing communities
   - Data governance
+
 - Representativeness
   - Language barriers for minority populations
   - Scientific staff not diverse enough  
@@ -451,8 +466,6 @@ Not trusted
 # Other thoughts
 
 - Framed as "Distribution of Fishery Management Benefits", but what about the costs?
-  - What are they?
-  - Are they borne equitably?
   - Day-to-Day costs are split between public and private sector 
       - Going to meetings, 
       - Providing fishery management advice,
@@ -461,17 +474,22 @@ Not trusted
   - "Rare" costs also seem to be split
       - Fishery Disasters,
       - Rebuilding from overfished
-- Justification for prohibition on "permit splitting" is less compelling for fisheries managed with a hard ACL.
-  - Even less compelling for fisheries that are quota managed.
+
 - Although common in US Fisheries, an initial allocation does not *need* to be based on fishing history.
 
 ---
 
-## Acknowledgement Slide
+## Acknowledgements -- Thank you to:
+
+
 - Greg Ardini
+
 - Trish Clay
+
 - Matt Cutler
+
 - Patricia Pinto da Silva
+
 - Samantha Werner
 
 
@@ -514,15 +532,15 @@ PrintBibliography(myBib, .opts=list(max.names=3))
     - Communities
     - Communities At-Sea
   - By vessel, firm, or captain attributes
-.contrib[
+.footnote[
 \* With increasingly tenuous assumptions and data processing.]
 ]
 
 .pull-right[
-<img src="./images/scatter_revage.png" alt="An Aging curve for Fishing Captains" width="350" height="auto"  />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/scatter_revage.png" alt="An Aging curve for Fishing Captains" width="350" height="auto"  />
 
 
-<img src="./images/gini_and_income.png" alt="Gini Coefficient and Aggregate Captain Income" width="350" height="auto" />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/gini_and_income.png" alt="Gini Coefficient and Aggregate Captain Income" width="350" height="auto" />
 ]
 
 
