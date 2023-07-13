@@ -509,7 +509,7 @@ PrintBibliography(myBib, .opts=list(max.names=3))
 .pull-left[
 * [Crew Survey Landing Page](https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey)
 
-* [Cost Survey Landing Page](https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/)
+* [Cost Data Visualization Tool](https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/)
 
 * [Performance Meaures Landings Page](https://apps-nefsc.fisheries.noaa.gov/socialsci/pm/index.php)
 
