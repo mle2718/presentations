@@ -451,18 +451,23 @@ Not trusted
 ---
 
 ## Common Issues and Obstacles
-- Logistics
+- Government
   - Office of Management and Budget 
       - PRA Process is onerous
       - Incentives for surveys are not permitted
-  - Survey Fatigue and Coordination
-  - Voluntary data collections
   - Short-term funding to implement a survey does not lay the groundwork for a long-term partnership with fishing communities
   - Data governance
 
+- A big imposition for Respondents
+  - Survey Fatigue and Coordination
+  - Voluntary data collections
+  - Lots of time to take a survey
+  - Questions are sensitive
+  - Questions are difficult to answer
+
 - Representativeness
-  - Language barriers for minority populations
-  - Scientific staff not diverse enough  
+    - Language barriers for minority populations
+    - Scientific staff not diverse enough  
       - In demographic characteristics `r Cite(myBib, c("ando2023environmental", "kuminoff2023new"))`
       - In training 
 
