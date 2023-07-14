@@ -216,7 +216,7 @@ knitr::kable(data_overview, linesep = "",
 - Owner Socioeconomic Survey: 2013
 - Recreational Valuation Surveys
 
-- Voices from the Fisheries\*
+- NOAA Voices Oral History Archives\*
 
 - .grayed_out[American Seafood Harvesters Marketing Practices Survey\*]
 - .grayed_out[Recreational Expenditure Survey\*]
@@ -312,7 +312,7 @@ The Demographics Page from the 2022 Summer Flounder (Fluke) valuation survey.
 ]
 
 ---
-## Voices Oral History Archives
+## NOAA Voices Oral History Archives
 
 .pull-left[
 - Document the human experience as it relates to the changing environment, climate, oceans and coasts through firsthand oral history accounts
@@ -345,7 +345,7 @@ Used to:
 ]
 
 
-.warning[Voices funding scheduled to end at the end of FY2024.]
+.warning[Voices funding scheduled to end in FY2024.]
 
 ---
 ## Are there socioeconomic data collection efforts have been tried and have failed?
