@@ -129,7 +129,7 @@ What do we have? .opinion[*In my opinion*, not nearly enough.]
 
 .opinion[
 *In my opinion*, this is due to  
-- Under-investment in our ability to collect and analyse socioeconomic information
+- Under-investment in our ability to collect and analyze socioeconomic information
 - Not well-understood by leadership  
 - Not well-understood by people who would use this information
 - Not well-communicated by our group
@@ -138,7 +138,7 @@ What do we have? .opinion[*In my opinion*, not nearly enough.]
 .pull-right[
 <img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/SBEs_at_NOAA.png" alt="Approximately 1\% of the NOAA workforce are social scientists" width="auto" height="250"  />
 
-- At Fisheries, there are approximately 15 social scientists and 50 economists.  Economists have the tools to tell a small part of any equity story.
+- At Fisheries, there are approximately 15 social scientists and 50 economists.  Economists have the tools to tell only a part of any equity story.
 
 - No Senior Executive Service Social Scientists at NOAA.
 
@@ -154,7 +154,7 @@ What do we have? .opinion[*In my opinion*, not nearly enough.]
 ---
 ##  Repurposing High-Frequency Data Collections
 .pull-left[
-Regtional datastreams primarily designed for monitoring catch and assessing stocks of fish 
+Regional datastreams primarily designed for monitoring catch and assessing stocks of fish 
 -  Repurposed for socioeconomic analysis
 -  Hard to examine distributions 
 -  Only covers the harvest sector
@@ -250,7 +250,7 @@ https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
 ## Crew Socioeconomic Survey
 
 .pull-left[
-- Population: Crew of fishing vessels in the Northeast US.
+- Population: Crew of fishing vessels in the Northeast US
 - Assess the social and economic well-being of commercial fishing vessel crews 
 <!--- - Better understand how management and environmental change affect important, socially vulnerable groups --->
 - Examine trends in:
@@ -258,19 +258,19 @@ https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/
     -  Views on fishery management
     -  Job satisfaction
 - Implementation funded by NMFS OST
-<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/crew_demogs.png" alt="Crew Demographic Information" width="300" height="auto" />
+<img src="./20230717_DistributionofFisheryManagementBenefits_Lee/images/crew_demogs.png" alt="Crew Demographic Information" width="400" height="auto" />
 
 ]
 .pull-right[
 Crew Survey Planned locations for 2023
 <img src="http://www.fisheries.noaa.gov/s3/2023-06/crewsurvey-june1.png" alt="The Crew Survey will be be in ports from Beals, ME to Wanchese, NC in 2023" width="400" height="auto" />
-
-]
 .footnote[
 `r Citet(myBib, c("Henry2014","cutler2022tracking"))`
 
 https://www.fisheries.noaa.gov/new-england-mid-atlantic/socioeconomics/2023-commercial-fishing-crew-survey
 ]
+]
+
 
 ---
 ## Owner Socioeconomic Survey
@@ -282,7 +282,8 @@ Gather data to inform the development of social indicators that fall under the b
 - Collect Vessel and Owner information
     - Primary landing port and mooring port, fishery
     - Marital status, age, educational attainment
-    - Race and language at home
+    - Race
+    - Language at home
     - Years in the industry, family history
 - Implementation was funded by NMFS OST
 - **Issue**: No follow up planned
@@ -320,13 +321,15 @@ The Demographics Page from the 2022 Summer Flounder (Fluke) valuation survey.
 
 .pull-left[
 - Document the human experience as it relates to the changing environment, climate, oceans and coasts through firsthand oral history accounts
-- Population: Communities and groups that are underrepresented in fisheries and fisheries management 
+
 - Collected using a power-sharing data collection approach
+
+- Population: Communities and groups related to fishing that are underrepresented in fisheries and fisheries management, including:
     - crew
     - shoreside workers
     - immigrants
     - processing workers
-    - small scale producers
+    - small-scale producers
     - rural producers
     - women
 
@@ -382,7 +385,7 @@ Used to:
 
 - Consumers
 
-- First Nations (in the Northeast US)
+- Tribal and Indigenous groups (in the Northeast US)
 
   .footnote[
 https://thepublicsradio.org/article/-clear-vengeance-workers-threatened-with-termination-at-new-bedford-seafood-plant]
@@ -413,15 +416,16 @@ https://thepublicsradio.org/article/-clear-vengeance-workers-threatened-with-ter
   - Port
   - Gear
   - Vessel size
+  - Community
   - Analyses of non-qualifying firms
   
-- More sophisticated or dissagregated metrics? 
-    - Not really
-    - We have limited ability to provide this information
+- Limited ability to provide more sophisticated or dissagregated metrics? 
 
 - NE council has asked what we are doing on the EEJ front.
-  - We have the EEJ strategy.
-  - How do we implement? Who implements? 
+  - We have the EEJ strategy, but it is unclear:
+      - How we will implement.
+      - Who will implement.
+      - Where the resources to implement will come from. 
 
 
 ---
@@ -432,11 +436,10 @@ Under-resourced
  - Occasional Crew surveys
  - Occasional Cost surveys
  - Voices project being shuttered
- - Very small staff with qualitative focus
+ - 3 staff in our region with sociocultural training
  
 Under-Valued
   - Importance of qualitative data not understood by Fisheries leadership
-    - what else are you going to ask,their shoe size?
   - Sentiment that nobody is going to use this information anyway.
     - Minimal support from affiliated stakeholders 
     - Decision makers don't know how to use qualitative info
@@ -494,7 +497,7 @@ Not trusted
 
 - Greg Ardini
 
-- Trish Clay
+- Patricia Clay
 
 - Matt Cutler
 
@@ -520,7 +523,10 @@ PrintBibliography(myBib, .opts=list(max.names=3))
 
 * [Cost Data Visualization Tool](https://apps-nefsc.fisheries.noaa.gov/socialsci/cost-data/)
 
-* [Performance Meaures Landings Page](https://apps-nefsc.fisheries.noaa.gov/socialsci/pm/index.php)
+* [Performance Meaures Landing Page](https://apps-nefsc.fisheries.noaa.gov/socialsci/pm/index.php)
+
+
+* [Social Indicators for Coastal Communities](https://www.fisheries.noaa.gov/national/socioeconomics/social-indicators-coastal-communities)
 
 ]
 .pull-right[
