@@ -1,5 +1,5 @@
 ---
-title: "[DRAFT] Northeast Fisheries"
+title: "Northeast Fisheries"
 subtitle: "Presentation to the National Academies Committee’s for Assessing Equity in the Distribution of Fisheries Management Benefits: Data and Information Availability"
 author: "Min-Yang Lee<br />Social Sciences Branch<br />   Northeast Fisheries Science Center<br /> 17 July 2023"
 output:
