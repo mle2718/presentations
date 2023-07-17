@@ -454,6 +454,7 @@ Not trusted
 ---
 
 ## Common Issues and Obstacles
+.pull-left[
 - Government
   - Office of Management and Budget 
       - PRA Process is onerous
@@ -465,15 +466,18 @@ Not trusted
   - Survey Fatigue and Coordination
   - Voluntary data collections
   - Lots of time to take a survey
-  - Questions are sensitive
-  - Questions are difficult to answer
-
+  - Questions are sensitive and difficult to answer
+]
+.pull-right[
 - Representativeness
     - Language barriers for minority populations
     - Scientific staff not diverse enough  
       - In demographic characteristics `r Cite(myBib, c("ando2023environmental", "kuminoff2023new"))`
-      - In training 
-
+      - In training
+      
+- Regional datastreams are regional
+  - Movement of vessels and crew across regions?
+]
 
 ---
 # Other thoughts
