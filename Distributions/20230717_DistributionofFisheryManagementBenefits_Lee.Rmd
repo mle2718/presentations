@@ -438,8 +438,8 @@ Under-resourced
  - 3 staff in our region with sociocultural training
  
 Under-Valued
-  - Importance of qualitative data not understood by Fisheries leadership
-  - Sentiment that nobody is going to use this information anyway.
+  - Importance of qualitative data not well understood 
+  - Sentiment that nobody is going to use this information anyway
     - Minimal support from affiliated stakeholders 
     - Decision makers don't know how to use qualitative info
 ]
