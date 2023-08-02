@@ -161,6 +161,7 @@ $$ln\frac{F_{jt}}{Ftarget_{jt}} = ln(\varepsilon_j)$$
 
 .pull-right[
 - "Implementation Error" yearly catch plotted against "Economic Model" yearly catch
+- 45 degree line in red.
 - Paired simulations don't match very well on this or other metrics
 - Not too surprising, though -- it's just 1 realization.
 ]
