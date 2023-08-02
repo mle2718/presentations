@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Integrated Economic Models</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Min-Yang Lee, Anna Birkenbach, Jerelle Jesse,  Lisa Kerr, Mackenzie Mazur, Samuel Truesdell  07 August 2023" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="libs/EDAB_theme3_508_SOE_16by9.css" type="text/css" />
+    <link rel="stylesheet" href="libs/ml_simple_themes.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: right, middle, my-title, title-slide
+
+.title[
+# Integrated Economic Models
+]
+.author[
+### Min-Yang Lee, Anna Birkenbach, Jerelle Jesse,<br /> Lisa Kerr, Mackenzie Mazur, Samuel Truesdell<br /> 07 August 2023
+]
+
+---
+
+class: top, left
+
+&lt;style&gt;
+p.caption {
+  font-size: 0.6em;
+}
+&lt;/style&gt;
+
+&lt;style&gt;
+.reduced_opacity {
+  opacity: 0.5;
+}
+&lt;/style&gt;
+
+
+
+
+
+&lt;!---
+Use this to add a bottom note to a figure
+.contrib[
+Few managed species have binding limits; Management less likely playing a role
+]
+
+Use this to make a left list
+.pull-left[
+
+]
+
+in-line cite with:  
+    + Contextual information
+    + Report evolving since 2016
+    + Fishery-relevant subset of full Ecosystem Status Reports
+
+- Open science emphasis 
+
+- Used within Mid-Atlantic Fishery Management Council's Ecosystem Process 
+ - Inline cite 
+
+
+--&gt;
+
+.pull-left[
+### Research Question
+
+Under what conditions does an "Implementation Error" approach work well? ...poorly?   
+
+`$$F_{jt}=Ftarget_{jt}(1+\varepsilon_j),  \hspace{4mm} ln(\varepsilon) \sim N(\mu_j, \sigma_j^2)$$`
+ - When "something" happens that is not in the training data.
+ - Multispecies with technical interactions?  With regulatory interactions?
+
+.footnote[
+Plenty of other ways to model this: based on catch, could have different error distributions, or no error.
+]
+&lt;!---
+  .footnote[
+`$$ln\frac{F_{jt}}{Ftarget_{jt}} = ln(\varepsilon_j)$$`
+  ]---&gt;
+]
+
+.pull-right[
+### Motivation
+1. In the U.S., fishery managers set the *upper bound* on catch.
+2. Variations of this approach are quite common &lt;a name=cite-Hart2013a&gt;&lt;/a&gt;&lt;a name=cite-Siddeek2020&gt;&lt;/a&gt;&lt;a name=cite-Surma2021&gt;&lt;/a&gt;([Hart, 2013](https://doi.org/10.1093/icesjms/fss204); [Siddeek et al., 2020](https://doi.org/10.7755/FB.118.4.7); [Surma et al., 2021](https://doi.org/10.1093/icesjms/fsab125)).
+3. It's a *very easy* phenomenological approach to modeling a very important source of uncertainty  &lt;a name=cite-Fulton2011a&gt;&lt;/a&gt;&lt;a name=cite-Fenichel2013&gt;&lt;/a&gt;&lt;a name=cite-Abbott2013&gt;&lt;/a&gt;([Fulton et al., 2011](https://doi.org/10.1111/j.1467-2979.2010.00371.x); [Fenichel et al., 2013](#bib-Fenichel2013); [Abbott et al., 2013](#bib-Abbott2013)).
+]
+
+
+---
+## Our Approach
+
+1. Simulate the integrated bio-economic model for 20 years.
+2. Estimate the `\(\mu_j\)` and `\(\sigma^2_{j}\)` terms for each stock.
+3. Use these estimated parameters to simulate an implementation error model for the same 20 years. 
+4. Repeat steps 1-3 and compare the results.
+
+.pull-left[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/catch_comparisons.png" alt="Scatterplots of IE model catch to economic catch" width="auto" height="350"  /&gt;
+]
+
+.pull-right[
+- "Implementation Error" yearly catch plotted against "Economic Model" yearly catch
+- Paired simulations don't match very well on this or other metrics
+- Not too surprising, though -- it's just 1 realization.
+]
+
+
+---
+### How well does an "Implementation Error" approach work (v2) ?
+1. Simulate the economic model for 20 years using a random draw of years.
+2. Estimate the `\(\mu_j\)` and `\(\sigma^2_{j}\)` terms for each stock.
+3. Use these estimated parameters to simulate an implementation error model .opinion[many times].
+4. Repeat steps 1-3.
+
+.pull-left[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/SSB_codGB_exp_comparisons.png" alt="Trajectories of GB Cod SSB for the implementation error model and Economic model (black)" width="auto" height="350"  /&gt;
+]
+
+.pull-right[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/grossRev_exp_comparisons.png" alt="Trajectories of Gross revenues for the implementation error model and Economic model (black)" width="auto" height="350"  /&gt;
+]
+
+---
+## The Economic Model
+.pull-left[
+Every day, every captain `\(i\)` chooses the primary target stock `\(j\)` that gets the highest (expected) profits
+
+`$$P[Target_{ij}] =P(Revenue_{ij}, Costs_{ij}, Z_{ij})$$`
+Choice of what to do depends on:
+- **Expected Revenues**
+- **Quota Prices** 
+- Fuel Prices
+- A few other things
+
+
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/targeting_model.png" alt="The choice sets of the two fleets overlap somewhat" width="auto" height="250"  /&gt;
+]
+
+.pull-right[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/BKS_revdiffs.png" alt="Simulated groundfish revenue differences (catch shares minus DAS)." width="auto" height="400"  /&gt;
+.footnote[
+Figure 3 from &lt;a name=cite-Birkenbach2023&gt;&lt;/a&gt;[Birkenbach et al. (2023)](#bib-Birkenbach2023): Simulated groundfish revenue differences (catch shares minus DAS).
+]
+]
+.footnote[
+
+]
+
+---
+
+.pull-left[
+### Expected Revenues for a target are a function of
+- **Bottom Trawl Survey Index** 
+- Prices of fish
+- Vessel-level
+    - Skill at catching a target stock
+    - Skill at catching (or avoiding) other species
+]
+
+.pull-right[
+### Quota Prices are a function of 
+- **Quota Remaining**
+- Prices of Fish
+- Quarter of the Fishing Year
+
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/LD-Fig10A.png" alt="Probability of positive price as a function of quota remaining. As the amount of quota increases, the likelihood that a stock will trade at positive prices declines" width="auto" height="350"/&gt;
+.footnote[
+Probability of positive price as a function of quota Remaining. As the amount of quota increases, the likelihood that a stock will trade at positive prices declines &lt;a name=cite-Lee2023&gt;&lt;/a&gt;([Lee and Demarest, 2023](https://doi.org/10.1016/j.fishres.2022.106605)).
+]
+]
+
+---
+## Integrating the Economic and Biological Models
+
+.pull-left[
+Based on the "Groundfish-MSE" from &lt;a name=cite-Mazur2023&gt;&lt;/a&gt;[Mazur et al. (2023)](https://doi.org/10.1016/j.fishres.2023.106652), with models for GB Yellowtail Flounder, Pollock, and GB cod.  Using the "Ramp 0.4 HCR."
+
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/Mazur2023_Fig1.jpg" alt="Conceptual model from Mazur et al 2023 Fisheries Research, with low-quality highlighting of the Harvest component." width="auto" height="250"  /&gt;
+
+.remark[
+Conceptual model from [Mazur et al. (2023)](https://doi.org/10.1016/j.fishres.2023.106652).
+]
+
+]
+
+
+.pull-right[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/Mazur2023_Fig3.jpg" alt="SSB, F, and Catch for Gulf of Maine Cod and Georges Bank haddock for a variety of uncertainty and harvest control rules." width="auto" height="400"  /&gt;
+
+.remark[Figure 3 from [Mazur et al. (2023)](https://doi.org/10.1016/j.fishres.2023.106652): SSB, F, and Catch for Gulf of Maine Cod and Georges Bank haddock for a variety of uncertainty and harvest control rules.]
+
+]
+
+
+---
+### Feedback Loops
+- Simulated Bottom Trawl Survey informs the expected revenue function
+  - Higher Index &amp;rarr; more catch
+  - Size of the Effect varies by species
+- ACLs from the management model constrain the fishing fleet
+  - When an ACL is reached for stock `\(j\)`, vessels cannot:
+      - retain stock `\(j\)` 
+      - target stocks that are jointly caught with `\(j\)`
+- ACL minus cumulative catch equal Quota Remaining
+  - As the amount of quota left decreases, quota prices rise
+  - Changes in quota prices change the attractiveness of one target relative to another
+
+
+---
+### Uncomfortable Assumptions
+.pull-left[
+- We have a model of the *groundfish catch share fishery*
+  - Recreational, state-waters, other fleet fishing mortality?
+  - Canadian waters fishing mortality?
+- We use 2010-2015 data to simulate economic variables (fuel and fish prices) **and** biological variables for the non-modeled stocks.
+  - We draw randomly fishing years 2010-2015, OR
+  - Us a single year of data (2015) data
+]
+.pull-right[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/fuelprice.png" alt="Daily Fuel Prices, by year" width="auto" height="250"  /&gt;
+
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/cod_to_monk_ratio.png" alt="Cod to Monkfish Ratio is higher in 2013 than in 2010" width="auto" height="250"  /&gt;
+]
+---
+## Some SSB Trajectories
+
+.pull-left[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/GBCod_SSB.jpg" alt="Georges Bank Cod SSB Median trajectories" width="500" height="500"  /&gt;
+Georges Bank Cod SSB Median trajectories
+]
+
+
+.pull-right[
+
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/GBYellowtail_SSB.jpg" alt="Georges Bank Yellowtail SSB Median trajectories" width="500" height="500"  /&gt;
+Georges Bank Yellowtail SSB Median trajectories
+
+]
+
+---
+## More Results
+
+.pull-left[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/SSB_trajectories.png" alt="SSB trajectories by stock" width="auto" height="400"  /&gt;
+]
+
+.pull-right[
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/F_full.png" alt="F trajectories by stock" width="auto" height="400"  /&gt;
+]
+
+.remark[There's just so much noise.]
+.footnote[
+Model 1: An economic model. Model 3: No implementation error.  
+
+Model 4: Implementation error params estimated from Model 1.  Model 6: IE params from Model 1, but using at constant F HCR.
+]
+
+
+
+&lt;style type="text/css"&gt;
+.bg_slide {
+  position: relative;
+  z-index: 1;
+}
+
+.bg_slide::before {    
+      content: "";
+      background-image: url(./20230807_Integrated_Economic_Models_Lee/images/lookingout.jpg);
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.5;
+      z-index: -1;
+      transform: scaleX(-1);
+}
+&lt;/style&gt;
+
+
+&lt;!---
+background-image: 
+background-position: center
+background-repeat: no-repeat
+background-size: contain
+---&gt;
+---
+class: top, bg_slide
+
+# Where are we going?
+- Explore different scenarios?
+  - A depleted stock (in the model, like GB yellowtail)?
+  - A depleted stock (not in the model, like Plaice)?
+  - Back to Days-at-Sea management?
+  - Climate change affecting recruitment?
+- Different performance metrics?
+- A disaggregated (vessel-level) model in which firms choose which ports to utilize.  This brings us a step closer to including effects on communities.
+
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/triangle3.png" alt="Understanding targeting choices and patterns of port usage can help us understand effects of changing ocean conditions of fishing communities" width="auto" height="250"  /&gt;
+
+
+
+
+
+---
+## References
+.contrib[
+&lt;a name=bib-Abbott2013&gt;&lt;/a&gt;[Abbott, J. K. and E. P.
+Fenichel](#cite-Abbott2013) (2013). "Anticipating adaptation: a
+mechanistic approach for linking policy and stock status to
+recreational angler behavior". In: _Canadian Journal of Fisheries and
+Aquatic Sciences_ 70.8, pp. 1190-1208.
+
+&lt;a name=bib-Birkenbach2023&gt;&lt;/a&gt;[Birkenbach, A. M., M. Lee, and M. D.
+Smith](#cite-Birkenbach2023) (2023). " Counterfactual Modeling of
+Multispecies Fisheries Outcomes Under Market-Based Regulation". In: _
+Journal of the Association of Environmental and Resource Economists_ X,
+p. PPP.
+
+&lt;a name=bib-Fenichel2013&gt;&lt;/a&gt;[Fenichel, E. P., J. K. Abbott, and B.
+Huang](#cite-Fenichel2013) (2013). "Modelling angler behaviour as a
+part of the management system: synthesizing a multi-disciplinary
+literature". In: _Fish and Fisheries_ 14.2, pp. 137-157.
+
+&lt;a name=bib-Fulton2011a&gt;&lt;/a&gt;[Fulton, E. A., A. D. M. Smith, D. C.
+Smith, et al.](#cite-Fulton2011a) (2011). "Human behaviour: The key
+source of uncertainty in fisheries management". In: _Fish and
+Fisheries_ 12.1, pp. 2-17. DOI:
+[10.1111/j.1467-2979.2010.00371.x](https://doi.org/10.1111%2Fj.1467-2979.2010.00371.x).
+
+&lt;a name=bib-Hart2013a&gt;&lt;/a&gt;[Hart, D. R.](#cite-Hart2013a) (2013).
+"Quantifying the tradeoff between precaution and yield in fishery
+reference points". In: _ICES Journal of Marine Science_ 70.3, pp.
+591-603. DOI:
+[10.1093/icesjms/fss204](https://doi.org/10.1093%2Ficesjms%2Ffss204).
+
+&lt;a name=bib-Lee2023&gt;&lt;/a&gt;[Lee, M. and C. Demarest](#cite-Lee2023)
+(2023). "Groundfish Quota Prices". In: _Fisheries Research_ 260.April
+2023, p. 106605. DOI:
+[10.1016/j.fishres.2022.106605](https://doi.org/10.1016%2Fj.fishres.2022.106605).
+
+&lt;a name=bib-Mazur2023&gt;&lt;/a&gt;[Mazur, M. D., J. Jesse, S. X. Cadrin, et
+al.](#cite-Mazur2023) (2023). "Consequences of ignoring climate impacts
+on New England groundfish stock assessment and management". In:
+_Fisheries Research_ 262.October 2022, p. 106652. DOI:
+[10.1016/j.fishres.2023.106652](https://doi.org/10.1016%2Fj.fishres.2023.106652).
+
+&lt;a name=bib-Siddeek2020&gt;&lt;/a&gt;[Siddeek, S. M., B. Daly, A. E. Punt, et
+al.](#cite-Siddeek2020) (2020). "Development of harvest control rules
+for hard-to-age crab stocks: The example of the golden king crab
+(lithodes aequispinus) in the eastern aleutian islands in alaska". In:
+_Fishery Bulletin_ 118.4, pp. 380-398. DOI:
+[10.7755/FB.118.4.7](https://doi.org/10.7755%2FFB.118.4.7).
+
+&lt;a name=bib-Surma2021&gt;&lt;/a&gt;[Surma, S., T. J. Pitcher, and E. A.
+Pakhomov](#cite-Surma2021) (2021). "Trade-offs and uncertainties in
+Northeast Pacific herring fisheries: Ecosystem modelling and management
+strategy evaluation". In: _ICES Journal of Marine Science_ 78.6, pp.
+2280-2297. DOI:
+[10.1093/icesjms/fsab125](https://doi.org/10.1093%2Ficesjms%2Ffsab125).
+]
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="libs/macros.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "githubp",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
