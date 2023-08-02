@@ -3,7 +3,7 @@
   <head>
     <title>Integrated Economic Models</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Min-Yang Lee, Anna Birkenbach, Jerelle Jesse,  Lisa Kerr, Mackenzie Mazur, Samuel Truesdell  07 August 2023" />
+    <meta name="author" content="Min-Yang Lee, Anna Birkenbach, Jerelle Jesse,  Lisa Kerr, Mackenzie Mazur, Samuel Truesdell  08 August 2023" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="libs/EDAB_theme3_508_SOE_16by9.css" type="text/css" />
@@ -17,7 +17,7 @@ class: right, middle, my-title, title-slide
 # Integrated Economic Models
 ]
 .author[
-### Min-Yang Lee, Anna Birkenbach, Jerelle Jesse,<br /> Lisa Kerr, Mackenzie Mazur, Samuel Truesdell<br /> 07 August 2023
+### Min-Yang Lee, Anna Birkenbach, Jerelle Jesse,<br /> Lisa Kerr, Mackenzie Mazur, Samuel Truesdell<br /> 08 August 2023
 ]
 
 ---
@@ -35,6 +35,29 @@ p.caption {
   opacity: 0.5;
 }
 &lt;/style&gt;
+
+&lt;style type="text/css"&gt;
+.bg_slide {
+  position: relative;
+  z-index: 1;
+}
+
+.bg_slide::before {    
+      content: "";
+      background-image: url(./20230807_Integrated_Economic_Models_Lee/images/lookingout.jpg);
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.4;
+      z-index: -1;
+      transform: scaleX(-1);
+}
+&lt;/style&gt;
+
+
 
 
 
@@ -130,14 +153,8 @@ Plenty of other ways to model this: based on catch, could have different error d
 Every day, every captain `\(i\)` chooses the primary target stock `\(j\)` that gets the highest (expected) profits
 
 `$$P[Target_{ij}] =P(Revenue_{ij}, Costs_{ij}, Z_{ij})$$`
-Choice of what to do depends on:
-- **Expected Revenues**
-- **Quota Prices** 
-- Fuel Prices
-- A few other things
 
-
-&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/targeting_model.png" alt="The choice sets of the two fleets overlap somewhat" width="auto" height="250"  /&gt;
+&lt;img src="./20230807_Integrated_Economic_Models_Lee/images/targeting_model.png" alt="The choice sets of the two fleets overlap somewhat" width="auto" height="300"  /&gt;
 ]
 
 .pull-right[
@@ -214,7 +231,7 @@ Conceptual model from [Mazur et al. (2023)](https://doi.org/10.1016/j.fishres.20
   - Canadian waters fishing mortality?
 - We use 2010-2015 data to simulate economic variables (fuel and fish prices) **and** biological variables for the non-modeled stocks.
   - We draw randomly fishing years 2010-2015, OR
-  - Us a single year of data (2015) data
+  - Use a single year of data (2015) data
 ]
 .pull-right[
 &lt;img src="./20230807_Integrated_Economic_Models_Lee/images/fuelprice.png" alt="Daily Fuel Prices, by year" width="auto" height="250"  /&gt;
@@ -238,45 +255,45 @@ Conceptual model from [Mazur et al. (2023)](https://doi.org/10.1016/j.fishres.20
 ]
 
 ---
-## More Results
+## More Results -- SSB
 
 .pull-left[
 &lt;img src="./20230807_Integrated_Economic_Models_Lee/images/SSB_trajectories.png" alt="SSB trajectories by stock" width="auto" height="400"  /&gt;
 ]
 
 .pull-right[
+
+- Model 1: An economic model
+
+- Model 3: No implementation error
+
+- Model 4: Implementation error params estimated from Model 1
+
+- Model 6: IE params from Model 1, but using a constant-F HCR
+]
+
+---
+## More Results -- F
+
+
+.pull-left[
 &lt;img src="./20230807_Integrated_Economic_Models_Lee/images/F_full.png" alt="F trajectories by stock" width="auto" height="400"  /&gt;
 ]
 
-.remark[There's just so much noise.]
-.contrib[
-Model 1: An economic model. Model 3: No implementation error.  
+.pull-right[
 
-Model 4: Implementation error params estimated from Model 1.  Model 6: IE params from Model 1, but using at constant F HCR.
+- Model 1: An economic model
+
+- Model 3: No implementation error
+
+- Model 4: Implementation error params estimated from Model 1
+
+- Model 6: IE params from Model 1, but using a constant-F HCR
 ]
 
 
 
-&lt;style type="text/css"&gt;
-.bg_slide {
-  position: relative;
-  z-index: 1;
-}
 
-.bg_slide::before {    
-      content: "";
-      background-image: url(./20230807_Integrated_Economic_Models_Lee/images/lookingout.jpg);
-      background-size: cover;
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      left: 0px;
-      opacity: 0.5;
-      z-index: -1;
-      transform: scaleX(-1);
-}
-&lt;/style&gt;
 
 
 &lt;!---
@@ -295,6 +312,7 @@ class: top, bg_slide
   - Back to Days-at-Sea management?
   - Climate change affecting recruitment?
 - Different performance metrics?
+- Integrate models of prices
 
 ---
 class: top, bg_slide
@@ -302,9 +320,9 @@ class: top, bg_slide
 # Where else are we going?
 A disaggregated (vessel-level) model in which firms choose which ports to utilize.
   -  Effects on communities
-  -  Understanding structure underlying fishers' decisions allows us to better predict how fishing activity and landings will redistribute in response to policy changes or exogenous shocks
+  -  Better predict how fishing activity and landings will redistribute in response to policy or environmental changes.
   -  **LANDING** location choice:
-    - Travel distances ($-$)
+    - Travel distances (-)
     - Expected prices/revenues (+-ish)
     - State dependence: Unobserved contractual relationships, formal or informal, between buyers and sellers
  
