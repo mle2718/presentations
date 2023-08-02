@@ -12,5 +12,8 @@ output: html_document
  
 ### 2023
 
+<a href="https://mle2718.github.io/presentations/20230807_Integrated_Economic_Models_Lee" target="_blank"> Integrated Economic Models for NCLIM. August 2023</a>
+
+
 <a href="https://mle2718.github.io/presentations/20230717_DistributionofFisheryManagementBenefits_Lee.html" target="_blank"> Distribution of Fishery Management Benefits. National Academy of Sciences. July 2023</a>
 
