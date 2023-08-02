@@ -180,9 +180,6 @@ Choice of what to do depends on:
 Figure 3 from `r Citet(myBib, c("Birkenbach2023"))`: Simulated groundfish revenue differences (catch shares minus DAS).
 ]
 ]
-.footnote[
-
-]
 
 ---
 
@@ -202,7 +199,7 @@ Figure 3 from `r Citet(myBib, c("Birkenbach2023"))`: Simulated groundfish revenu
 - Quarter of the Fishing Year
 
 <img src="./20230807_Integrated_Economic_Models_Lee/images/LD-Fig10A.png" alt="Probability of positive price as a function of quota remaining. As the amount of quota increases, the likelihood that a stock will trade at positive prices declines" width="auto" height="350"/>
-.footnote[
+.contrib[
 Probability of positive price as a function of quota Remaining. As the amount of quota increases, the likelihood that a stock will trade at positive prices declines `r AutoCite(myBib, c("Lee2023"), .opts=list(max.names=2))`.
 ]
 ]
@@ -215,7 +212,7 @@ Based on the "Groundfish-MSE" from `r Citet(myBib, c("Mazur2023"))`, with models
 
 <img src="./20230807_Integrated_Economic_Models_Lee/images/Mazur2023_Fig1.jpg" alt="Conceptual model from Mazur et al 2023 Fisheries Research, with low-quality highlighting of the Harvest component." width="auto" height="250"  />
 
-.remark[
+.contrib[
 Conceptual model from `r Citet(myBib, c("Mazur2023"))`.
 ]
 
@@ -225,8 +222,7 @@ Conceptual model from `r Citet(myBib, c("Mazur2023"))`.
 .pull-right[
 <img src="./20230807_Integrated_Economic_Models_Lee/images/Mazur2023_Fig3.jpg" alt="SSB, F, and Catch for Gulf of Maine Cod and Georges Bank haddock for a variety of uncertainty and harvest control rules." width="auto" height="400"  />
 
-.remark[Figure 3 from `r Citet(myBib, c("Mazur2023"))`: SSB, F, and Catch for Gulf of Maine Cod and Georges Bank haddock for a variety of uncertainty and harvest control rules.]
-
+.contrib[Figure 3 from `r Citet(myBib, c("Mazur2023"))`: SSB, F, and Catch for Gulf of Maine Cod and Georges Bank haddock for a variety of uncertainty and harvest control rules.]
 ]
 
 
@@ -264,15 +260,15 @@ Conceptual model from `r Citet(myBib, c("Mazur2023"))`.
 
 .pull-left[
 <img src="./20230807_Integrated_Economic_Models_Lee/images/GBCod_SSB.jpg" alt="Georges Bank Cod SSB Median trajectories" width="500" height="500"  />
-Georges Bank Cod SSB Median trajectories
+  .contrib[Georges Bank Cod SSB Median trajectories
+  ]
 ]
-
 
 .pull-right[
 
 <img src="./20230807_Integrated_Economic_Models_Lee/images/GBYellowtail_SSB.jpg" alt="Georges Bank Yellowtail SSB Median trajectories" width="500" height="500"  />
-Georges Bank Yellowtail SSB Median trajectories
-
+  .contrib[ Georges Bank Yellowtail SSB Median trajectories
+  ]
 ]
 
 ---
@@ -287,7 +283,7 @@ Georges Bank Yellowtail SSB Median trajectories
 ]
 
 .remark[There's just so much noise.]
-.footnote[
+.contrib[
 Model 1: An economic model. Model 3: No implementation error.  
 
 Model 4: Implementation error params estimated from Model 1.  Model 6: IE params from Model 1, but using at constant F HCR.
@@ -333,15 +329,24 @@ class: top, bg_slide
   - Back to Days-at-Sea management?
   - Climate change affecting recruitment?
 - Different performance metrics?
-- A disaggregated (vessel-level) model in which firms choose which ports to utilize.  This brings us a step closer to including effects on communities.
 
+---
+class: top, bg_slide
+
+# Where else are we going?
+A disaggregated (vessel-level) model in which firms choose which ports to utilize.
+  -  Effects on communities
+  -  Understanding structure underlying fishers' decisions allows us to better predict how fishing activity and landings will redistribute in response to policy changes or exogenous shocks
+  -  **LANDING** location choice:
+    - Travel distances ($-$)
+    - Expected prices/revenues (+-ish)
+    - State dependence: Unobserved contractual relationships, formal or informal, between buyers and sellers
+ 
 <img src="./20230807_Integrated_Economic_Models_Lee/images/triangle3.png" alt="Understanding targeting choices and patterns of port usage can help us understand effects of changing ocean conditions of fishing communities" width="auto" height="250"  />
 
 
-
-
-
 ---
+class: top, bg_slide
 ## References
 .contrib[
 ```{r refs, echo=FALSE, results="asis", eval=TRUE}
