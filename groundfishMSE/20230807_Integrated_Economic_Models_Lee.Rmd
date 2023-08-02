@@ -54,7 +54,7 @@ library(widgetframe)
 # and folder name
 # 20220316_MAFMCSSC_Gaichas_files/figure-html/
 
-imagefolder<-"20230717_DistributionofFisheryManagementBenefits_Lee"
+imagefolder<-"20230807_Integrated_Economic_Models_Lee"
 
 ```
 
@@ -98,6 +98,67 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 
 -->
 
+.pull-left[
+### Research Question
+
+Under what conditions does an "Implementation Error" approach work well? ...poorly?   
+
+$$F_{jt}=Ftarget_{jt}(1+\varepsilon_j),  \hspace{4mm} ln(\varepsilon) \sim N(\mu_j, \sigma_j^2)$$
+ - When "something" happens that is not in the training data.
+ - Multispecies with technical interactions?  With regulatory interactions?
+
+.footnote[
+Plenty of other ways to model this: based on catch, could have different error distributions, or no error.
+]
+<!---
+  .footnote[
+$$ln\frac{F_{jt}}{Ftarget_{jt}} = ln(\varepsilon_j)$$
+  ]--->
+]
+
+.pull-right[
+### Motivation
+1. In the U.S., fishery managers set the *upper bound* on catch.
+2. Variations of this approach are quite common `r Cite(myBib, c("Hart2013a","Siddeek2020", "Surma2021"))`.
+3. It's a *very easy* phenomenological approach to modeling a very important source of uncertainty  `r Cite(myBib,c("Fulton2011a", "Fenichel2013", "Abbott2013"))`.
+]
+
+
+---
+## Our Approach
+
+1. Simulate the integrated bio-economic model for 20 years.
+2. Estimate the $\mu_j$ and $\sigma^2_{j}$ terms for each stock.
+3. Use these estimated parameters to simulate an implementation error model for the same 20 years. 
+4. Repeat steps 1-3 and compare the results.
+
+.pull-left[
+<img src="./20230807_Integrated_Economic_Models_Lee/images/catch_comparisons.png" alt="Scatterplots of IE model catch to economic catch" width="auto" height="350"  />
+]
+
+.pull-right[
+- "Implementation Error" yearly catch plotted against "Economic Model" yearly catch
+- Paired simulations don't match very well on this or other metrics
+- Not too surprising, though -- it's just 1 realization.
+]
+
+
+---
+### How well does an "Implementation Error" approach work (v2) ?
+1. Simulate the economic model for 20 years using a random draw of years.
+2. Estimate the $\mu_j$ and $\sigma^2_{j}$ terms for each stock.
+3. Use these estimated parameters to simulate an implementation error model .opinion[many times].
+4. Repeat steps 1-3.
+
+.pull-left[
+<img src="./20230807_Integrated_Economic_Models_Lee/images/SSB_codGB_exp_comparisons.png" alt="Trajectories of GB Cod SSB for the implementation error model and Economic model (black)" width="auto" height="350"  />
+]
+
+.pull-right[
+<img src="./20230807_Integrated_Economic_Models_Lee/images/grossRev_exp_comparisons.png" alt="Trajectories of Gross revenues for the implementation error model and Economic model (black)" width="auto" height="350"  />
+]
+
+---
 ## The Economic Model
 .pull-left[
 Every day, every captain $i$ chooses the primary target stock $j$ that gets the highest (expected) profits
@@ -124,53 +185,52 @@ Figure 3 from `r Citet(myBib, c("Birkenbach2023"))`: Simulated groundfish revenu
 ]
 
 ---
-## Expected Revenues and Quota Prices
 
 .pull-left[
-Expected Revenues for a target are a function of
+### Expected Revenues for a target are a function of
 - **Bottom Trawl Survey Index** 
 - Prices of fish
 - Vessel-level
     - Skill at catching a target stock
     - Skill at catching (or avoiding) other species
+]
 
-Quota Prices are a function of 
+.pull-right[
+### Quota Prices are a function of 
 - **Quota Remaining**
 - Prices of Fish
 - Quarter of the Fishing Year
 
-]
-
-
-
-
-.pull-right[
-
-<img src="./20230807_Integrated_Economic_Models_Lee/images/LD-Fig10A.png" alt="Probability of positive price as a function of quota remaining. As the amount of quota increases, the likelihood that a stock will trade at positive prices declines" width="auto" height="400"/>
+<img src="./20230807_Integrated_Economic_Models_Lee/images/LD-Fig10A.png" alt="Probability of positive price as a function of quota remaining. As the amount of quota increases, the likelihood that a stock will trade at positive prices declines" width="auto" height="350"/>
 .footnote[
 Probability of positive price as a function of quota Remaining. As the amount of quota increases, the likelihood that a stock will trade at positive prices declines `r AutoCite(myBib, c("Lee2023"), .opts=list(max.names=2))`.
 ]
 ]
----
 
+---
 ## Integrating the Economic and Biological Models
 
 .pull-left[
-Working to integrate the Economic model of targeting into a 5 stock variant of the "Groundfish-MSE" from `r Citet(myBib, c("Mazur2023"))`.  
-
-Built out models for GB Yellowtail Flounder, Pollock, GB cod in addition to the existing GOM cod and GB Haddock.
+Based on the "Groundfish-MSE" from `r Citet(myBib, c("Mazur2023"))`, with models for GB Yellowtail Flounder, Pollock, and GB cod.  Using the "Ramp 0.4 HCR."
 
 <img src="./20230807_Integrated_Economic_Models_Lee/images/Mazur2023_Fig1.jpg" alt="Conceptual model from Mazur et al 2023 Fisheries Research, with low-quality highlighting of the Harvest component." width="auto" height="250"  />
+
+.remark[
+Conceptual model from `r Citet(myBib, c("Mazur2023"))`.
+]
+
 ]
 
 
 .pull-right[
 <img src="./20230807_Integrated_Economic_Models_Lee/images/Mazur2023_Fig3.jpg" alt="SSB, F, and Catch for Gulf of Maine Cod and Georges Bank haddock for a variety of uncertainty and harvest control rules." width="auto" height="400"  />
+
+.remark[Figure 3 from `r Citet(myBib, c("Mazur2023"))`: SSB, F, and Catch for Gulf of Maine Cod and Georges Bank haddock for a variety of uncertainty and harvest control rules.]
+
 ]
 
 
 ---
-
 ### Feedback Loops
 - Simulated Bottom Trawl Survey informs the expected revenue function
   - Higher Index &rarr; more catch
@@ -188,13 +248,11 @@ Built out models for GB Yellowtail Flounder, Pollock, GB cod in addition to the 
 ### Uncomfortable Assumptions
 .pull-left[
 - We have a model of the *groundfish catch share fishery*
-  - Recreational, state-waters, other fleet fishing mortality
-  - Canadian waters fishing mortality
-- We use 2010-2015 data to simulate economic variables (input and output prices)
+  - Recreational, state-waters, other fleet fishing mortality?
+  - Canadian waters fishing mortality?
+- We use 2010-2015 data to simulate economic variables (fuel and fish prices) **and** biological variables for the non-modeled stocks.
   - We draw randomly fishing years 2010-2015, OR
   - Us a single year of data (2015) data
-- What do we do for biomass index and catch limits for stocks without a biological model?
-  - Same thing that we do for economic variables.
 ]
 .pull-right[
 <img src="./20230807_Integrated_Economic_Models_Lee/images/fuelprice.png" alt="Daily Fuel Prices, by year" width="auto" height="250"  />
@@ -218,7 +276,7 @@ Georges Bank Yellowtail SSB Median trajectories
 ]
 
 ---
-## More results
+## More Results
 
 .pull-left[
 <img src="./20230807_Integrated_Economic_Models_Lee/images/SSB_trajectories.png" alt="SSB trajectories by stock" width="auto" height="400"  />
@@ -228,57 +286,62 @@ Georges Bank Yellowtail SSB Median trajectories
 <img src="./20230807_Integrated_Economic_Models_Lee/images/F_full.png" alt="F trajectories by stock" width="auto" height="400"  />
 ]
 
-Model 1: An economic model.  
+.remark[There's just so much noise.]
+.footnote[
+Model 1: An economic model. Model 3: No implementation error.  
 
-Model 3: No implementation error.  
+Model 4: Implementation error params estimated from Model 1.  Model 6: IE params from Model 1, but using at constant F HCR.
+]
+
+
+
+```{css, echo = F}
+.bg_slide {
+  position: relative;
+  z-index: 1;
+}
+
+.bg_slide::before {    
+      content: "";
+      background-image: url(./20230807_Integrated_Economic_Models_Lee/images/lookingout.jpg);
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.5;
+      z-index: -1;
+      transform: scaleX(-1);
+}
+```
+
+
+<!---
+background-image: 
+background-position: center
+background-repeat: no-repeat
+background-size: contain
+--->
+---
+class: top, bg_slide
+
+# Where are we going?
+- Explore different scenarios?
+  - A depleted stock (in the model, like GB yellowtail)?
+  - A depleted stock (not in the model, like Plaice)?
+  - Back to Days-at-Sea management?
+  - Climate change affecting recruitment?
+- Different performance metrics?
+- A disaggregated (vessel-level) model in which firms choose which ports to utilize.  This brings us a step closer to including effects on communities.
+
+<img src="./20230807_Integrated_Economic_Models_Lee/images/triangle3.png" alt="Understanding targeting choices and patterns of port usage can help us understand effects of changing ocean conditions of fishing communities" width="auto" height="250"  />
+
+
+
+
 
 ---
-### How well does an "Implementation Error" approach work?
-1. Simulate the economic model for 20 years using a random draw of years.
-2. Assume that $errors=\frac{F}{F-Advice}$ are log-normally distributed, estimate the mean and variance of that distribution for each of the 5 stocks
-3. Feed these estimated parameters into the "Implementation - Error" and simulate the model.
-4. Repeat steps 1-3.
-
-.pull-left[
-<img src="./20230807_Integrated_Economic_Models_Lee/images/catch_comparisons.png" alt="Scatterplots of IE model catch to economic catch" width="auto" height="350"  />
-]
-
-.pull-right[
-- Paired simulations don't match very well on any metric (SSB, Catch, etc)
-- Not too surprising, though?
-]
-
----
-### How well does an "Implementation Error" approach work (v2) ?
-1. Simulate the economic model for 20 years using a random draw of years.
-2. Assume that $errors=\frac{F}{F-Advice}$ are log-normally distributed, estimate the mean and variance of that distribution for each of the 5 stocks
-3. Feed these estimated parameters into the "Implementation - Error" and simulate the model .opinion[many times].
-4. Repeat steps 1-3.
-
----
-## More results
-
-.pull-left[
-<img src="./20230807_Integrated_Economic_Models_Lee/images/SSB_codGB_exp_comparisons.png" alt="Trajectories of GB Cod SSB for the implementation error model and Economic model (black)" width="auto" height="400"  />
-]
-
-.pull-right[
-<img src="./20230807_Integrated_Economic_Models_Lee/images/grossRev_exp_comparisons.png" alt="Trajectories of Gross revenues for the implementation error model and Economic model (black)" width="auto" height="400"  />
-]
-
----
-
-# Other thoughts
-
----
-## End Matter
-.pull-left[
-** Thank you to** 
-]
-.pull-right[
-**Additional resources**
-]
-
 ## References
 .contrib[
 ```{r refs, echo=FALSE, results="asis", eval=TRUE}
