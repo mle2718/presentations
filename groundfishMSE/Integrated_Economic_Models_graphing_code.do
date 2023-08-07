@@ -11,7 +11,7 @@ format date %td
 
 tsset gffishingyear doffy
 
-xtline fuelprice if inlist(gffishingyear,2010,2013), scheme(plottigblind)  overlay ytitle("fuel price") xtitle("day of fishing year") legend(order(1 "2010" 2 "2013") rows(1) position(6))
+xtline fuelprice if inlist(gffishingyear,2011,2015), scheme(plottigblind)  overlay ytitle("fuel price") xtitle("day of fishing year") legend(order(1 "2011" 2 "2015") rows(1) position(6))
 graph export ${output_dir}/fuelprice.png, width(2000) as(png) replace
 
 use "$MSE_network\data\data_raw\econ\output_price_series_MSE.dta",clear
