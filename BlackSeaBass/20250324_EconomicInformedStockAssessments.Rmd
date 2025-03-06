@@ -129,18 +129,18 @@ For years, economists have asked the opposite question: how much more do buyers 
 Scallops `r Cite(myBib, "Ardini2018")`are a nice example with clean separation:
 
 
-<img src=".20250324_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/>
+<img src="./20250324_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/>
 
 ---
 ## Cod is another example
 
 .pull-left[
-<img src="./lee2014_fig2.jpg" alt="Box plots of Price per pound for various cod market categories." width="auto"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/lee2014_fig2.jpg" alt="Box plots of Price per pound for various cod market categories." width="auto"  />
 ]
 
 
 .pull-right[
-<img src="./lee2014_fig1.jpg" alt="Kernel Density Estimates of Length for various market categories" width="auto" />
+<img src="./20250324_EconomicInformedStockAssessments/images/lee2014_fig1.jpg" alt="Kernel Density Estimates of Length for various market categories" width="auto" />
 ]
 
 But the separation is not as clean.
@@ -267,11 +267,11 @@ This is kind of not great. Plus, it's an "in sample" prediction, so it's overly 
 
  
 .pull-left[
-<img src="./brier_class.png" alt="Brier Classification Metric (Low is good)" width="auto" height="350"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/brier_class.png" alt="Brier Classification Metric (Low is good)" width="auto" height="350"  />
 ]
  
  .pull-right[
-<img src="./mn_log_loss.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="350"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/mn_log_loss.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="350"  />
 ]
 
 ## Preliminary fit assessments
@@ -279,7 +279,7 @@ This is kind of not great. Plus, it's an "in sample" prediction, so it's overly 
 Fair..also wrong not from the same model fit as previous
 
 .pull-right[
-<img src="./roc.png" alt="ROC Curve" width="auto" height="350"  />
+<img src="/20250324_EconomicInformedStockAssessments/images/roc.png" alt="ROC Curve" width="auto" height="350"  />
 ]
  
 ## Predictions
@@ -296,7 +296,7 @@ I haven't figured out how to get the weights out.
 ]
 
 .right-column[
-<img src="./2023_BSB_UNIT_TOR2_commercialdata_slide8.jpg" alt="Borrowed Length data in the 2023 BSB Assessment" width="auto" height="500"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_commercialdata_slide8.jpg" alt="Borrowed Length data in the 2023 BSB Assessment" width="auto" height="500"  />
 ]
 
 ---
