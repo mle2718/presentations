@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Economic Informed Stock Assessments:</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Min-Yang Lee Social Sciences Branch  Northeast Fisheries Science Center  27 March 2025" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="libs/EDAB_theme3_508_SOE_16by9.css" type="text/css" />
+    <link rel="stylesheet" href="libs/ml_simple_themes.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: right, middle, my-title, title-slide
+
+.title[
+# Economic Informed Stock Assessments:
+]
+.subtitle[
+## Using Prices to Understand The Length of Fish
+]
+.author[
+### Min-Yang Lee<br />Social Sciences Branch<br /> Northeast Fisheries Science Center<br /> 27 March 2025
+]
+
+---
+
+class: top, left
+
+&lt;style&gt;
+p.caption {
+  font-size: 0.6em;
+}
+&lt;/style&gt;
+
+&lt;style&gt;
+.reduced_opacity {
+  opacity: 0.5;
+}
+&lt;/style&gt;
+
+
+
+
+
+&lt;!---
+Use this to add a bottom note to a figure
+.contrib[
+Few managed species have binding limits; Management less likely playing a role
+]
+
+Use this to make a left list
+.pull-left[
+
+]
+
+in-line cite with:  
+    + Contextual information
+    + Report evolving since 2016
+    + Fishery-relevant subset of full Ecosystem Status Reports
+
+- Open science emphasis 
+
+- Used within Mid-Atlantic Fishery Management Council's Ecosystem Process 
+ - Inline cite 
+
+
+
+--&gt;
+
+# Research Question and Motivation
+
+## Research Question
+Can we use the information contained in fish prices to infer something useful about the size of the Unclassified Black Sea Bass?
+
+## Motivation
+
+* Another source of uncertainty stemmed from the fact that no length information on individuals in the unclassified market category have been sampled since 2020. Calculating the catch at length for 2021-2023 necessitated borrowing information from before 2020 which introduces additional uncertainty. [BSB management track assessment report]
+
+* It is costly to collect length and age information.  Is trying to collect this information for all market categories the most efficient use of our resources?
+
+
+---
+# Background
+For years, economists have asked the opposite question: how much more do buyers pay for large fish compared to small fish? &lt;a name=cite-McConnell2000&gt;&lt;/a&gt;([Mcconnell et al., 2000](#bib-McConnell2000))
+
+
+Scallops &lt;a name=cite-Ardini2018&gt;&lt;/a&gt;([Ardini et al., 2018](https://doi.org/10.1086/698199))are a nice example with clean separation:
+
+&lt;img src="./mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/&gt;
+
+---
+## Cod is another example
+
+.pull-left[
+&lt;img src="./lee2014_fig2.jpg" alt="Box plots of Price per pound for various cod market categories." width="auto"  /&gt;
+]
+
+
+.pull-right[
+&lt;img src="./lee2014_fig1.jpg" alt="Kernel Density Estimates of Length for various market categories" width="auto" /&gt;
+]
+
+But the separation is not as clean.
+
+
+.footnote[
+&lt;a name=cite-Lee2014&gt;&lt;/a&gt;([Lee, 2014](https://doi.org/10.1086/677769))
+]
+
+---
+# Methods Overview I 
+
+1. Exploratory data analysis step: Do prices vary by size? 
+  - Estimate a hedonic model: the price per pound is a function of the transaction level attributes, like market category, gear, and time of year. 
+  - A slightly more sophisticated way of checking that prices vary by market category than the box plots from the previous slide.
+  
+2. Estimate a categorical model (ordered or un-ordered logit or something related) with price as an explanatory variable. 
+  - Validate the model with a k-fold cross validation. 
+  - Predict out of sample for the unclassified market category.
+
+
+---
+# Methods Overview II 
+
+3.  Train a random forest classification model on the four principle classes (Jumbo, Large, Medium, Small).  
+  - **Test** and **train** with a k-fold cross-validation.
+  - **Validate** on a hold-out sample.
+  - **Predict** out of sample on the "Unclassified".
+  
+4. Using the results of (3) reconstruct a new length distribution of the landed black sea bass.  
+
+---
+## Potential Pitfalls
+
+1.  Data is such a bear.
+  - Less QA/QC on the "value" columns (value, sppvalue). 
+  - State-level reporting.  There are rows in the dealer data that are state-level reports of sales by non-federal permits to non-federal dealers. 
+      - If these are transactions (trip/subtrip) with true value, this is fine.
+      - If these are transactions (trip/subtrip) with "imputed" or "assigned" value, they *probably cannot* be included in the model.
+      - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
+2.  Price Separation: Prices need to vary by market category. 
+  - No variation in prices across market categories, then it won't work
+  - No need to assumed a particular price-size relationship
+  - price-size relationship can change from year to year
+  - Better if the price of ``Unclassified`` is between the price of two other categories.
+
+asd
+  
+---
+##  Pitfalls 2
+
+3.  Dealer specific effects.  How do we handle the fact that dealers have their own tendencies in terms of how they classify fish?
+  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
+  - Example 2: Dealer C only grades into "Large" or "Small"
+  - Problem 1: Need to handle this properly in the `\(k-\)`fold cross validation, otherwise the training and validation datasets are not truly independent and the model fit measures are overly optimistic. 
+  - Problem 2: Would want to include a dealer "fixed effect" as to account the dealer's tendencies.  If all observations of cluster `\(c\)` are in fold `\(k\)`, then I don't know how you use that info to predict.
+
+---
+# Hedonic Results
+.left-column[
+- Estimates in the columns can be interpreted as the average price of a pound of Black Sea Bass for each market category.
+- Not shown are the effects of factor variables for gear,  state, calendar year, and month.
+- Not show are the effects of total landings and total landings$^2$.
+]
+.right-column[
+
+Unweighted and Weighted Hedonic Price Regression (2018-2024)
+
+|                        | Weighted   | Unweighted |
+|------------------------|------------|------------|
+| Jumbo                  | 5.883***   | 6.122***   |
+|                        | (0.001)    | (0.015)    |
+| Large                  | 4.647***   | 4.551***   |
+|                        | (0.001)    | (0.016)    |
+| Medium                 | 3.751***   | 3.479***   |
+|                        | (0.001)    | (0.016)    |
+| Small                  | 3.526***   | 3.132***   |
+|                        | (0.002)    | (0.016)    |
+| Unclassified           | 4.397***   | 4.460***   |
+|                        | (0.001)    | (0.017)    |
+|                        |            |            |
+| Live                   | 0.164***   | 0.237***   |
+|                        | (0.002)    | (0.014)    |
+|                        |            |            |
+| R-squared              | 0.907      | 0.924      |
+|                        |            |            |
+| Number of observations | 29,195,457 | 360,159    |
+*** p&lt;.01, ** p&lt;.05, * p&lt;.1
+]
+---
+## Multinomial Logit
+.left-column[
+- Estimates greater than 1 indicate that increases in a predictor increase the 
+chances of transaction being in a particular market category relative to large.
+- Not shown are factor variables for month, year, and state
+]
+.right-column[
+
+Relative Risk Ratios after Multinomial Logistic Regression to Predict the Market Category
+
+|          | Jumbo    | Large   | Medium     | Small       |
+|----------|----------|---------|------------|-------------|
+| price    | 3.312*** |         | 0.194***   | 0.113***    |
+|          | (0.002)  |         | (0.000)    | (0.000)     |
+|          |          |         |            |             |
+| Gillnet  | 0.018*** | 1.000   | 116.521*** | 758.605***  |
+|          | (0.000)  | (0.000) | (0.758)    | (9.274)     |
+| LineHand | 0.011*** | 1.000   | 95.864***  | 359.321***  |
+|          | (0.000)  | (0.000) | (0.468)    | (3.907)     |
+| Misc     | 0.010*** | 1.000   | 77.525***  | 13.942***   |
+|          | (0.000)  | (0.000) | (1.892)    | (3.240)     |
+| PotTrap  | 0.007*** | 1.000   | 173.831*** | 1076.618*** |
+|          | (0.000)  | (0.000) | (0.848)    | (11.704)    |
+| Trawl    | 0.020*** | 1.000   | 30.999***  | 259.741***  |
+|          | (0.000)  | (0.000) | (0.135)    | (2.620)     |
+*** p&lt;.01, ** p&lt;.05, * p&lt;.1
+]
+
+---
+## Multinomial Logit predictions
+
+I predicted each of the four class probabilities for every transaction.
+
+I multiplied the predictions by the *lndlb* for each transaction and then summed by market category.
+
+&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+&lt;caption&gt;Predicted Category (mt) after a multinomial logit.  Main diagonal indicates a correct prediction, off diagonal terms are incorrect predictions. 2018-2024&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; market_desc &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred_Jumbo &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred_Large &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred_Medium &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred_Small &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Jumbo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2529 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1289 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Large &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1296 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1034 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Medium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 283 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1048 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1783 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 154 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Small &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 86 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+The mechanics of the logit mean that the model is correct: the row sums are equal to the column sums.
+
+
+---
+## Multinomial Logit predictions II
+
+
+&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+&lt;caption&gt;Predicted Category after a multinomial logit, expressed as a row frequency(2018-2024)&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; market_desc &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; rowfreq_Jumbo &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; rowfreq_Large &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; rowfreq_Medium &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; rowfreq_Small &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Jumbo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.07 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Large &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Medium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Small &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.24 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+This is kind of not great. Plus, it's an "in sample" prediction, so it's overly optimistic 
+
+---
+## Machine Learning with Random Forest
+
+- I trained and tuned a Random Forest on 40% of my data.  I used 10% as a hold out sample. 
+- More predictors, so it's not really a fair comparison to the logit. Factor have a *
+   - Factors: Gear (5), Stockarea (2), state (9), Year (7), Month (12), Semester (2), Grade (1)  
+   - Continuous: Price, Landed pounds
+   - Frequency Weights: Landed Pounds
+- Tuned with mtry in 1:11
+
+---
+## Preliminary fit assessments
+
+ 
+.pull-left[
+&lt;img src="./brier_class.png" alt="Brier Classification Metric (Low is good)" width="auto" height="350"  /&gt;
+]
+ 
+ .pull-right[
+&lt;img src="./mn_log_loss.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="350"  /&gt;
+]
+
+## Preliminary fit assessments
+
+Fair..also wrong not from the same model fit as previous
+
+.pull-right[
+&lt;img src="./roc.png" alt="ROC Curve" width="auto" height="350"  /&gt;
+]
+ 
+## Predictions
+
+Haven't written the code yet. I can get the 'class predictions' for the "transactions", but
+I haven't figured out how to get the weights out.
+
+ 
+## Extensions
+.left-column[
+- Can we modify the way lengths have been borrowed?
+- Can we apply these methods to other stocks?  Which stocks?
+- If it works well, can port sampling effort be re-deployed away from categories that are hard to get?
+]
+
+.right-column[
+&lt;img src="./2023_BSB_UNIT_TOR2_commercialdata_slide8.jpg" alt="Borrowed Length data in the 2023 BSB Assessment" width="auto" height="500"  /&gt;
+]
+
+---
+## End Matter
+.pull-left[
+** Thank you to** 
+- People
+- Other People
+]
+.pull-right[
+**Additional resources**
+]
+
+## References
+.contrib[
+&lt;a name=bib-Ardini2018&gt;&lt;/a&gt;[Ardini, G. and M. Lee](#cite-Ardini2018)
+(2018). "Do IFQs in the US Atlantic Sea Scallop Fishery Impact Price
+and Size?". In: _Marine Resource Economics_ 33.3, pp. 263-288. DOI:
+[10.1086/698199](https://doi.org/10.1086%2F698199).
+
+&lt;a name=bib-Lee2014&gt;&lt;/a&gt;[Lee, M.](#cite-Lee2014) (2014). "Hedonic
+Pricing of Atlantic Cod: Effects of Size, Freshness, and Gear". In:
+_Marine Resource Economics_. ISSN: 0738-1360. DOI:
+[10.1086/677769](https://doi.org/10.1086%2F677769).
+
+&lt;a name=bib-McConnell2000&gt;&lt;/a&gt;[Mcconnell, K. E. and I. E.
+Strand](#cite-McConnell2000) (2000). "Hedonic Prices for Fish: Tuna
+Prices in Hawaii". In: _American Journal of Agricultural Economics_
+82.1, pp. 133-144.
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="libs/macros.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "githubp",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
