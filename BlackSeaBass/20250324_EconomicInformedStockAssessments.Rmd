@@ -49,18 +49,19 @@ library(here)
 library(kableExtra)
 library(DT)
 library(widgetframe)
-here::i_am("writing/presentations/2025_03_24_Economic_Informed_Stock_Assessments/2025_03_24_Economic_Informed_Stock_Assessments.Rmd")
+here::i_am("BlackSeaBass/20250324_EconomicInformedStockAssessments.Rmd")
 
 # if figure output defaults to docs/images/ replace with this before moving to 
 # presentations/docs in both the html output (search and replace)
 # and folder name
 # 20220316_MAFMCSSC_Gaichas_files/figure-html/
 
-imagefolder<-here("writing","presentations","2025_03_24_Economic_Informed_Stock_Assessments")
+imagefolder<-"20250324_EconomicInformedStockAssessments"
+imagefolder<-here("BlackSeaBass","20250324_EconomicInformedStockAssessments")
 
-mlogit_preds<-read.csv(here("writing","presentations","2025_03_24_Economic_Informed_Stock_Assessments","mlogit_predictions_raw.csv"))
-mlogit_colfreq_preds<-read.csv(here("writing","presentations","2025_03_24_Economic_Informed_Stock_Assessments","mlogit_predictions_col_freq.csv"))
-mlogit_rowfreq_preds<-read.csv(here("writing","presentations","2025_03_24_Economic_Informed_Stock_Assessments","mlogit_predictions_row_freq.csv"))
+mlogit_preds<-read.csv(here("BlackSeaBass","20250324_EconomicInformedStockAssessments","data","mlogit_predictions_raw.csv"))
+mlogit_colfreq_preds<-read.csv(here("BlackSeaBass","20250324_EconomicInformedStockAssessments","data","mlogit_predictions_col_freq.csv"))
+mlogit_rowfreq_preds<-read.csv(here("BlackSeaBass","20250324_EconomicInformedStockAssessments","data","mlogit_predictions_row_freq.csv"))
 
 
 ```
@@ -74,7 +75,7 @@ BibOptions(check.entries = FALSE,
            longnamesfirst = FALSE,
            max.names = 1,
            style = "markdown")
-myBib <- ReadBib("../../../../library.bib", check = FALSE)
+myBib <- ReadBib("./EconInformed.bib", check = FALSE)
 
 # A large bib takes a while (10-20 seconds).
 #,
@@ -127,18 +128,19 @@ For years, economists have asked the opposite question: how much more do buyers 
 
 Scallops `r Cite(myBib, "Ardini2018")`are a nice example with clean separation:
 
-<img src="./mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/>
+
+<img src="./20250324_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/>
 
 ---
 ## Cod is another example
 
 .pull-left[
-<img src="./lee2014_fig2.jpg" alt="Box plots of Price per pound for various cod market categories." width="auto"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/lee2014_fig2.jpg" alt="Box plots of Price per pound for various cod market categories." width="auto"  />
 ]
 
 
 .pull-right[
-<img src="./lee2014_fig1.jpg" alt="Kernel Density Estimates of Length for various market categories" width="auto" />
+<img src="./20250324_EconomicInformedStockAssessments/images/lee2014_fig1.jpg" alt="Kernel Density Estimates of Length for various market categories" width="auto" />
 ]
 
 But the separation is not as clean.
@@ -204,7 +206,7 @@ But the separation is not as clean.
 - Not show are the effects of total landings and total landings$^2$.
 ]
 .right-column[
-```{r child=here("results","hedonic_table_market_cats.md")}
+```{r child=here("BlackSeaBass","20250324_EconomicInformedStockAssessments","results","hedonic_table_market_cats.md")}
 ```
 ]
 ---
@@ -215,7 +217,7 @@ chances of transaction being in a particular market category relative to large.
 - Not shown are factor variables for month, year, and state
 ]
 .right-column[
-```{r child=here("results","mlogitNom_short.md")}
+```{r child=here("BlackSeaBass","20250324_EconomicInformedStockAssessments","results","mlogitNom_short.md")}
 ```
 ]
 
@@ -265,11 +267,11 @@ This is kind of not great. Plus, it's an "in sample" prediction, so it's overly 
 
  
 .pull-left[
-<img src="./brier_class.png" alt="Brier Classification Metric (Low is good)" width="auto" height="350"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/brier_class.png" alt="Brier Classification Metric (Low is good)" width="auto" height="350"  />
 ]
  
  .pull-right[
-<img src="./mn_log_loss.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="350"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/mn_log_loss.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="350"  />
 ]
 
 ## Preliminary fit assessments
@@ -277,7 +279,7 @@ This is kind of not great. Plus, it's an "in sample" prediction, so it's overly 
 Fair..also wrong not from the same model fit as previous
 
 .pull-right[
-<img src="./roc.png" alt="ROC Curve" width="auto" height="350"  />
+<img src="/20250324_EconomicInformedStockAssessments/images/roc.png" alt="ROC Curve" width="auto" height="350"  />
 ]
  
 ## Predictions
@@ -294,7 +296,7 @@ I haven't figured out how to get the weights out.
 ]
 
 .right-column[
-<img src="./2023_BSB_UNIT_TOR2_commercialdata_slide8.jpg" alt="Borrowed Length data in the 2023 BSB Assessment" width="auto" height="500"  />
+<img src="./20250324_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_commercialdata_slide8.jpg" alt="Borrowed Length data in the 2023 BSB Assessment" width="auto" height="500"  />
 ]
 
 ---
