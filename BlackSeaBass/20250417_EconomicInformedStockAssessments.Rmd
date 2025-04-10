@@ -1,6 +1,6 @@
 ---
-title: "Economic Informed Stock Assessments:"
-subtitle: "Using Prices to Understand The Length of Fish"
+title: "Using Prices to Inform Stock Assessment:"
+subtitle: "The Curious Case of the Unclassifed Black Sea Bass"
 author: "Min-Yang Lee<br />Emily Liljestrand<br />   Northeast Fisheries Science Center<br /> 27 March 2025"
 output:
   xaringan::moon_reader:
@@ -109,14 +109,28 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 
 -->
 
+# Acknowledgements
+.pull-left[
+** Thank you to** 
+- Jennifer Dopkowski (NOAA Research - Climate Program Office)
+- Brian Linton (NEFSC)
+- Scott Steinback (NEFSC)
+]
+
+.pull-right[
+<img src="./20250417_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="Sam, doubled up on her first black sea bass" height="500" width="auto"  />
+]
+
+
+---
 # Research Question and Motivation
 
 ## Research Question
-Can inclusion of prices improve our ability to infer something about the size of the Unclassified Black Sea Bass?
+Can we use prices to say something interesting about the size of Unclassified Black Sea Bass? (**Yes we can**).
 
 ## Motivation
 
-* Another source of uncertainty stemmed from the fact that no length information on individuals in the unclassified market category have been sampled since 2020. Calculating the catch at length for 2021-2023 necessitated borrowing information from before 2020 which introduces additional uncertainty. [BSB management track assessment report]
+* From 2020 to 2023, 5 to 10% of commercial landings were in the “Unclassified” market category; but no fish in this category were measured. 
 
 * It is costly to collect length and age information.  Is trying to collect this information for all market categories the most efficient use of our resources?
 
@@ -124,7 +138,6 @@ Can inclusion of prices improve our ability to infer something about the size of
 ---
 # Background
 For years, economists have asked the opposite question: how much more do buyers pay for large fish compared to small fish? `r Cite(myBib, "McConnell2000")`
-
 
 Scallops `r Cite(myBib, "Ardini2018")`are a nice example with clean separation:
 
@@ -157,23 +170,24 @@ But the separation is not as clean.
   - Estimate a hedonic model: the price per pound is a function of the transaction level attributes, like market category, gear, and time of year. 
   - A slightly more sophisticated way of checking that prices vary by market category than the box plots from the previous slide.
   
-2. Estimate a categorical model (ordered or un-ordered logit or something related) with price as an explanatory variable. 
-  - Validate the model with a k-fold cross validation. 
-  - Predict out of sample for the unclassified market category.
-
-
 ---
 # Methods Overview II 
 
 3.  Train a random forest classification model on the four principle classes (Jumbo, Large, Medium, Small).  
   - **Test** and **train** with a k-fold cross-validation.
   - **Validate** on a hold-out sample.
-  - **Predict** out of sample on the "Unclassified".
+  - Retrain on the entire dataset.
   
-4. Using the results of (3) reconstruct a new length distribution of the landed black sea bass.  
+4.  **Predict** out of sample on the "Unclassified".
+
+5.  Using the results of (4) reconstruct a new length distribution of the landed black sea bass.  
 
 ---
-# Potential Pitfalls
+# Pitfalls
+
+**Predict** out of sample on the "Unclassified."  Is the data generating process
+the same for Unclassified as it is for Classified?
+
 
 Data is such a bear.
   - Less QA/QC on the "value" columns (value, sppvalue). 
@@ -375,11 +389,6 @@ I haven't figured out how to get the weights out.
 ---
 # End Matter
 .pull-left[
-** Thank you to** 
-- People
-- Other People
-]
-.pull-right[
 **Additional resources**
 ]
 
