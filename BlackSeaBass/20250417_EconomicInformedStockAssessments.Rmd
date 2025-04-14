@@ -1,7 +1,7 @@
 ---
 title: "Using Prices to Inform Stock Assessment:"
 subtitle: "The Curious Case of the Unclassifed Black Sea Bass"
-author: "Min-Yang Lee<br />Emily Liljestrand<br />   Northeast Fisheries Science Center<br /> 27 March 2025"
+author: "Min-Yang Lee<br />Emily Liljestrand<br />   Northeast Fisheries Science Center<br /> 17 April 2025"
 output:
   xaringan::moon_reader:
     yolo: false
