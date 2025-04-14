@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Using Prices to Inform Stock Assessment:</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Min-Yang Lee Emily Liljestrand  Northeast Fisheries Science Center  27 March 2025" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="libs/EDAB_theme3_508_SOE_16by9.css" type="text/css" />
+    <link rel="stylesheet" href="libs/ml_simple_themes.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: right, middle, my-title, title-slide
+
+.title[
+# Using Prices to Inform Stock Assessment:
+]
+.subtitle[
+## The Curious Case of the Unclassifed Black Sea Bass
+]
+.author[
+### Min-Yang Lee<br />Emily Liljestrand<br /> Northeast Fisheries Science Center<br /> 27 March 2025
+]
+
+---
+
+class: top, left
+
+&lt;style&gt;
+p.caption {
+  font-size: 0.6em;
+}
+&lt;/style&gt;
+
+&lt;style&gt;
+.reduced_opacity {
+  opacity: 0.5;
+}
+&lt;/style&gt;
+
+
+
+
+
+&lt;!---
+Use this to add a bottom note to a figure
+.contrib[
+Few managed species have binding limits; Management less likely playing a role
+]
+
+Use this to make a left list
+.pull-left[
+
+]
+
+in-line cite with:  
+    + Contextual information
+    + Report evolving since 2016
+    + Fishery-relevant subset of full Ecosystem Status Reports
+
+- Open science emphasis 
+
+- Used within Mid-Atlantic Fishery Management Council's Ecosystem Process 
+ - Inline cite 
+
+
+
+--&gt;
+
+# Acknowledgements
+.pull-left[
+** Thank you to** 
+- Jennifer Dopkowski (OAR - Climate Program Office)
+- Brian Linton (NEFSC)
+- Scott Steinback (NEFSC)
+]
+
+.pull-right[
+&lt;img src="./20250417_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="Sam, doubled up on her first black sea bass" height="500" width="auto"  /&gt;
+]
+
+
+---
+# Research Question and Motivation
+
+## Research Question
+Can we use prices to say something interesting about the size of Unclassified Black Sea Bass? 
+
+--
+**Yes we can**.
+
+--
+## Motivation
+
+- From 2020 to 2023, 5 to 10% of commercial landings were in the “Unclassified” market category; but no fish in this category were measured by port biosamplers. 
+
+--
+
+- Collecting length and age information is costly.  Is trying to collect this information for all market categories the most efficient use of our resources?
+
+
+---
+# Background I - A Stylized Model
+
+- Fishing vessels catch black sea bass
+
+- Fishing vessels transfer their catch to dealers
+
+--
+- Dealers sort catch, sell to downstream customers, and pay the vessel
+
+--
+
+- NEFSC deploys biosamplers to measure lengths and collect otoliths of fish
+    - Measure lots of fish
+    - Age some fish
+
+--
+
+- Numbers-at-age or numbers-at-length are inputs into stock assessment 
+    - Fill "missing" data with neighbors.
+
+---
+# Background II - Scallops and Prices
+
+For years, economists have asked the opposite question: how much more do buyers pay for large fish compared to small fish? &lt;a name=cite-McConnell2000&gt;&lt;/a&gt;([Mcconnell et al., 2000](#bib-McConnell2000))
+
+--
+
+Scallops &lt;a name=cite-Ardini2018&gt;&lt;/a&gt;([Ardini et al., 2018](https://doi.org/10.1086/698199)) are a nice example:
+
+
+&lt;img src="./20250417_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/&gt;
+
+---
+# Preliminaries I
+
+1. Exploratory data analysis step: Do prices vary by size? 
+  - Estimate a hedonic model: the price per pound is a function of the transaction level attributes, like market category, gear, and time of year
+
+---
+# Preliminaries II
+&lt;!---- Not shown are the effects of factor variables for gear,  state, calendar year, and month.
+- Not show are the effects of total landings and total landings$^2$.
+---&gt;
+
+|                        | Weighted   | Unweighted |
+|------------------------|------------|------------|
+| Jumbo                  | 5.883***   | 6.122***   |
+|                        | (0.001)    | (0.015)    |
+| Large                  | 4.647***   | 4.551***   |
+|                        | (0.001)    | (0.016)    |
+| Medium                 | 3.751***   | 3.479***   |
+|                        | (0.001)    | (0.016)    |
+| Small                  | 3.526***   | 3.132***   |
+|                        | (0.002)    | (0.016)    |
+| Unclassified           | 4.397***   | 4.460***   |
+|                        | (0.001)    | (0.017)    |
+|                        |            |            |
+| Live                   | 0.164***   | 0.237***   |
+|                        | (0.002)    | (0.014)    |
+|                        |            |            |
+| R-squared              | 0.907      | 0.924      |
+|                        |            |            |
+| Number of observations | 29,195,457 | 360,159    |
+*** p&lt;.01, ** p&lt;.05, * p&lt;.1
+
+---
+# Methods Overview I
+
+1.  Train a random forest classification model using data on the four principle classes (`\(c=\)`Jumbo, Large, Medium, Small) 
+
+  - **Tune** and **train** with a `\(k-\)`fold cross-validation
+  - **Validate** on a hold-out sample
+  - Finalize (retrain) on the entire dataset
+
+--
+  
+2.  **Predict** out of sample on the "Unclassified"
+
+--
+
+3.  Use the results to construct a new length distribution of the landed black sea bass
+
+---
+# Assumptions, Potential Problems, and Some solutions
+
+Assumption 1 -  Out-of-sample prediction is valid
+  
+  - Unclassified fish are the same as classified fish, we just don't observe their class
+  - There are rows in the dealer data that are state-level reports of sales by non-federal permits to non-federal dealers
+
+--
+
+Assumption 2 - Dealers have diverse but persistent tendencies in terms of how they classify fish
+
+  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
+  - Example 2: Dealer C only grades into "Large" or "Small"
+  - Dealer ID should go into the model as a factor variable
+      - Implications for Tuning and training: do a "group" split and `\(k-\)`fold 
+      - Modified "target encoding" instead of "one-hot
+
+--
+
+Assumption 3 -  Fishing vessels have similar tendencies, but since they do not perform the classification, we should **not** include vessel ID 
+as factor variables
+
+&lt;!---
+- If these are transactions (trip/subtrip) with true value, this is fine.
+      - If these are transactions (trip/subtrip) with "imputed" or "assigned" value, they *probably cannot* be included in the model.
+      - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
+---&gt;
+
+---
+# Machine Learning with Random Forest
+
+- Catch Accounting and Monitoring System (CAMS)
+- Each row is a stockarea-gear allocated landings at the vessel-dealer-market category level
+
+--
+
+- Set aside 20% of our data (2015-2024) for validation
+
+- Tune (*mtry*) and train a Random Forest on 80% of our data  
+
+- 10-fold cross validation to find optimal *mtry*
+  - Grouped on dealer ID so all of a dealer's observations are in exactly 1 fold
+  - Avoid overfitting or over-optimism
+  
+-  Frequency Weight observations : Landed Pounds
+
+  
+---
+# Predictors:
+
+.pull-left[
+Factor Variables:
+
+   - Gear : Trawl, Line, Pot/Trap, Gillnet, Other
+   - Stock: North or South
+   - State of Landing: North Carolina to Maine
+   - Year: 2015-2025 
+   - Month
+   - Semester
+   - Live or Dead  
+]
+
+.pull-right[
+Continuous: 
+  - Price
+  - Trip landings
+  - Trip landings by market cat 
+  - Aggregate landings 
+      - State landings by market cat on other trips*
+      - Stock area landings by market cat on other trips*
+      - 7 day moving average landings by market category
+  - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
+
+]   
+&lt;!---
+keep_cols&lt;-c("market_desc","dlrid","camsid","weighting", "mygear","price","priceR_CPI", "stockarea","state", "year","month", "semester","lndlb", "grade_desc", "trip_level_BSB")
+keep_cols&lt;-c(keep_cols,"StateOtherQJumbo", "StateOtherQLarge", "StateOtherQMedium", "StateOtherQSmall" )
+keep_cols&lt;-c(keep_cols,"StockareaOtherQJumbo", "StockareaOtherQLarge", "StockareaOtherQMedium", "StockareaOtherQSmall" )
+keep_cols&lt;-c(keep_cols,"MA7_StockareaQJumbo", "MA7_StockareaQLarge", "MA7_StockareaQMedium", "MA7_StockareaQSmall" )
+keep_cols&lt;-c(keep_cols,"MA7_StateQJumbo", "MA7_StateQLarge","MA7_StateQMedium", "MA7_StateQSmall")
+keep_cols&lt;-c(keep_cols,"MA7_stockarea_trips", "MA7_state_trips" )
+keep_cols&lt;-c(keep_cols,"Share2014Jumbo", "Share2014Large", "Share2014Medium","Share2014Small", "Share2014Unclassified" )
+keep_cols&lt;-c(keep_cols,"TransactionCountJumbo", "TransactionCountLarge", "TransactionCountMedium", "TransactionCountSmall", "TransactionCountUnclassified" )
+---&gt;
+
+
+---
+# Model Tuning Results
+
+We use mean log-loss to select optimal *mtry.*
+
+.center[
+&lt;img src="./20250417_EconomicInformedStockAssessments/images/mn_log_lossstandard2025-04-04.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="500"  /&gt;
+]
+
+
+---
+# Variable Importance
+.center[
+&lt;img src="./20250417_EconomicInformedStockAssessments/images/vipstandard2025-04-04.png" alt="Variable Importance Plots" width="auto" height="500"  /&gt;
+]
+
+---
+# Out of Sample Prediction
+.pull-left[
+&lt;img src="./20250417_EconomicInformedStockAssessments/images/roc_standard2025-04-04.png" alt="ROC curve" width="auto" height="500"  /&gt;
+]
+
+.pull-right[
+Receiver-Operator Curve for our validation. We trained the model on 80%, and then predict on the 20% hold out sample.
+
+Haven't gotten to the "confusion" matrix or weighted predictions yet.
+
+]
+
+
+
+ 
+---
+#  Predictions
+
+Not done yet
+ 
+---
+# Extensions
+.pull-left[
+- Collecting length and age information is costly.  Is trying to collect this information for all market categories the most efficient use of our resources?
+- Can we modify the way lengths have been borrowed?
+- Can we apply these methods to other stocks?  Which stocks?
+- If it works well, can port sampling effort be re-deployed away from categories that are hard to get?
+]
+
+.pull-right[
+]&lt;img src="./20250417_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_pct.jpg" alt="Proportion of 'borrowed' age-length data" height="500" width="500"  /&gt;
+
+
+---
+# References
+.contrib[
+&lt;a name=bib-Ardini2018&gt;&lt;/a&gt;[Ardini, G. and M. Lee](#cite-Ardini2018)
+(2018). "Do IFQs in the US Atlantic Sea Scallop Fishery Impact Price
+and Size?". In: _Marine Resource Economics_ 33.3, pp. 263-288. DOI:
+[10.1086/698199](https://doi.org/10.1086%2F698199).
+
+&lt;a name=bib-McConnell2000&gt;&lt;/a&gt;[Mcconnell, K. E. and I. E.
+Strand](#cite-McConnell2000) (2000). "Hedonic Prices for Fish: Tuna
+Prices in Hawaii". In: _American Journal of Agricultural Economics_
+82.1, pp. 133-144.
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="libs/macros.js"></script>
+<script>var slideshow = remark.create({
+  "ratio": "16:9",
+  "highlightStyle": "githubp",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
