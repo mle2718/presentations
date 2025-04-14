@@ -11,10 +11,9 @@ output: html_document
  
 ### 2025
 
-<a href="https://mle2718.github.io/presentations/20250324_EconomicInformedStockAssessments" target="_blank"> Economic Informed Stock Assessments. March 2025</a>
+<a href="https://mle2718.github.io/presentations/20250417_EconomicInformedStockAssessments" target="_blank"> Economic Informed Stock Assessments. April 2025</a>
 
 
- 
  
 ### 2023
 
