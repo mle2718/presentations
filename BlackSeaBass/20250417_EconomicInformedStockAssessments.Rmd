@@ -1,6 +1,6 @@
 ---
-title: "Economic Informed Stock Assessments:"
-subtitle: "Using Prices to Understand The Length of Fish"
+title: "Using Prices to Inform Stock Assessment:"
+subtitle: "The Curious Case of the Unclassifed Black Sea Bass"
 author: "Min-Yang Lee<br />Emily Liljestrand<br />   Northeast Fisheries Science Center<br /> 27 March 2025"
 output:
   xaringan::moon_reader:
@@ -109,281 +109,241 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 
 -->
 
-# Research Question and Motivation
+# Acknowledgements
+.pull-left[
+** Thank you to** 
+- Jennifer Dopkowski (OAR - Climate Program Office)
+- Brian Linton (NEFSC)
+- Scott Steinback (NEFSC)
+]
 
-## Research Question
-Can inclusion of prices improve our ability to infer something about the size of the Unclassified Black Sea Bass?
-
-## Motivation
-
-* Another source of uncertainty stemmed from the fact that no length information on individuals in the unclassified market category have been sampled since 2020. Calculating the catch at length for 2021-2023 necessitated borrowing information from before 2020 which introduces additional uncertainty. [BSB management track assessment report]
-
-* It is costly to collect length and age information.  Is trying to collect this information for all market categories the most efficient use of our resources?
+.pull-right[
+<img src="./20250417_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="Sam, doubled up on her first black sea bass" height="500" width="auto"  />
+]
 
 
 ---
-# Background
+# Research Question and Motivation
+
+## Research Question
+Can we use prices to say something interesting about the size of Unclassified Black Sea Bass? 
+
+--
+**Yes we can**.
+
+--
+## Motivation
+
+- From 2020 to 2023, 5 to 10% of commercial landings were in the “Unclassified” market category; but no fish in this category were measured by port biosamplers. 
+
+--
+
+- Collecting length and age information is costly.  Is trying to collect this information for all market categories the most efficient use of our resources?
+
+
+---
+# Background I - A Stylized Model
+
+- Fishing vessels catch black sea bass
+
+- Fishing vessels transfer their catch to dealers
+
+--
+- Dealers sort catch, sell to downstream customers, and pay the vessel
+
+--
+
+- NEFSC deploys biosamplers to measure lengths and collect otoliths of fish
+    - Measure lots of fish
+    - Age some fish
+
+--
+
+- Numbers-at-age or numbers-at-length are inputs into stock assessment 
+    - Fill "missing" data with neighbors.
+
+---
+# Background II - Scallops and Prices
+
 For years, economists have asked the opposite question: how much more do buyers pay for large fish compared to small fish? `r Cite(myBib, "McConnell2000")`
 
+--
 
-Scallops `r Cite(myBib, "Ardini2018")`are a nice example with clean separation:
+Scallops `r Cite(myBib, "Ardini2018")` are a nice example:
 
 
 <img src="./20250417_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/>
 
 ---
-## Cod is another example
-
-.pull-left[
-<img src="./20250417_EconomicInformedStockAssessments/images/lee2014_fig2.jpg" alt="Box plots of Price per pound for various cod market categories." width="auto"  />
-]
-
-
-.pull-right[
-<img src="./20250417_EconomicInformedStockAssessments/images/lee2014_fig1.jpg" alt="Kernel Density Estimates of Length for various market categories" width="auto" />
-]
-
-But the separation is not as clean.
-
-
-.footnote[
-`r Cite(myBib, "Lee2014")`
-]
-
----
-# Methods Overview I 
+# Preliminaries I
 
 1. Exploratory data analysis step: Do prices vary by size? 
-  - Estimate a hedonic model: the price per pound is a function of the transaction level attributes, like market category, gear, and time of year. 
-  - A slightly more sophisticated way of checking that prices vary by market category than the box plots from the previous slide.
-  
-2. Estimate a categorical model (ordered or un-ordered logit or something related) with price as an explanatory variable. 
-  - Validate the model with a k-fold cross validation. 
-  - Predict out of sample for the unclassified market category.
-
+  - Estimate a hedonic model: the price per pound is a function of the transaction level attributes, like market category, gear, and time of year
 
 ---
-# Methods Overview II 
-
-3.  Train a random forest classification model on the four principle classes (Jumbo, Large, Medium, Small).  
-  - **Test** and **train** with a k-fold cross-validation.
-  - **Validate** on a hold-out sample.
-  - **Predict** out of sample on the "Unclassified".
-  
-4. Using the results of (3) reconstruct a new length distribution of the landed black sea bass.  
-
----
-# Potential Pitfalls
-
-Data is such a bear.
-  - Less QA/QC on the "value" columns (value, sppvalue). 
-  - State-level reporting.  There are rows in the dealer data that are state-level reports of sales by non-federal permits to non-federal dealers. 
-      - If these are transactions (trip/subtrip) with true value, this is fine.
-      - If these are transactions (trip/subtrip) with "imputed" or "assigned" value, they *probably cannot* be included in the model.
-      - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
-Price Separation: Prices need to vary by market category. 
-  - No variation in prices across market categories, then it won't work
-  - No need to assumed a particular price-size relationship
-  - Price-size relationship can change from year to year
-  - Better if the price of "Unclassified" is between the price of two other categories.
-
----
-# More Pitfalls
-
-Dealers have their own diverse but persistent tendencies in terms of how they classify fish.
-  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
-  - Example 2: Dealer C only grades into "Large" or "Small"
-  - Dealer id should go into the model as a factor variable. 
-
-Problems: 
-  - Need to handle this properly in the $k-$fold cross validation, otherwise the training and validation datasets are not truly independent and the model fit measures are overly optimistic. 
-  - Would want to include a dealer "fixed effect" as to account the dealer's tendencies.  If all observations of cluster $c$ are in fold $k$, then I don't know how you use that info to predict.
-  - Inclusion of factor variables with many levels in a machine learning model can lead to overfitting. "Target" encode instead of "one-hot" (classical expansion of factor into a set of 0/1 dummy variables).
-
----
-# Hedonic Results
-.left-column[
-- Estimates in the columns can be interpreted as the average price of a pound of Black Sea Bass for each market category.
-- Not shown are the effects of factor variables for gear,  state, calendar year, and month.
+# Preliminaries II
+<!---- Not shown are the effects of factor variables for gear,  state, calendar year, and month.
 - Not show are the effects of total landings and total landings$^2$.
-]
-.right-column[
+--->
 ```{r child=here("BlackSeaBass","20250417_EconomicInformedStockAssessments","results","hedonic_table_market_cats.md")}
 ```
-]
 
 ---
-## Multinomial Logit
-.left-column[
-- Estimates greater than 1 indicate that increases in a predictor increase the 
-chances of transaction being in a particular market category relative to large.
-- Not shown are factor variables for month, year, and state
-]
-.right-column[
-```{r child=here("BlackSeaBass","20250417_EconomicInformedStockAssessments","results","mlogitNom_short.md")}
-```
-]
+# Methods Overview I
+
+1.  Train a random forest classification model using data on the four principle classes ($c=$Jumbo, Large, Medium, Small) 
+
+  - **Tune** and **train** with a $k-$fold cross-validation
+  - **Validate** on a hold-out sample
+  - Finalize (retrain) on the entire dataset
+
+--
+  
+2.  **Predict** out of sample on the "Unclassified"
+
+--
+
+3.  Use the results to construct a new length distribution of the landed black sea bass
 
 ---
-## Multinomial Logit predictions
+# Assumptions, Potential Problems, and Some solutions
 
-I predicted each of the four class probabilities for every transaction.
+Assumption 1 -  Out-of-sample prediction is valid
+  
+  - Unclassified fish are the same as classified fish, we just don't observe their class
+  - There are rows in the dealer data that are state-level reports of sales by non-federal permits to non-federal dealers
 
-I multiplied the predictions by the *lndlb* for each transaction and then summed by market category.
+--
 
-```{r}
-kbl(mlogit_preds, digits=0,booktabs=T, align=c("l",rep('r',times=4)), caption =  "Predicted Category (mt) after a multinomial logit.  Main diagonal indicates a correct prediction, off diagonal terms are incorrect predictions. 2018-2024")  %>%
-    #column_spec(5:8, width = "2cm")
-    kable_styling(full_width = F) %>%
-      row_spec(0,bold=FALSE) 
+Assumption 2 - Dealers have diverse but persistent tendencies in terms of how they classify fish
 
-```
-The mechanics of the logit mean that the model is correct: the row sums are equal to the column sums.
+  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
+  - Example 2: Dealer C only grades into "Large" or "Small"
+  - Dealer ID should go into the model as a factor variable
+      - Implications for Tuning and training: do a "group" split and $k-$fold 
+      - Modified "target encoding" instead of "one-hot
 
+--
 
----
-## Multinomial Logit predictions II
-
-
-```{r}
-kbl(mlogit_rowfreq_preds, digits=2,booktabs=T, align=c("l",rep('r',times=4)), caption =  "Predicted Category after a multinomial logit, expressed as a row frequency(2018-2024)")  %>%
-    #column_spec(5:8, width = "2cm")
-    kable_styling(full_width = F) %>%
-      row_spec(0,bold=FALSE) 
-
-```
-
-This is kind of not great. Plus, it's an "in sample" prediction, so it's overly optimistic 
-
----
-## Machine Learning with Random Forest
-
-- I trained and tuned a Random Forest on 40% of my data.  I used 10% as a hold out sample. 
-- More predictors, so it's not really a fair comparison to the logit. Factor have a *
-   - Factors: Gear (5), Stockarea (2), state (9), Year (7), Month (12), Semester (2), Grade (1)  
-   - Continuous: Price, Landed pounds
-   - Frequency Weights: Landed Pounds
-   - 
-- Tuned with mtry in 1:15, 20, and 38
+Assumption 3 -  Fishing vessels have similar tendencies, but since they do not perform the classification, we should **not** include vessel ID 
+as factor variables
 
 <!---
-myfolds<-rsample::group_vfold_cv(train_data, group=dlrid, v = 10, balance="observations")
+- If these are transactions (trip/subtrip) with true value, this is fine.
+      - If these are transactions (trip/subtrip) with "imputed" or "assigned" value, they *probably cannot* be included in the model.
+      - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
+--->
 
+---
+# Machine Learning with Random Forest
 
-mtry<-1:15
-mtry<-c(mtry,20,npredict)
-# Use a recipe on the training data. 
+- Catch Accounting and Monitoring System (CAMS)
+- Each row is a stockarea-gear allocated landings at the vessel-dealer-market category level
 
-# assign roles to predictors, outcome, groups, and weights
-BSB.Classification.Recipe <- recipe(train_data) %>%
-  update_role(market_desc, new_role = "outcome")%>%
-  update_role(c(dlrid,camsid), new_role = "ID variable") %>%
-  update_role(c(mygear,price,stockarea, state, year, month, semester, lndlb, grade_desc, trip_level_BSB), new_role = "predictor")
+--
 
-# State-level daily Landings on "other" trips, by market category  
-BSB.Classification.Recipe <-BSB.Classification.Recipe %>%
-  update_role(c(StateOtherQJumbo, StateOtherQLarge, StateOtherQMedium, StateOtherQSmall), new_role = "predictor") 
+- Set aside 20% of our data (2015-2024) for validation
 
-# stockarea-level daily Landings on "other" trips, by market category  
-BSB.Classification.Recipe <-BSB.Classification.Recipe %>%
-  update_role(c(StockareaOtherQJumbo, StockareaOtherQLarge, StockareaOtherQMedium, StockareaOtherQSmall), new_role = "predictor") 
+- Tune (*mtry*) and train a Random Forest on 80% of our data  
 
-# Trailing 7 days landings, by stockarea and market category   
-BSB.Classification.Recipe <-BSB.Classification.Recipe %>%
-  update_role(c(MA7_StockareaQJumbo, MA7_StockareaQLarge, MA7_StockareaQMedium, MA7_StockareaQSmall), new_role = "predictor")
+- 10-fold cross validation to find optimal *mtry*
+  - Grouped on dealer ID so all of a dealer's observations are in exactly 1 fold
+  - Avoid overfitting or over-optimism
+  
+-  Frequency Weight observations : Landed Pounds
 
-# Trailing 7 days landings, by state and market category   
-BSB.Classification.Recipe <-BSB.Classification.Recipe %>%
-  update_role(c(MA7_StateQJumbo, MA7_StateQLarge, MA7_StateQMedium, MA7_StateQSmall), new_role = "predictor") 
+  
+---
+# Predictors:
 
-# Trailing 7 day trips, by state and stock area.   
-BSB.Classification.Recipe <-BSB.Classification.Recipe %>%
-  update_role(c(MA7_stockarea_trips, MA7_state_trips), new_role = "predictor") 
+.pull-left[
+Factor Variables:
 
-# Dealer share of landings by market category from 2013-2017   
-BSB.Classification.Recipe <-BSB.Classification.Recipe %>%
-  update_role(c(ShareJumbo, ShareLarge, ShareMedium,ShareSmall, ShareUnclassified), new_role = "predictor") 
+   - Gear : Trawl, Line, Pot/Trap, Gillnet, Other
+   - Stock: North or South
+   - State of Landing: North Carolina to Maine
+   - Year: 2015-2025 
+   - Month
+   - Semester
+   - Live or Dead  
+]
 
-# Dealer transaction count of landings by market category from 2013-2017   
+.pull-right[
+Continuous: 
+  - Price
+  - Trip landings
+  - Trip landings by market cat 
+  - Aggregate landings 
+      - State landings by market cat on other trips*
+      - Stock area landings by market cat on other trips*
+      - 7 day moving average landings by market category
+  - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
 
-BSB.Classification.Recipe <-BSB.Classification.Recipe %>%
-  update_role(c(TransactionCountJumbo, TransactionCountLarge, TransactionCountMedium,TransactionCountSmall, TransactionCountUnclassified), new_role = "predictor") 
-
-
-
-
-
-# You can't center the factor variables
-# rescale and recenter 
-BSB.Classification.Recipe <- BSB.Classification.Recipe %>% 
-#  step_impute_knn(all_predictors()) %>%
-  step_center(all_numeric_predictors()) %>%
-  step_scale(all_numeric_predictors())
-
-recipe_summary<-BSB.Classification.Recipe %>%
-  summary() %>%
-  arrange(source,role, variable)
-
-
-
-#How many predictors
-npredict<-nrow(recipe_summary %>% dplyr::filter(role=="predictor"))
-
+]   
+<!---
+keep_cols<-c("market_desc","dlrid","camsid","weighting", "mygear","price","priceR_CPI", "stockarea","state", "year","month", "semester","lndlb", "grade_desc", "trip_level_BSB")
+keep_cols<-c(keep_cols,"StateOtherQJumbo", "StateOtherQLarge", "StateOtherQMedium", "StateOtherQSmall" )
+keep_cols<-c(keep_cols,"StockareaOtherQJumbo", "StockareaOtherQLarge", "StockareaOtherQMedium", "StockareaOtherQSmall" )
+keep_cols<-c(keep_cols,"MA7_StockareaQJumbo", "MA7_StockareaQLarge", "MA7_StockareaQMedium", "MA7_StockareaQSmall" )
+keep_cols<-c(keep_cols,"MA7_StateQJumbo", "MA7_StateQLarge","MA7_StateQMedium", "MA7_StateQSmall")
+keep_cols<-c(keep_cols,"MA7_stockarea_trips", "MA7_state_trips" )
+keep_cols<-c(keep_cols,"Share2014Jumbo", "Share2014Large", "Share2014Medium","Share2014Small", "Share2014Unclassified" )
+keep_cols<-c(keep_cols,"TransactionCountJumbo", "TransactionCountLarge", "TransactionCountMedium", "TransactionCountSmall", "TransactionCountUnclassified" )
 --->
 
 
 ---
-# Preliminary fit assessments
+# Model Tuning Results
 
- 
-.pull-left[
-<img src="./20250417_EconomicInformedStockAssessments/images/brier_class.png" alt="Brier Classification Metric (Low is good)" width="auto" height="350"  />
+We use mean log-loss to select optimal *mtry.*
+
+.center[
+<img src="./20250417_EconomicInformedStockAssessments/images/mn_log_lossstandard2025-04-04.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="500"  />
 ]
- 
- .pull-right[
-<img src="./20250417_EconomicInformedStockAssessments/images/mn_log_loss.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="350"  />
+
+
+---
+# Variable Importance
+.center[
+<img src="./20250417_EconomicInformedStockAssessments/images/vipstandard2025-04-04.png" alt="Variable Importance Plots" width="auto" height="500"  />
 ]
 
 ---
-# Preliminary fit assessments
-
-Fair..also wrong not from the same model fit as previous
+# Out of Sample Prediction
+.pull-left[
+<img src="./20250417_EconomicInformedStockAssessments/images/roc_standard2025-04-04.png" alt="ROC curve" width="auto" height="500"  />
+]
 
 .pull-right[
-<img src="/20250417_EconomicInformedStockAssessments/images/roc.png" alt="ROC Curve" width="auto" height="350"  />
+Receiver-Operator Curve for our validation. We trained the model on 80%, and then predict on the 20% hold out sample.
+
+Haven't gotten to the "confusion" matrix or weighted predictions yet.
+
 ]
+
+
+
  
 ---
 #  Predictions
 
-Haven't written the code yet. I can get the 'class predictions' for the "transactions", but
-I haven't figured out how to get the weights out.
-
+Not done yet
  
 ---
 # Extensions
-.left-column[
+.pull-left[
+- Collecting length and age information is costly.  Is trying to collect this information for all market categories the most efficient use of our resources?
 - Can we modify the way lengths have been borrowed?
 - Can we apply these methods to other stocks?  Which stocks?
 - If it works well, can port sampling effort be re-deployed away from categories that are hard to get?
 ]
 
-.right-column[
-<img src="./20250417_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_commercialdata_slide8.jpg" alt="Borrowed Length data in the 2023 BSB Assessment" width="auto" height="500"  />
-]
+.pull-right[
+]<img src="./20250417_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_pct.jpg" alt="Proportion of 'borrowed' age-length data" height="500" width="500"  />
+
 
 ---
-# End Matter
-.pull-left[
-** Thank you to** 
-- People
-- Other People
-]
-.pull-right[
-**Additional resources**
-]
-
-## References
+# References
 .contrib[
 ```{r refs, echo=FALSE, results="asis", eval=TRUE}
 PrintBibliography(myBib, .opts=list(max.names=3))

@@ -1,5 +1,3 @@
-Unweighted and Weighted Hedonic Price Regression (2018-2024)
-
 |                        | Weighted   | Unweighted |
 |------------------------|------------|------------|
 | Jumbo                  | 5.883***   | 6.122***   |
