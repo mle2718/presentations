@@ -123,6 +123,32 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 
 
 ---
+# Background I 
+
+- Fishing vessels catch black sea bass
+
+- Fishing vessels transfer their catch to dealers
+
+--
+- Dealers 
+    - Sort catch into market categories, 
+    - Pay the vessel,
+    - Report sales info to NOAA Fisheries,
+    - Sell to downstream customers
+
+--
+
+- NEFSC deploys biosamplers 
+    - Measure lots of fish
+    - Collect otoliths from some fish
+
+--
+
+- Numbers-at-age and numbers-at-length are inputs into stock assessment 
+    - Fill "missing" data with neighbors
+
+
+---
 # Research Question and Motivation
 
 ## Research Question
@@ -134,45 +160,23 @@ Can we use prices to say something interesting about the size of Unclassified Bl
 --
 ## Motivation
 
-- From 2020 to 2023, 5 to 10% of commercial landings were in the “Unclassified” market category; but no fish in this category were measured by port biosamplers. 
+- No biosampling of the Unclassified fish from 2020-2023.     
 
 --
 
-- Collecting length and age information is costly.  Is trying to collect this information for all market categories the most efficient use of our resources?
+- Collecting length and age information is costly.  Should we collect it for all
+market catgories?
 
-
----
-# Background I - A Stylized Model
-
-- Fishing vessels catch black sea bass
-
-- Fishing vessels transfer their catch to dealers
-
---
-- Dealers sort catch, sell to downstream customers, and pay the vessel
-
---
-
-- NEFSC deploys biosamplers to measure lengths and collect otoliths of fish
-    - Measure lots of fish
-    - Age some fish
-
---
-
-- Numbers-at-age or numbers-at-length are inputs into stock assessment 
-    - Fill "missing" data with neighbors.
 
 ---
 # Background II - Scallops and Prices
 
-For years, economists have asked the opposite question: how much more do buyers pay for large fish compared to small fish? `r Cite(myBib, "McConnell2000")`
-
---
-
-Scallops `r Cite(myBib, "Ardini2018")` are a nice example:
-
+Price Depends on Size, scallops `r Cite(myBib, "Ardini2018")` are a nice example $^{1}$:
 
 <img src="./20250417_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/>
+
+
+.footnote[[1] Other examples include `r Citet(myBib, c("McConnell2000","Kristofersson2007", "Hammarlund2015"))` ]
 
 ---
 # Preliminaries I
@@ -191,7 +195,10 @@ Scallops `r Cite(myBib, "Ardini2018")` are a nice example:
 ---
 # Methods Overview I
 
-1.  Train a random forest classification model using data on the four principle classes ($c=$Jumbo, Large, Medium, Small) 
+- Train a random forest classification model `r Cite(myBib, "Breiman2001")` using transaction-level data $^{2}$
+on the four principle classes ($c=$Jumbo, Large, Medium, Small) 
+
+.footnote[[2] GARFO's Catch Accounting and Monitoring System (CAMS): stockarea-gear allocated landings at the vessel-dealer-market category level]
 
   - **Tune** and **train** with a $k-$fold cross-validation
   - **Validate** on a hold-out sample
@@ -199,11 +206,11 @@ Scallops `r Cite(myBib, "Ardini2018")` are a nice example:
 
 --
   
-2.  **Predict** out of sample on the "Unclassified"
+- **Predict** out of sample on the "Unclassified"
 
 --
 
-3.  Use the results to construct a new length distribution of the landed black sea bass
+- Use the results to construct a new length distribution of the landed black sea bass
 
 ---
 # Assumptions, Potential Problems, and Some solutions
@@ -211,7 +218,7 @@ Scallops `r Cite(myBib, "Ardini2018")` are a nice example:
 Assumption 1 -  Out-of-sample prediction is valid
   
   - Unclassified fish are the same as classified fish, we just don't observe their class
-  - There are rows in the dealer data that are state-level reports of sales by non-federal permits to non-federal dealers
+  - .gray[Concern: There are some transactions by non-federally permitted vessels]
 
 --
 
@@ -225,8 +232,10 @@ Assumption 2 - Dealers have diverse but persistent tendencies in terms of how th
 
 --
 
-Assumption 3 -  Fishing vessels have similar tendencies, but since they do not perform the classification, we should **not** include vessel ID 
-as factor variables
+Assumption 3 -  Fishing vessels have similar tendencies to dealers
+
+  - Fishing vessels do not perform the classification, therefore
+  - We should **not** include vessel ID as factor variables
 
 <!---
 - If these are transactions (trip/subtrip) with true value, this is fine.
@@ -237,23 +246,18 @@ as factor variables
 ---
 # Machine Learning with Random Forest
 
-- Catch Accounting and Monitoring System (CAMS)
-
-- Each row is a stockarea-gear allocated landings at the vessel-dealer-market category level
-
---
-
-- Set aside 20% of our data (2015-2024) for validation
-
-- Tune (*mtry*) and train a Random Forest on 80% of our data  
-
-- 10-fold cross validation to find optimal *mtry*
+- Tune (*mtry*) and train a Random Forest on 80% of our data  (2015-2024)
+  - Mean log loss as the criteria function. 
+  - Very loosely, $Loss=I(Class) - \hat{P}(Class)$ 
+  
+- 10-fold cross validation $^{2}$ to find optimal *mtry* hyperparameters
   - Grouped on dealer ID so all of a dealer's observations are in exactly 1 fold
   - Avoid overfitting or over-optimism
   
--  Frequency Weight observations : Landed Pounds
+-  Frequency weight observations : Landed Pounds
 
-  
+.footnote[[2] $k$-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
+
 ---
 # Predictors:
 
@@ -281,17 +285,6 @@ Continuous:
   - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
 
 ]   
-<!---
-keep_cols<-c("market_desc","dlrid","camsid","weighting", "mygear","price","priceR_CPI", "stockarea","state", "year","month", "semester","lndlb", "grade_desc", "trip_level_BSB")
-keep_cols<-c(keep_cols,"StateOtherQJumbo", "StateOtherQLarge", "StateOtherQMedium", "StateOtherQSmall" )
-keep_cols<-c(keep_cols,"StockareaOtherQJumbo", "StockareaOtherQLarge", "StockareaOtherQMedium", "StockareaOtherQSmall" )
-keep_cols<-c(keep_cols,"MA7_StockareaQJumbo", "MA7_StockareaQLarge", "MA7_StockareaQMedium", "MA7_StockareaQSmall" )
-keep_cols<-c(keep_cols,"MA7_StateQJumbo", "MA7_StateQLarge","MA7_StateQMedium", "MA7_StateQSmall")
-keep_cols<-c(keep_cols,"MA7_stockarea_trips", "MA7_state_trips" )
-keep_cols<-c(keep_cols,"Share2014Jumbo", "Share2014Large", "Share2014Medium","Share2014Small", "Share2014Unclassified" )
-keep_cols<-c(keep_cols,"TransactionCountJumbo", "TransactionCountLarge", "TransactionCountMedium", "TransactionCountSmall", "TransactionCountUnclassified" )
---->
-
 
 ---
 # Model Tuning Results
@@ -310,13 +303,13 @@ We use mean log-loss to select optimal *mtry.*
 ]
 
 ---
-# Out of Sample Prediction
+# Validation
 .pull-left[
 <img src="./20250417_EconomicInformedStockAssessments/images/roc_standard2025-04-04.png" alt="ROC curve" width="auto" height="500"  />
 ]
 
 .pull-right[
-Receiver-Operator Curve for our validation. We trained the model on 80%, and then predict on the 20% hold out sample.
+Receiver-Operator Curve for our model. We trained the model on 80%, and then predict on the 20% hold out sample.
 
 Haven't gotten to the "confusion" matrix or weighted predictions yet.
 
@@ -333,14 +326,24 @@ Not done yet
 ---
 # Extensions
 .pull-left[
-- Collecting length and age information is costly.  Is trying to collect this information for all market categories the most efficient use of our resources?
+  - Should we collect age and length data for all
+market catgories?
+
 - Can we modify the way lengths have been borrowed?
-- Can we apply these methods to other stocks?  Which stocks?
-- If it works well, can port sampling effort be re-deployed away from categories that are hard to get?
+
+- Can we apply these methods to other stocks? 
 ]
 
 .pull-right[
 ]<img src="./20250417_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_pct.jpg" alt="Proportion of 'borrowed' age-length data" height="500" width="500"  />
+
+
+---
+# Further Reading
+
+-  Machine Learning for Economists: `r Citet(myBib, c("Varian2014","Athey2017", "Storm2020"))`
+
+-  Machine Learning:  `r Citet(myBib, c("Breiman1984", "Breiman2001", "Hastie2009","Kuhn2013a", "Bates2024"))` 
 
 
 ---
