@@ -111,7 +111,6 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 
 # Acknowledgements
 .pull-left[
-** Thank you to** 
 - Jennifer Dopkowski (OAR - Climate Program Office)
 - Brian Linton (NEFSC)
 - Scott Steinback (NEFSC)
