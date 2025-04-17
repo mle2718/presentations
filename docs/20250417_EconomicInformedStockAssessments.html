@@ -74,10 +74,11 @@ in-line cite with:
 - Jennifer Dopkowski (OAR - Climate Program Office)
 - Brian Linton (NEFSC)
 - Scott Steinback (NEFSC)
+- Geret DePiper (NEFSC)
 ]
 
 .pull-right[
-&lt;img src="./20250417_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="Sam, doubled up on her first black sea bass" height="500" width="auto"  /&gt;
+&lt;img src="./20250417_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="The first author's daughter, Sam, doubled up on black sea bass on Scott's boat in 2024." height="450" width="auto"  /&gt; 
 ]
 
 
@@ -92,7 +93,7 @@ in-line cite with:
 - Dealers 
     - Sort catch into market categories, 
     - Pay the vessel,
-    - Report sales info to NOAA Fisheries,
+    - Report weight, value, vessel id, trip identifier to NOAA Fisheries,
     - Sell to downstream customers
 
 --
@@ -111,7 +112,7 @@ in-line cite with:
 # Research Question and Motivation
 
 ## Research Question
-Can we use prices to say something interesting about the size of Unclassified Black Sea Bass? 
+Can we use prices to infer the size of Unclassified Black Sea Bass? 
 
 --
 **Yes we can**.
@@ -128,20 +129,17 @@ market catgories?
 
 
 ---
-# Background II - Scallops and Prices
-
-Price Depends on Size, scallops &lt;a name=cite-Ardini2018&gt;&lt;/a&gt;([Ardini et al., 2018](https://doi.org/10.1086/698199)) are a nice example `\(^{1}\)`:
-
-&lt;img src="./20250417_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/&gt;
-
-
-.footnote[[1] Other examples include &lt;a name=cite-McConnell2000&gt;&lt;/a&gt;&lt;a name=cite-Kristofersson2007&gt;&lt;/a&gt;&lt;a name=cite-Hammarlund2015&gt;&lt;/a&gt;[Mcconnell et al. (2000)](#bib-McConnell2000); [Kristofersson et al. (2007)](https://doi.org/10.1111/j.1468-0084.2006.00441.x); [Hammarlund (2015)](#bib-Hammarlund2015) ]
-
----
 # Preliminaries I
 
-1. Exploratory data analysis step: Do prices vary by size? 
-  - Estimate a hedonic model: the price per pound is a function of the transaction level attributes, like market category, gear, and time of year
+Exploratory data analysis step: Do prices vary by size? Estimate a simple hedonic model, the price of a pound of fish is a function of:
+
+- market category, 
+- gear,
+- time of year,
+- lots of other factors.
+
+
+.footnote[Hedonic models: &lt;a name=cite-McConnell2000&gt;&lt;/a&gt;&lt;a name=cite-Kristofersson2007&gt;&lt;/a&gt;&lt;a name=cite-Hammarlund2015&gt;&lt;/a&gt;&lt;a name=cite-Ardini2018&gt;&lt;/a&gt;[Mcconnell et al. (2000)](#bib-McConnell2000); [Kristofersson et al. (2007)](https://doi.org/10.1111/j.1468-0084.2006.00441.x); [Hammarlund (2015)](#bib-Hammarlund2015); [Ardini et al. (2018)](https://doi.org/10.1086/698199) ]
 
 ---
 # Preliminaries II
@@ -162,9 +160,6 @@ Price Depends on Size, scallops &lt;a name=cite-Ardini2018&gt;&lt;/a&gt;([Ardini
 | Unclassified           | 4.397***   | 4.460***   |
 |                        | (0.001)    | (0.017)    |
 |                        |            |            |
-| Live                   | 0.164***   | 0.237***   |
-|                        | (0.002)    | (0.014)    |
-|                        |            |            |
 | R-squared              | 0.907      | 0.924      |
 |                        |            |            |
 | Number of observations | 29,195,457 | 360,159    |
@@ -173,10 +168,18 @@ Price Depends on Size, scallops &lt;a name=cite-Ardini2018&gt;&lt;/a&gt;([Ardini
 ---
 # Methods Overview I
 
-- Train a random forest classification model &lt;a name=cite-Breiman2001&gt;&lt;/a&gt;([Breiman, 2001](#bib-Breiman2001)) using transaction-level data `\(^{2}\)`
+- Train a random forest classification model &lt;a name=cite-Breiman2001&gt;&lt;/a&gt;([Breiman, 2001](#bib-Breiman2001)) using transaction-level data
 on the four principle classes (`\(c=\)`Jumbo, Large, Medium, Small) 
 
-.footnote[[2] GARFO's Catch Accounting and Monitoring System (CAMS): stockarea-gear allocated landings at the vessel-dealer-market category level]
+
+.footnote[
+
+Data comes from GARFO's Catch Accounting and Monitoring System (CAMS): stockarea-gear allocated landings at the vessel-dealer-market category level
+
+Random Forests are "bootstraps" of classification trees, where a subset of explanatory factors are used in each bootstrap.
+
+Classification trees perform recursive binary splitting.  The dependent variable is repeatedly partitioned into two groups based on a single explanatory variable based on minimizing within group variation.
+]
 
   - **Tune** and **train** with a `\(k-\)`fold cross-validation
   - **Validate** on a hold-out sample
@@ -190,13 +193,14 @@ on the four principle classes (`\(c=\)`Jumbo, Large, Medium, Small)
 
 - Use the results to construct a new length distribution of the landed black sea bass
 
+
 ---
 # Assumptions, Potential Problems, and Some solutions
 
 Assumption 1 -  Out-of-sample prediction is valid
   
   - Unclassified fish are the same as classified fish, we just don't observe their class
-  - .gray[Concern: There are some transactions by non-federally permitted vessels]
+  - Concern: There are some transactions by non-federally permitted vessels
 
 --
 
@@ -205,8 +209,8 @@ Assumption 2 - Dealers have diverse but persistent tendencies in terms of how th
   - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
   - Example 2: Dealer C only grades into "Large" or "Small"
   - Dealer ID should go into the model as a factor variable
-      - Implications for Tuning and training: do a "group" split and `\(k-\)`fold 
       - Modified "target encoding" instead of "one-hot"
+      - Implications for Tuning and training: do a "group" split and `\(k-\)`fold  &lt;a name=cite-Strobl2007&gt;&lt;/a&gt;([Strobl et al., 2007](https://doi.org/10.1186/1471-2105-8-25))
 
 --
 
@@ -228,17 +232,19 @@ Assumption 3 -  Fishing vessels have similar tendencies to dealers
   - Mean log loss as the criteria function. 
   - Very loosely, `\(Loss=I(Class) - \hat{P}(Class)\)` 
   
-- 10-fold cross validation `\(^{2}\)` to find optimal *mtry* hyperparameters
+- 10-fold cross validation to find optimal *mtry* hyperparameter
   - Grouped on dealer ID so all of a dealer's observations are in exactly 1 fold
   - Avoid overfitting or over-optimism
   
 -  Frequency weight observations : Landed Pounds
 
-.footnote[[2] `\(k\)`-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
+.footnote[
+mtry: The number of randomly selected parameters that go into the Classification Tree.
+
+k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
 
 ---
 # Predictors:
-
 .pull-left[
 Factor Variables:
 
@@ -263,6 +269,9 @@ Continuous:
   - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
 
 ]   
+
+&gt; Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. &lt;a name=cite-Mullainathan2017&gt;&lt;/a&gt;([Mullainathan et al., 2017](https://doi.org/10.1257/jep.31.2.87))
+
 
 ---
 # Model Tuning Results
@@ -319,11 +328,11 @@ market catgories?
 ---
 # Further Reading
 
--  Machine Learning for Economists: &lt;a name=cite-Varian2014&gt;&lt;/a&gt;&lt;a name=cite-Athey2017&gt;&lt;/a&gt;&lt;a name=cite-Storm2020&gt;&lt;/a&gt;[Varian (2014)](https://doi.org/10.1257/jep.28.2.3); [Athey et al. (2017)](https://doi.org/10.1257/jep.31.2.3); [Storm et al. (2020)](https://doi.org/10.1093/erae/jbz033)
+-  Machine Learning for Economists: &lt;a name=cite-Varian2014&gt;&lt;/a&gt;&lt;a name=cite-Athey2019&gt;&lt;/a&gt;&lt;a name=cite-Storm2020&gt;&lt;/a&gt;[Varian (2014)](https://doi.org/10.1257/jep.28.2.3); [Mullainathan et al. (2017)](https://doi.org/10.1257/jep.31.2.87); [Athey et al. (2019)](https://doi.org/10.1146/annurev-economics-080217-053433); [Storm et al. (2020)](https://doi.org/10.1093/erae/jbz033)
 
 -  Machine Learning:  &lt;a name=cite-Breiman1984&gt;&lt;/a&gt;&lt;a name=cite-Hastie2009&gt;&lt;/a&gt;&lt;a name=cite-Kuhn2013a&gt;&lt;/a&gt;&lt;a name=cite-Bates2024&gt;&lt;/a&gt;[Breiman et al. (1984)](https://doi.org/https://doi.org/10.1201/9781315139470); [Breiman (2001)](#bib-Breiman2001); [Hastie et al. (2013)](https://doi.org/10.1111/j.1532-5415.1984.tb02220.x); [Kuhn et al. (2024)](http://appliedpredictivemodeling.com/s/Applied_Predictive_Modeling_in_R.pdf); [Bates et al. (1984)](https://doi.org/10.1080/01621459.2023.2197686) 
 
-
+- http://www.tidymodels.org/
 ---
 # References
 .contrib[
@@ -332,12 +341,11 @@ market catgories?
 and Size?". In: _Marine Resource Economics_ 33.3, pp. 263-288. DOI:
 [10.1086/698199](https://doi.org/10.1086%2F698199).
 
-&lt;a name=bib-Athey2017&gt;&lt;/a&gt;[Athey, S. and G. W. Imbens](#cite-Athey2017)
-(2017). "The state of applied econometrics: Causality and policy
-evaluation". In: _Journal of Economic Perspectives_ 31.2, pp. 3-32.
-ISSN: 08953309. DOI:
-[10.1257/jep.31.2.3](https://doi.org/10.1257%2Fjep.31.2.3). eprint:
-1607.00699.
+&lt;a name=bib-Athey2019&gt;&lt;/a&gt;[Athey, S. and G. W. Imbens](#cite-Athey2019)
+(2019). "Machine Learning Methods That Economists Should Know about".
+In: _Annual Review of Economics_ 11, pp. 685-725. ISSN: 19411391. DOI:
+[10.1146/annurev-economics-080217-053433](https://doi.org/10.1146%2Fannurev-economics-080217-053433).
+eprint: 1903.10075.
 
 &lt;a name=bib-Bates2024&gt;&lt;/a&gt;[Bates, S., T. Hastie, and R.
 Tibshirani](#cite-Bates2024) (2024). "Cross-Validation: What Does It
@@ -380,11 +388,23 @@ Strand](#cite-McConnell2000) (2000). "Hedonic Prices for Fish: Tuna
 Prices in Hawaii". In: _American Journal of Agricultural Economics_
 82.1, pp. 133-144.
 
+&lt;a name=bib-Mullainathan2017&gt;&lt;/a&gt;[Mullainathan, S. and J.
+Spiess](#cite-Mullainathan2017) (2017). "Machine learning: An applied
+econometric approach". In: _Journal of Economic Perspectives_ 31.2, pp.
+87-106. ISSN: 08953309. DOI:
+[10.1257/jep.31.2.87](https://doi.org/10.1257%2Fjep.31.2.87).
+
 &lt;a name=bib-Storm2020&gt;&lt;/a&gt;[Storm, H., K. Baylis, and T.
 Heckelei](#cite-Storm2020) (2020). "Machine learning in agricultural
 and applied economics". In: _European Review of Agricultural Economics_
 47.3, pp. 849-892. ISSN: 14643618. DOI:
 [10.1093/erae/jbz033](https://doi.org/10.1093%2Ferae%2Fjbz033).
+
+&lt;a name=bib-Strobl2007&gt;&lt;/a&gt;[Strobl, C., A. L. Boulesteix, A. Zeileis,
+et al.](#cite-Strobl2007) (2007). "Bias in random forest variable
+importance measures: Illustrations, sources and a solution". In: _BMC
+Bioinformatics_ 8. ISSN: 14712105. DOI:
+[10.1186/1471-2105-8-25](https://doi.org/10.1186%2F1471-2105-8-25).
 
 &lt;a name=bib-Varian2014&gt;&lt;/a&gt;[Varian, H. R.](#cite-Varian2014) (2014).
 "Big data: New tricks for econometrics". In: _Journal of Economic
