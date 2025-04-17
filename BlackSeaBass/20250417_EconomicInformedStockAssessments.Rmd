@@ -115,10 +115,11 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 - Jennifer Dopkowski (OAR - Climate Program Office)
 - Brian Linton (NEFSC)
 - Scott Steinback (NEFSC)
+- Geret DePiper (NEFSC)
 ]
 
 .pull-right[
-<img src="./20250417_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="Sam, doubled up on her first black sea bass" height="500" width="auto"  />
+<img src="./20250417_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="The first author's daughter, Sam, doubled up on black sea bass on Scott's boat in 2024." height="450" width="auto"  /> 
 ]
 
 
@@ -133,7 +134,7 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 - Dealers 
     - Sort catch into market categories, 
     - Pay the vessel,
-    - Report sales info to NOAA Fisheries,
+    - Report weight, value, vessel id, trip identifier to NOAA Fisheries,
     - Sell to downstream customers
 
 --
@@ -152,7 +153,7 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 # Research Question and Motivation
 
 ## Research Question
-Can we use prices to say something interesting about the size of Unclassified Black Sea Bass? 
+Can we use prices to infer the size of Unclassified Black Sea Bass? 
 
 --
 **Yes we can**.
@@ -169,20 +170,17 @@ market catgories?
 
 
 ---
-# Background II - Scallops and Prices
-
-Price Depends on Size, scallops `r Cite(myBib, "Ardini2018")` are a nice example $^{1}$:
-
-<img src="./20250417_EconomicInformedStockAssessments/images/mfx_myspp_fy.png" alt="Average Discrete Premia (lines) and 90% Confidence Intervals (ranges) Relative to the 11–20 Scallop Size Class for the other Four Size Classes" width="auto" height="400"/>
-
-
-.footnote[[1] Other examples include `r Citet(myBib, c("McConnell2000","Kristofersson2007", "Hammarlund2015"))` ]
-
----
 # Preliminaries I
 
-1. Exploratory data analysis step: Do prices vary by size? 
-  - Estimate a hedonic model: the price per pound is a function of the transaction level attributes, like market category, gear, and time of year
+Exploratory data analysis step: Do prices vary by size? Estimate a simple hedonic model, the price of a pound of fish is a function of:
+
+- market category, 
+- gear,
+- time of year,
+- lots of other factors.
+
+
+.footnote[Hedonic models: `r Citet(myBib, c("McConnell2000","Kristofersson2007", "Hammarlund2015", "Ardini2018"))` ]
 
 ---
 # Preliminaries II
@@ -195,10 +193,18 @@ Price Depends on Size, scallops `r Cite(myBib, "Ardini2018")` are a nice example
 ---
 # Methods Overview I
 
-- Train a random forest classification model `r Cite(myBib, "Breiman2001")` using transaction-level data $^{2}$
+- Train a random forest classification model `r Cite(myBib, "Breiman2001")` using transaction-level data
 on the four principle classes ($c=$Jumbo, Large, Medium, Small) 
 
-.footnote[[2] GARFO's Catch Accounting and Monitoring System (CAMS): stockarea-gear allocated landings at the vessel-dealer-market category level]
+
+.footnote[
+
+Data comes from GARFO's Catch Accounting and Monitoring System (CAMS): stockarea-gear allocated landings at the vessel-dealer-market category level
+
+Random Forests are "bootstraps" of classification trees, where a subset of explanatory factors are used in each bootstrap.
+
+Classification trees perform recursive binary splitting.  The dependent variable is repeatedly partitioned into two groups based on a single explanatory variable based on minimizing within group variation.
+]
 
   - **Tune** and **train** with a $k-$fold cross-validation
   - **Validate** on a hold-out sample
@@ -212,13 +218,14 @@ on the four principle classes ($c=$Jumbo, Large, Medium, Small)
 
 - Use the results to construct a new length distribution of the landed black sea bass
 
+
 ---
 # Assumptions, Potential Problems, and Some solutions
 
 Assumption 1 -  Out-of-sample prediction is valid
   
   - Unclassified fish are the same as classified fish, we just don't observe their class
-  - .gray[Concern: There are some transactions by non-federally permitted vessels]
+  - Concern: There are some transactions by non-federally permitted vessels
 
 --
 
@@ -227,8 +234,8 @@ Assumption 2 - Dealers have diverse but persistent tendencies in terms of how th
   - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
   - Example 2: Dealer C only grades into "Large" or "Small"
   - Dealer ID should go into the model as a factor variable
-      - Implications for Tuning and training: do a "group" split and $k-$fold 
       - Modified "target encoding" instead of "one-hot"
+      - Implications for Tuning and training: do a "group" split and $k-$fold  `r Cite(myBib, "Strobl2007")`
 
 --
 
@@ -250,17 +257,19 @@ Assumption 3 -  Fishing vessels have similar tendencies to dealers
   - Mean log loss as the criteria function. 
   - Very loosely, $Loss=I(Class) - \hat{P}(Class)$ 
   
-- 10-fold cross validation $^{2}$ to find optimal *mtry* hyperparameters
+- 10-fold cross validation to find optimal *mtry* hyperparameter
   - Grouped on dealer ID so all of a dealer's observations are in exactly 1 fold
   - Avoid overfitting or over-optimism
   
 -  Frequency weight observations : Landed Pounds
 
-.footnote[[2] $k$-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
+.footnote[
+mtry: The number of randomly selected parameters that go into the Classification Tree.
+
+k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
 
 ---
 # Predictors:
-
 .pull-left[
 Factor Variables:
 
@@ -283,8 +292,10 @@ Continuous:
       - Stock area landings by market cat on other trips*
       - 7 day moving average landings by market category
   - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
-
 ]   
+
+> Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. `r Cite(myBib, "Mullainathan2017")`
+
 
 ---
 # Model Tuning Results
@@ -341,11 +352,11 @@ market catgories?
 ---
 # Further Reading
 
--  Machine Learning for Economists: `r Citet(myBib, c("Varian2014","Athey2017", "Storm2020"))`
+-  Machine Learning for Economists: `r Citet(myBib, c("Varian2014","Mullainathan2017","Athey2019", "Storm2020"))`
 
 -  Machine Learning:  `r Citet(myBib, c("Breiman1984", "Breiman2001", "Hastie2009","Kuhn2013a", "Bates2024"))` 
 
-
+- http://www.tidymodels.org/
 ---
 # References
 .contrib[

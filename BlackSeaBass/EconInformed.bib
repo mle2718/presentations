@@ -125,22 +125,22 @@ volume = {26},
 year = {2013}
 }
 
-@article{Athey2017,
+
+@article{Athey2019,
+abstract = {We discuss the relevance of the recent machine learning (ML) literature for economics and econometrics. First we discuss the differences in goals, methods, and settings between the ML literature and the traditional econometrics and statistics literatures. Then we discuss some specific methods from the ML literature that we view as important for empirical researchers in economics. These include supervised learning methods for regression and classification, unsupervised learning methods, and matrix completion methods. Finally, we highlight newly developed methods at the intersection of ML and econometrics that typically perform better than either off-the-shelf ML or more traditional econometric methods when applied to particular classes of problems, including causal inference for average treatment effects, optimal policy estimation, and estimation of the counterfactual effect of price changes in consumer choice models.},
 archivePrefix = {arXiv},
-arxivId = {1607.00699},
+arxivId = {1903.10075},
 author = {Athey, Susan and Imbens, Guido W.},
-doi = {10.1257/jep.31.2.3},
-eprint = {1607.00699},
-issn = {08953309},
-journal = {Journal of Economic Perspectives},
-number = {2},
-pages = {3--32},
-title = {{The state of applied econometrics: Causality and policy evaluation}},
-volume = {31},
-year = {2017}
+doi = {10.1146/annurev-economics-080217-053433},
+eprint = {1903.10075},
+issn = {19411391},
+journal = {Annual Review of Economics},
+keywords = {causal inference,econometrics,machine learning},
+pages = {685--725},
+title = {{Machine Learning Methods That Economists Should Know about}},
+volume = {11},
+year = {2019}
 }
-
-
 @article{Storm2020,
 abstract = {This review presents machine learning (ML) approaches from an applied economist's perspective. We first introduce the key ML methods drawing connections to econometric practice. We then identify current limitations of the econometric and simulation model toolbox in applied economics and explore potential solutions afforded by ML. We dive into cases such as inflexible functional forms, unstructured data sources and large numbers of explanatory variables in both prediction and causal analysis, and highlight the challenges of complex simulation models. Finally, we argue that economists have a vital role in addressing the shortcomings of ML when used for quantitative economic analysis.},
 author = {Storm, Hugo and Baylis, Kathy and Heckelei, Thomas},
@@ -153,4 +153,31 @@ pages = {849--892},
 title = {{Machine learning in agricultural and applied economics}},
 volume = {47},
 year = {2020}
+}
+
+
+
+@article{Strobl2007,
+abstract = {Background: Variable importance measures for random forests have been receiving increased attention as a means of variable selection in many classification tasks in bioinformatics and related scientific fields, for instance to select a subset of genetic markers relevant for the prediction of a certain disease. We show that random forest variable importance measures are a sensible means for variable selection in many applications, but are not reliable in situations where potential predictor variables vary in their scale of measurement or their number of categories. This is particularly important in genomics and computational biology, where predictors often include variables of different types, for example when predictors include both sequence data and continuous variables such as folding energy, or when amino acid sequence data show different numbers of categories. Results: Simulation studies are presented illustrating that, when random forest variable importance measures are used with data of varying types, the results are misleading because suboptimal predictor variables may be artificially preferred in variable selection. The two mechanisms underlying this deficiency are biased variable selection in the individual classification trees used to build the random forest on one hand, and effects induced by bootstrap sampling with replacement on the other hand. Conclusion: We propose to employ an alternative implementation of random forests, that provides unbiased variable selection in the individual classification trees. When this method is applied using subsampling without replacement, the resulting variable importance measures can be used reliably for variable selection even in situations where the potential predictor variables vary in their scale of measurement or their number of categories. The usage of both random forest algorithms and their variable importance measures in the R system for statistical computing is illustrated and documented thoroughly in an application re-analyzing data from a study on RNA editing. Therefore the suggested method can be applied straightforwardly by scientists in bioinformatics research. {\textcopyright} 2007 Strobl et al; licensee BioMed Central Ltd.},
+author = {Strobl, Carolin and Boulesteix, Anne Laure and Zeileis, Achim and Hothorn, Torsten},
+doi = {10.1186/1471-2105-8-25},
+issn = {14712105},
+journal = {BMC Bioinformatics},
+pmid = {17254353},
+title = {{Bias in random forest variable importance measures: Illustrations, sources and a solution}},
+volume = {8},
+year = {2007}
+}
+
+
+@article{Mullainathan2017,
+author = {Mullainathan, Sendhil and Spiess, Jann},
+doi = {10.1257/jep.31.2.87},
+issn = {08953309},
+journal = {Journal of Economic Perspectives},
+number = {2},
+pages = {87--106},
+title = {{Machine learning: An applied econometric approach}},
+volume = {31},
+year = {2017}
 }
