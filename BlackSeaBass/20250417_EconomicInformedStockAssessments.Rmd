@@ -170,9 +170,9 @@ market catgories?
 
 
 ---
-# Preliminaries I
+# An Exploratory hedonic model 
 
-Exploratory data analysis step: Do prices vary by size? Estimate a simple hedonic model, the price of a pound of fish is a function of:
+We estimate a simple hedonic model where the price of a pound of fish is a function of:
 
 - market category, 
 - gear,
@@ -220,7 +220,7 @@ Classification trees perform recursive binary splitting.  The dependent variable
 
 
 ---
-# Assumptions, Potential Problems, and Some solutions
+# Assumptions, Potential Problems, and Some Solutions
 
 Assumption 1 -  Out-of-sample prediction is valid
   
@@ -234,8 +234,8 @@ Assumption 2 - Dealers have diverse but persistent tendencies in terms of how th
   - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
   - Example 2: Dealer C only grades into "Large" or "Small"
   - Dealer ID should go into the model as a factor variable
-      - Modified "target encoding" instead of "one-hot"
-      - Implications for Tuning and training: do a "group" split and $k-$fold  `r Cite(myBib, "Strobl2007")`
+      - Modified "target encoding" instead of "one-hot"  `r Cite(myBib, "Strobl2007")`
+      - Implications for Tuning and training: do a "group" split and $k-$fold 
 
 --
 
@@ -254,7 +254,7 @@ Assumption 3 -  Fishing vessels have similar tendencies to dealers
 # Machine Learning with Random Forest
 
 - Tune (*mtry*) and train a Random Forest on 80% of our data  (2015-2024)
-  - Mean log loss as the criteria function. 
+  - Mean log loss as the criteria function
   - Very loosely, $Loss=I(Class) - \hat{P}(Class)$ 
   
 - 10-fold cross validation to find optimal *mtry* hyperparameter
@@ -264,12 +264,15 @@ Assumption 3 -  Fishing vessels have similar tendencies to dealers
 -  Frequency weight observations : Landed Pounds
 
 .footnote[
-mtry: The number of randomly selected parameters that go into the Classification Tree.
+mtry: The number of randomly selected predictors that go into the Classification Tree.
 
 k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
 
 ---
 # Predictors
+
+Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. `r Cite(myBib, "Mullainathan2017")`
+
 .pull-left[
 Factor Variables:
 
@@ -294,7 +297,6 @@ Continuous:
   - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
 ]   
 
-> Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. `r Cite(myBib, "Mullainathan2017")`
 
 
 ---
