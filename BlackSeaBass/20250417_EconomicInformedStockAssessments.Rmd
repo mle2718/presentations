@@ -269,7 +269,7 @@ mtry: The number of randomly selected parameters that go into the Classification
 k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
 
 ---
-# Predictors:
+# Predictors
 .pull-left[
 Factor Variables:
 
