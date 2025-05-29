@@ -110,10 +110,12 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 - Brian Linton (NEFSC)
 - Scott Steinback (NEFSC)
 - Geret DePiper (NEFSC)
+
 ]
 
 .pull-right[
-<img src="./20250612_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="The first author's daughter, Sam, doubled up on black sea bass on Scott's boat in 2024." height="450" width="auto"  /> 
+<img src="./20250612_EconomicInformedStockAssessments/images/black_sea_bass2.jpg" alt="The first author's daughter, Caroline, with a on black sea bass and sea robin on Scott's boat in 2025." height="300" width="auto"  /> 
+<img src="./20250612_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="The first author's daughter, Sam, doubled up on black sea bass on Scott's boat in 2024." height="300" width="auto"  /> 
 ]
 
 
@@ -122,13 +124,11 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 
 - Fishing vessels catch black sea bass
 
-- Fishing vessels transfer their catch to dealers
-
 --
 - Dealers 
-    - Sort catch into market categories, 
-    - Pay the vessel,
-    - Report weight, value, vessel id, trip identifier to NOAA Fisheries,
+    - Sort catch into market categories
+    - Pay the vessel
+    - Report weight, value, vessel id, trip identifier to NOAA Fisheries
     - Sell to downstream customers
 
 --
@@ -162,34 +162,22 @@ Can we use prices to infer the size of Unclassified Black Sea Bass?
 - Collecting length and age information is costly.  Should we collect it for all
 market catgories?
 
+---
+# Market Categories: Lengths and Prices
+
+.pull-left[
+<img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_categories.png" alt="Length Frequencies by Market Category, 1997-2023" width="auto" height="500"  />
+]
+
+.pull-right[
+<img src="./20250612_EconomicInformedStockAssessments/images/wprice_histograms.png" alt="Prices by Market Category, 2010-2024" width="auto" height="500"  />
+]
 
 ---
-# An Exploratory hedonic model 
 
-We estimate a simple hedonic model where the price of a pound of fish is a function of:
-
-- market category, 
-- gear,
-- time of year,
-- lots of other factors.
-
-
-.footnote[Hedonic models: `r Citet(myBib, c("McConnell2000","Kristofersson2007", "Hammarlund2015", "Ardini2018"))` ]
-
----
-# Preliminaries II
-<!---- Not shown are the effects of factor variables for gear,  state, calendar year, and month.
-- Not show are the effects of total landings and total landings$^2$.
---->
-```{r child=here("BlackSeaBass","20250612_EconomicInformedStockAssessments","results","hedonic_table_market_cats.md")}
-```
-
----
 # Methods Overview I
 
-- Train a random forest classification model `r Cite(myBib, "Breiman2001")` using transaction-level data
-on the four principle classes ($c=$Jumbo, Large, Medium, Small) 
-
+- Train a random forest classification model `r Cite(myBib, "Breiman2001")` using transaction-level data.  Predict whether an observation is Jumbo, Large, Medium, or Small.
 
 .footnote[
 
@@ -223,17 +211,16 @@ Assumption 1 -  Out-of-sample prediction is valid
 
 --
 
-Assumption 2 - Dealers have diverse but persistent tendencies in terms of how they classify fish
+Assumption 2 - Dealers have persistent tendencies in terms of how they classify fish
 
   - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
   - Example 2: Dealer C only grades into "Large" or "Small"
   - Dealer ID should go into the model as a factor variable
       - Modified "target encoding" instead of "one-hot"  `r Cite(myBib, "Strobl2007")`
-      - Implications for Tuning and training: do a "group" split and $k-$fold 
 
 --
 
-Assumption 3 -  Fishing vessels have similar tendencies to dealers
+Assumption 3 -  Fishing vessels also have these tendencies 
 
   - Fishing vessels do not perform the classification, therefore
   - We should **not** include vessel ID as factor variables
@@ -247,20 +234,18 @@ Assumption 3 -  Fishing vessels have similar tendencies to dealers
 ---
 # Machine Learning with Random Forest
 
-- Tune (*mtry*) and train a Random Forest on 80% of our data  (2015-2024)
-  - Mean log loss as the criteria function
-  - Very loosely, $Loss=I(Class) - \hat{P}(Class)$ 
+- Tune (select *mtry*)  train a Random Forest on 90% of our data  (2015-2024)
+  - Brier classification as the criteria function
+  - Very loosely, $Brier=I(Class) - \hat{P}(Class)$   Need to fix
   
 - 10-fold cross validation to find optimal *mtry* hyperparameter
-  - Grouped on dealer ID so all of a dealer's observations are in exactly 1 fold
-  - Avoid overfitting or over-optimism
-  
+
 -  Frequency weight observations : Landed Pounds
 
 .footnote[
 mtry: The number of randomly selected predictors that go into the Classification Tree.
 
-k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute mean log-loss.  Repeat.]
+k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute Brier classification score.  Repeat.]
 
 ---
 # Predictors
@@ -292,31 +277,20 @@ Continuous:
 ]   
 
 
-
----
-# Model Tuning Results
-
-We use mean log-loss to select optimal *mtry.*
-
-.center[
-<img src="./20250612_EconomicInformedStockAssessments/images/mn_log_lossstandard2025-04-04.png" alt="Multinomial Log-loss Classification Metric (Low is good)" width="auto" height="500"  />
-]
-
-
 ---
 # Variable Importance
 .center[
-<img src="./20250612_EconomicInformedStockAssessments/images/vipstandard2025-04-04.png" alt="Variable Importance Plots" width="auto" height="500"  />
+<img src="./20250612_EconomicInformedStockAssessments/images/vipnocluster2025-05-24.png" alt="Variable Importance Plots" width="auto" height="500"  />
 ]
 
 ---
 # Validation
 .pull-left[
-<img src="./20250612_EconomicInformedStockAssessments/images/roc_standard2025-04-04.png" alt="ROC curve" width="auto" height="500"  />
+<img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="600"  />
 ]
 
 .pull-right[
-Receiver-Operator Curve for our model. We trained the model on 80%, and then predict on the 20% hold out sample.
+Receiver-Operator Curve for our 10% validation hold out sample.
 
 Haven't gotten to the "confusion" matrix or weighted predictions yet.
 
