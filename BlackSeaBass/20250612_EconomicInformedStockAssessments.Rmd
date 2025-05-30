@@ -59,6 +59,14 @@ here::i_am("BlackSeaBass/20250612_EconomicInformedStockAssessments.Rmd")
 imagefolder<-"20250612_EconomicInformedStockAssessments"
 imagefolder<-here("BlackSeaBass","20250612_EconomicInformedStockAssessments")
 
+
+nocluster_testing_predictions<-readRDS(here("BlackSeaBass","20250612_EconomicInformedStockAssessments","data","aggregate_test_predictions_nocluster2025-05-24.Rds"))
+
+nocluster_full_predictions<-readRDS(here("BlackSeaBass","20250612_EconomicInformedStockAssessments","data","aggregate_full_predictions_nocluster2025-05-24.Rds"))
+
+aggregate_oos_predictions<-readRDS(here("BlackSeaBass","20250612_EconomicInformedStockAssessments","data","aggregate_oos_predictions_nocluster2025-05-24.Rds"))
+
+
 ```
 
 ```{r, load_refs,include=FALSE, cache=FALSE}
@@ -174,7 +182,7 @@ market categories?
 
 # Methods Overview I
 
-- Train a random forest classification model `r Cite(myBib, "Breiman2001")` using transaction-level data.  Predict whether an observation is Jumbo, Large, Medium, or Small.
+- Train a random forest classification model using transaction-level data  `r Cite(myBib, "Breiman2001")`.  Predict whether an observation is Jumbo, Large, Medium, or Small.
 
 .footnote[
 
@@ -282,18 +290,110 @@ Economic theory and content expertise play a crucial role in guiding where the a
 
 ---
 # Validation
-.center[
-<img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="500"  />
+.pull-left[
+<img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="400"  />
+Receiver Operating Characteristic Curve for our 10% validation hold out sample.
+]
+.pull-right[
+
+* Looks really good.  Too good?
+* True positive rate (vertical) vs false positive rate (horizontal) for every possible probability cutoff.
+
 ]
 
-Receiver-Operator Curve for our 10% validation hold out sample.
 
 ---
+# Validation II 
+
+```{r nocluster_predictions}
+testing_predictions<-nocluster_testing_predictions %>%
+  group_by(stockarea,market_desc) %>%
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small,lndlb), sum))%>%
+   mutate(across(where(is.numeric), round, 0))%>%
+  rename(true_pounds=lndlb)
+
+  
+
+true<-nocluster_testing_predictions %>%
+  mutate(market_desc=as.character(market_desc))%>%
+    group_by(stockarea,market_desc) %>%
+    summarise(across(c(true_pounds), sum)) 
+
+p1<-nocluster_testing_predictions %>%
+  group_by(stockarea) %>%
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
+
+p2<-p1 %>%
+  pivot_longer(cols=!stockarea, names_to="market_desc", names_prefix="pred_",values_to="predicted") 
+  
+
+mkt_preds<-p2 %>%
+  left_join(true, by=join_by(stockarea==stockarea, market_desc==market_desc))
+
+knitr::kable(mkt_preds, caption='Predictions on the holdout sample',format.args = list(big.mark = ","), digits=0)  
+```
+
+
+
+
 #  Predictions
 
-Not done yet
- 
+
+```{r nocluster_full_predictions}
+full_predictions<-nocluster_full_predictions %>%
+  group_by(stockarea,market_desc) %>%
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small,lndlb), sum))%>%
+   mutate(across(where(is.numeric), round, 0))%>%
+  rename(true_pounds=lndlb)
+
+  
+
+true<-full_predictions %>%
+  mutate(market_desc=as.character(market_desc))%>%
+    group_by(stockarea,market_desc) %>%
+    summarise(across(c(true_pounds), sum)) 
+
+p1<-full_predictions %>%
+  group_by(stockarea) %>%
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
+
+p2<-p1 %>%
+  pivot_longer(cols=!stockarea, names_to="market_desc", names_prefix="pred_",values_to="predicted") 
+  
+
+mkt_preds<-p2 %>%
+  left_join(true, by=join_by(stockarea==stockarea, market_desc==market_desc))
+
+knitr::kable(mkt_preds, caption='Predictions on the full sample',format.args = list(big.mark = ","), digits=0)  
+``` 
 ---
+
+
+
+#  Out of SamplePredictions
+
+
+```{r nocluster_full_predictions}
+full_oos_predictions<-aggregate_oos_predictions %>%
+  group_by(stockarea,market_desc) %>%
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small,lndlb), sum))%>%
+   mutate(across(where(is.numeric), round, 0))%>%
+  rename(true_pounds=lndlb)
+
+  
+p1<-full_oos_predictions %>%
+  group_by(stockarea) %>%
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
+
+mkt_preds<-p1 %>%
+  pivot_longer(cols=!stockarea, names_to="market_desc", names_prefix="pred_",values_to="predicted") 
+  
+
+
+knitr::kable(mkt_preds, caption='Out of Sample Predictions',format.args = list(big.mark = ","), digits=0)  
+``` 
+
+--- 
 # Extensions
 .pull-left[
   - Should we collect age and length data for all
