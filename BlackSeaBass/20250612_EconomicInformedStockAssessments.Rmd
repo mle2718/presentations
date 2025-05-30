@@ -1,7 +1,7 @@
 ---
 title: "Using Prices to Inform Stock Assessment:"
 subtitle: "The Curious Case of the Unclassifed Black Sea Bass"
-author: "Min-Yang Lee<br />Emily Liljestrand<br />   Northeast Fisheries Science Center<br /> 17 April 2025"
+author: "Min-Yang Lee<br />Emily Liljestrand<br />   Northeast Fisheries Science Center<br /> 12 June 2025"
 output:
   xaringan::moon_reader:
     yolo: false
@@ -118,29 +118,10 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 <img src="./20250612_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="The first author's daughter, Sam, doubled up on black sea bass on Scott's boat in 2024." height="300" width="auto"  /> 
 ]
 
+## Today, we are looking for
 
----
-# Background I 
-
-- Fishing vessels catch black sea bass
-
---
-- Dealers 
-    - Sort catch into market categories
-    - Pay the vessel
-    - Report weight, value, vessel id, trip identifier to NOAA Fisheries
-    - Sell to downstream customers
-
---
-
-- NEFSC deploys biosamplers 
-    - Measure lots of fish
-    - Collect otoliths from some fish
-
---
-
-- Numbers-at-age and numbers-at-length are inputs into stock assessment 
-    - Fill "missing" data with neighbors
+- Feedback on data, methods
+- Other species and stocks where this might work
 
 
 ---
@@ -160,8 +141,24 @@ Can we use prices to infer the size of Unclassified Black Sea Bass?
 --
 
 - Collecting length and age information is costly.  Should we collect it for all
-market catgories?
+market categories?
 
+---
+
+# Background
+
+- Dealers 
+    - Sort a vessel's catch into market categories
+    - Report weight, value, vessel id, trip identifier to NOAA Fisheries
+    - Sell to downstream customers
+
+--
+
+- Stock Assessment Enterprise  
+    - Measure lots of fish
+    - Collect otoliths from some fish
+    - Numbers-at-age and numbers-at-length are inputs into stock assessment 
+    
 ---
 # Market Categories: Lengths and Prices
 
@@ -236,7 +233,7 @@ Assumption 3 -  Fishing vessels also have these tendencies
 
 - Tune (select *mtry*)  train a Random Forest on 90% of our data  (2015-2024)
   - Brier classification as the criteria function
-  - Very loosely, $Brier=I(Class) - \hat{P}(Class)$   Need to fix
+  - Very loosely, $Brier=\frac{1}{2n} \sum \sum (y- \hat{P}(Class))^2$
   
 - 10-fold cross validation to find optimal *mtry* hyperparameter
 
@@ -249,8 +246,6 @@ k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Ran
 
 ---
 # Predictors
-
-Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. `r Cite(myBib, "Mullainathan2017")`
 
 .pull-left[
 Factor Variables:
@@ -276,6 +271,8 @@ Continuous:
   - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
 ]   
 
+Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. `r Cite(myBib, "Mullainathan2017")`
+
 
 ---
 # Variable Importance
@@ -285,20 +282,12 @@ Continuous:
 
 ---
 # Validation
-.pull-left[
-<img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="600"  />
+.center[
+<img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="500"  />
 ]
 
-.pull-right[
 Receiver-Operator Curve for our 10% validation hold out sample.
 
-Haven't gotten to the "confusion" matrix or weighted predictions yet.
-
-]
-
-
-
- 
 ---
 #  Predictions
 
