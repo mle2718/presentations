@@ -170,7 +170,7 @@ market catgories?
 ]
 
 .pull-right[
-<img src="./20250612_EconomicInformedStockAssessments/images/wprice_histograms.png" alt="Prices by Market Category, 2010-2024" width="auto" height="500"  />
+<img src="./20250612_EconomicInformedStockAssessments/images/wprice_histograms_vertical.png" alt="Prices by Market Category, 2010-2024" width="auto" height="500"  />
 ]
 
 ---
