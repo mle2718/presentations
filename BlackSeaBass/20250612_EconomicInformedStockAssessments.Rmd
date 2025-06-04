@@ -51,6 +51,9 @@ library(DT)
 library(widgetframe)
 here::i_am("BlackSeaBass/20250612_EconomicInformedStockAssessments.Rmd")
 
+
+lbs_per_mt<-2204.62
+
 # if figure output defaults to docs/images/ replace with this before moving to 
 # presentations/docs in both the html output (search and replace)
 # and folder name
@@ -144,7 +147,8 @@ Can we use prices to infer the size of Unclassified Black Sea Bass?
 --
 ## Motivation
 
-- No biosampling of the Unclassified fish from 2020-2023.     
+- No biosampling of the Unclassified fish from 2020-2023
+- 7-8% of total black sea bass landings during this time
 
 --
 
@@ -241,7 +245,7 @@ Assumption 3 -  Fishing vessels also have these tendencies
 
 - Tune (select *mtry*)  train a Random Forest on 90% of our data  (2015-2024)
   - Brier classification as the criteria function
-  - Very loosely, $Brier=\frac{1}{2n} \sum \sum (y- \hat{P}(Class))^2$
+  - $Brier=\frac{1}{2n} \sum_{i} \sum_j (y_{ij}- \hat{P_i}(Class_j))^2$
   
 - 10-fold cross validation to find optimal *mtry* hyperparameter
 
@@ -291,8 +295,8 @@ Economic theory and content expertise play a crucial role in guiding where the a
 ---
 # Validation
 .pull-left[
-<img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="400"  />
 Receiver Operating Characteristic Curve for our 10% validation hold out sample.
+<img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="400"  />
 ]
 .pull-right[
 
@@ -306,19 +310,20 @@ Receiver Operating Characteristic Curve for our 10% validation hold out sample.
 # Validation II 
 
 ```{r nocluster_predictions}
+
+# "confusion matrix" predictions, in pounds, by stockarea and market_category
 testing_predictions<-nocluster_testing_predictions %>%
   group_by(stockarea,market_desc) %>%
-    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small,lndlb), sum))%>%
-   mutate(across(where(is.numeric), round, 0))%>%
-  rename(true_pounds=lndlb)
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
 
-  
+# true landings by stockarea and market_category
 
 true<-nocluster_testing_predictions %>%
   mutate(market_desc=as.character(market_desc))%>%
     group_by(stockarea,market_desc) %>%
-    summarise(across(c(true_pounds), sum)) 
+    summarise(lndlb=sum(lndlb)) 
 
+# aggregate predictions, in pounds, by stockarea and market_category
 p1<-nocluster_testing_predictions %>%
   group_by(stockarea) %>%
     summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
@@ -329,30 +334,39 @@ p2<-p1 %>%
 
 mkt_preds<-p2 %>%
   left_join(true, by=join_by(stockarea==stockarea, market_desc==market_desc))
+mkt_preds<-mkt_preds %>%
+  mutate(predicted=predicted/lbs_per_mt,
+         lndlb=lndlb/lbs_per_mt) %>%
+  rename(true_mt=lndlb,
+         predicted_mt=predicted)%>%
+  mutate(error=floor(100*(predicted_mt-true_mt)/true_mt))
 
-knitr::kable(mkt_preds, caption='Predictions on the holdout sample',format.args = list(big.mark = ","), digits=0)  
+mkt_preds$error=paste0(mkt_preds$error,"%")
+
+knitr::kable(mkt_preds, caption='Predictions on the 10% Holdout Sample (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
 ```
 
-
-
+---
 
 #  Predictions
 
+Overly optimistic, since 90\% of the data was used to train the model.  
 
 ```{r nocluster_full_predictions}
+
+# "confusion matrix" predictions, in pounds, by stockarea and market_category
 full_predictions<-nocluster_full_predictions %>%
   group_by(stockarea,market_desc) %>%
-    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small,lndlb), sum))%>%
-   mutate(across(where(is.numeric), round, 0))%>%
-  rename(true_pounds=lndlb)
+    summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
 
-  
-
-true<-full_predictions %>%
+# true landings by stockarea and market_category
+true<-nocluster_full_predictions %>%
   mutate(market_desc=as.character(market_desc))%>%
     group_by(stockarea,market_desc) %>%
-    summarise(across(c(true_pounds), sum)) 
+    summarise(lndlb=sum(lndlb)) 
 
+
+# aggregate predictions, in pounds, by stockarea and market_category
 p1<-full_predictions %>%
   group_by(stockarea) %>%
     summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
@@ -364,34 +378,98 @@ p2<-p1 %>%
 mkt_preds<-p2 %>%
   left_join(true, by=join_by(stockarea==stockarea, market_desc==market_desc))
 
-knitr::kable(mkt_preds, caption='Predictions on the full sample',format.args = list(big.mark = ","), digits=0)  
+mkt_preds<-mkt_preds %>%
+  mutate(predicted=predicted/lbs_per_mt,
+         lndlb=lndlb/lbs_per_mt) %>%
+  rename(true_mt=lndlb,
+         predicted_mt=predicted)%>%
+  mutate(error=floor(100*(predicted_mt-true_mt)/true_mt))
+
+mkt_preds$error=paste0(mkt_preds$error,"%")
+
+knitr::kable(mkt_preds, caption='Predictions on the Full Sample (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
 ``` 
 ---
 
+#  Out of Sample Predictions
 
 
-#  Out of SamplePredictions
-
-
-```{r nocluster_full_predictions}
+```{r nocluster_oos_predictions}
 full_oos_predictions<-aggregate_oos_predictions %>%
-  group_by(stockarea,market_desc) %>%
+  group_by(stockarea,year, market_desc) %>%
     summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small,lndlb), sum))%>%
    mutate(across(where(is.numeric), round, 0))%>%
   rename(true_pounds=lndlb)
 
   
 p1<-full_oos_predictions %>%
-  group_by(stockarea) %>%
+  group_by(stockarea, year) %>%
     summarise(across(c(pred_Jumbo,pred_Large,pred_Medium,pred_Small), sum))
 
 mkt_preds<-p1 %>%
-  pivot_longer(cols=!stockarea, names_to="market_desc", names_prefix="pred_",values_to="predicted") 
+  pivot_longer(cols=starts_with("pred_"), names_to="market_desc", names_prefix="pred_",values_to="predicted") 
+  
+mkt_preds<-mkt_preds %>%
+  mutate(year=as.numeric(as.character(year)),
+         stockarea=as.character(stockarea)) %>%
+  mutate(predicted_mt=predicted/lbs_per_mt)
+
+test<-mkt_preds %>%
+#  filter(market_desc=="Jumbo") %>%
+ #  filter(stockarea=="South") %>%
+  group_by(stockarea, market_desc) %>%
+  arrange(stockarea, market_desc, year)
+
+
+ 
+ggplot(test, aes(x=year, y=predicted, group=market_desc))+
+    geom_line() +
+  scale_x_continuous(name="year", limits=c(2016,2024))  + 
+  facet_grid(vars(stockarea), vars(market_desc)) 
+
+
+
+
+# knitr::kable(mkt_preds, caption='Predicted Class Membership of the Unclassified Market category, by year and stock area',format.args = list(big.mark = ","), digits=0)  
+``` 
+
+---
+# Next steps
+
+.pull-left[
+  - We observe the lengths of Unclassified black sea bass from 2018-2022?  How well does the "Price Informed" allocation method work?  
+
+<img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_category_2018_2022.png" alt="Length Frequencies by Market Category, 2018-2022" height="400" width="400"  />
+]
+
+.pull-right[
+
+```{r econ_informed_allocation}
+
+econ_informed<-mkt_preds %>%
+  mutate(year=as.numeric(as.character(year)),
+         stockarea=as.character(stockarea)) %>%
+  filter(year>=2018 & year<=2022) %>%
+  group_by(stockarea, market_desc) %>%
+  summarise(predicted=sum(predicted)) %>%
+  ungroup() %>%
+  group_by(stockarea) %>%
+  mutate(total=sum(predicted)) %>%
+  ungroup() %>%
+  mutate(predicted_mt=predicted/lbs_per_mt,
+         percentage=floor(100*(predicted/total))) %>%
+  select(-predicted,-total) 
   
 
+econ_informed$percentage=paste0(econ_informed$percentage,"%")
 
-knitr::kable(mkt_preds, caption='Out of Sample Predictions',format.args = list(big.mark = ","), digits=0)  
-``` 
+
+knitr::kable(econ_informed, caption='Predictions Market Categories of the Unclassified Fish, 2018-2022 (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
+
+
+```
+]
+
 
 --- 
 # Extensions
