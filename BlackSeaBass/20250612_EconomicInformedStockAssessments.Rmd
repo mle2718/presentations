@@ -116,12 +116,19 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 
 -->
 
-# Acknowledgements
+# Getting Started
+
 .pull-left[
+## Acknowledgements
 - Jennifer Dopkowski (OAR - Climate Program Office)
 - Brian Linton (NEFSC)
 - Scott Steinback (NEFSC)
 - Geret DePiper (NEFSC)
+
+## Today, we are looking for:
+
+- Feedback on data, methods.
+- Other species and stocks where this might work.
 
 ]
 
@@ -130,10 +137,6 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 <img src="./20250612_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="The first author's daughter, Sam, doubled up on black sea bass on Scott's boat in 2024." height="300" width="auto"  /> 
 ]
 
-## Today, we are looking for
-
-- Feedback on data, methods
-- Other species and stocks where this might work
 
 
 ---
@@ -144,26 +147,25 @@ Can we use prices to infer the size of Unclassified Black Sea Bass?
 
 ## Motivation
 
-- No biosampling of the Unclassified fish from 2020-2023
-- 7-8% of total black sea bass landings during this time
-- Collecting length and age information is costly.  Should we collect it for all
-market categories?
+- No biosampling of the Unclassified fish from 2020-2023.
+- 7-8% of total black sea bass landings during this time.
+- Collecting length and age information is costly.  How can we exploit other sources of information?
 
 ---
 
 # Background
 
-- Dealers 
-    - Sort a vessel's catch into market categories
-    - Report weight, value, vessel id, trip identifier to NOAA Fisheries
-    - Sell to downstream customers
+- Dealers:
+    - Sort a vessel's catch into market categories.
+    - Report weight, value, vessel id, trip identifier to NOAA Fisheries.
+    - Sell to downstream customers.
 
 --
 
-- Stock Assessment Enterprise  
-    - Measure lots of fish
-    - Collect otoliths from some fish
-    - Numbers-at-age and numbers-at-length are inputs into stock assessment 
+- Stock Assessment Enterprise : 
+    - Measure lots of fish.
+    - Collect otoliths from some fish.
+    - Numbers-at-age and numbers-at-length are inputs into stock assessment.
     
 ---
 # Market Categories: Lengths and Prices
@@ -183,10 +185,10 @@ market categories?
 - Train a random forest classification model  `r Cite(myBib, "Breiman2001")`  using CAMS data for the four principle classes (Jumbo, Large, Medium, and Small).
 
 
-- **Predict** out of sample on the "Unclassified"
+- **Predict** out of sample on the "Unclassified."
 
 
-- Use the results to construct a new length distribution of the landed black sea bass
+- Use the results to construct a new length distribution of the landed black sea bass.
 
 ---
 # Methods Detail I   
@@ -204,19 +206,20 @@ market categories?
 
 .footnote[
 mtry: The number of randomly selected predictors that go into the Classification Tree.
-Brier $\approx$ Sum of Squared Errors 
+
+Brier $\tilde$ Sum of Squared Errors 
 ]
 
 ---
 # Methods Detail II   
 
-- With the optimum *mtry*, **train** the final random forest model
+- With the optimum *mtry*, **train** the final random forest model.
 
-- **Validate** on the 10\% hold-out sample
+- **Validate** on the 10\% hold-out sample.
 
-- CAMS data for the four principle classes (Jumbo, Large, Medium, and Small)
+- CAMS data for the four principle classes (Jumbo, Large, Medium, and Small).
 
-- Frequency weight observations : Landed Pounds
+- Frequency weight observations : Landed Pounds.
 
 
 ---
@@ -236,10 +239,10 @@ Factor Variables:
 
 .pull-right[
 Continuous: 
-  - Price
+  - Real Price
   - Trip landings
   - Trip landings by market cat 
-  - Aggregate landings 
+  - Proxies for "what is out there" 
       - State landings by market cat on other trips*
       - Stock area landings by market cat on other trips*
       - 7 day moving average landings by market category
@@ -253,17 +256,17 @@ Economic theory and content expertise play a crucial role in guiding where the a
 
 Assumption 1 -  Out-of-sample prediction is valid
   
-  - Unclassified fish just like classified fish, except we don't observe their class
-  - Concern: There are some transactions by non-federally permitted vessels
+  - Unclassified fish just like classified fish, except we don't observe their class.
+  - Concern: There are some transactions by non-federally permitted vessels.
 
 --
 
-Assumption 2 - Dealers have persistent tendencies in terms of how they classify fish
+Assumption 2 - Dealers have persistent tendencies in terms of how they classify fish.
 
-  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
-  - Example 2: Dealer C only grades into "Large" or "Small"
-  - Solution: Dealer ID should go into the model as a factor variable
-      - Modified "target encoding" instead of "one-hot"  `r Cite(myBib, "Strobl2007")`
+  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22."
+  - Example 2: Dealer C only grades into "Large" or "Small."
+  - Solution: Dealer ID should go into the model as a factor variable.
+      - Modified "target encoding" instead of "one-hot"  `r Cite(myBib, "Strobl2007")`.
 
 <!---
 - If these are transactions (trip/subtrip) with true value, this is fine.
@@ -301,12 +304,12 @@ Receiver Operating Characteristic Curve for the 10% validation hold-out sample.
 
 * Recall: we fit the model on one dataset and this ROC curve is based on the 10% validation sample.
 * Looks really good.  Too good?
-* True positive rate (vertical-axis) vs false positive rate (horizontal) for every possible probability cutoff.
+* True positive rate (vertical axis) vs false positive rate (horizontal axis) for every possible probability cutoff.
 ]
 
 
 ---
-# Validation II 
+# Validation II -- Underpredicting the Jumbo Class
 
 
 ```{r nocluster_predictions}
@@ -343,7 +346,7 @@ mkt_preds<-mkt_preds %>%
 
 mkt_preds$error=paste0(mkt_preds$error,"%")
 
-knitr::kable(mkt_preds, caption='Predictions on the 10% Holdout Sample (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
+knitr::kable(mkt_preds, caption='Predictions on the 10% Holdout Sample (mt).',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
 ```
 .footnote[
 Predict the probability of class membership. Multiply by the landed pounds. Aggregate up.
@@ -390,7 +393,7 @@ mkt_preds<-mkt_preds %>%
 
 mkt_preds$error=paste0(mkt_preds$error,"%")
 
-knitr::kable(mkt_preds, caption='Predictions on the Full Sample (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
+knitr::kable(mkt_preds, caption='Predictions on the Full Sample (mt).',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
 ``` 
 ---
 
@@ -454,7 +457,8 @@ econ_informed<-mkt_preds %>%
   ungroup() %>%
   mutate(predicted_mt=predicted/lbs_per_mt,
          percentage=floor(100*(predicted/total))) %>%
-  select(-stockarea,-predicted,-total) 
+  select(-stockarea,-predicted,-total)%>%
+  arrange(desc(market_desc))
   
 econ_informed$percentage=paste0(econ_informed$percentage,"%")
 
