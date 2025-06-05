@@ -59,10 +59,6 @@ here::i_am("BlackSeaBass/20250417_EconomicInformedStockAssessments.Rmd")
 imagefolder<-"20250417_EconomicInformedStockAssessments"
 imagefolder<-here("BlackSeaBass","20250417_EconomicInformedStockAssessments")
 
-mlogit_preds<-read.csv(here("BlackSeaBass","20250417_EconomicInformedStockAssessments","data","mlogit_predictions_raw.csv"))
-mlogit_colfreq_preds<-read.csv(here("BlackSeaBass","20250417_EconomicInformedStockAssessments","data","mlogit_predictions_col_freq.csv"))
-mlogit_rowfreq_preds<-read.csv(here("BlackSeaBass","20250417_EconomicInformedStockAssessments","data","mlogit_predictions_row_freq.csv"))
-
 
 ```
 

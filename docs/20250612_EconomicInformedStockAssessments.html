@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Using Prices to Inform Stock Assessment:</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Min-Yang Lee Emily Liljestrand  Northeast Fisheries Science Center  12 June 2025" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="libs/EDAB_theme3_508_SOE_16by9.css" type="text/css" />
+    <link rel="stylesheet" href="libs/ml_simple_themes.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: right, middle, my-title, title-slide
+
+.title[
+# Using Prices to Inform Stock Assessment:
+]
+.subtitle[
+## The Curious Case of the Unclassifed Black Sea Bass
+]
+.author[
+### Min-Yang Lee<br />Emily Liljestrand<br /> Northeast Fisheries Science Center<br /> 12 June 2025
+]
+
+---
+
+class: top, left
+
+&lt;style&gt;
+p.caption {
+  font-size: 0.6em;
+}
+&lt;/style&gt;
+
+&lt;style&gt;
+.reduced_opacity {
+  opacity: 0.5;
+}
+&lt;/style&gt;
+
+
+
+
+
+&lt;!---
+Use this to add a bottom note to a figure
+.contrib[
+Few managed species have binding limits; Management less likely playing a role
+]
+
+Use this to make a left list
+.pull-left[
+
+]
+
+in-line cite with:  
+    + Contextual information
+    + Report evolving since 2016
+    + Fishery-relevant subset of full Ecosystem Status Reports
+
+- Open science emphasis 
+
+- Used within Mid-Atlantic Fishery Management Council's Ecosystem Process 
+ - Inline cite 
+
+
+
+--&gt;
+
+# Getting Started
+
+.pull-left[
+## Acknowledgements
+- Jennifer Dopkowski (OAR - Climate Program Office)
+- Brian Linton (NEFSC)
+- Scott Steinback (NEFSC)
+- Geret DePiper (NEFSC)
+
+## Today, we are looking for:
+
+- Feedback on data, methods.
+- Other species and stocks where this might work.
+
+]
+
+.pull-right[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/black_sea_bass2.jpg" alt="The first author's daughter, Caroline, with a on black sea bass and sea robin on Scott's boat in 2025." height="300" width="auto"  /&gt; 
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/black_sea_bass.jpg" alt="The first author's daughter, Sam, doubled up on black sea bass on Scott's boat in 2024." height="300" width="auto"  /&gt; 
+]
+
+
+
+---
+# Research Question and Motivation
+
+## Research Question
+Can we use prices to infer the size of Unclassified Black Sea Bass? 
+
+## Motivation
+
+- No biosampling of the Unclassified fish from 2020-2023.
+- 7-8% of total black sea bass landings during this time.
+- Collecting length and age information is costly.  How can we exploit other sources of information?
+
+---
+
+# Background
+
+- Dealers:
+    - Sort a vessel's catch into market categories.
+    - Report weight, value, vessel id, trip identifier to NOAA Fisheries.
+    - Sell to downstream customers.
+
+--
+
+- Stock Assessment Enterprise : 
+    - Measure lots of fish.
+    - Collect otoliths from some fish.
+    - Numbers-at-age and numbers-at-length are inputs into stock assessment.
+    
+---
+# Market Categories: Lengths and Prices
+
+.pull-left[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_categories.png" alt="Length Frequencies by Market Category, 1997-2023" width="auto" height="500"  /&gt;
+]
+
+.pull-right[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/wprice_histograms_vertical.png" alt="Prices by Market Category, 2010-2024" width="auto" height="500"  /&gt;
+]
+
+---
+
+# Methods Overview 
+
+- Train a random forest classification model  &lt;a name=cite-Breiman2001&gt;&lt;/a&gt;([Breiman, 2001](#bib-Breiman2001))  using CAMS data for the four principle classes (Jumbo, Large, Medium, and Small).
+
+
+- **Predict** out of sample on the "Unclassified."
+
+
+- Use the results to construct a new length distribution of the landed black sea bass.
+
+---
+# Methods Detail I   
+
+- Classification trees perform recursive binary splitting.  The dependent variable is repeatedly partitioned into two groups based on a single explanatory variable based on minimizing within group variation.
+
+
+- Random Forests are "bootstraps" of classification trees, where a different subset of explanatory factors is used in each bootstrap.
+
+
+- **Tune** with a `\(10-\)`fold cross-validation on 90% of the data (2015-2024).
+    - select *mtry* (number of factors) using Brier classification as the criteria function.
+    - `\(Brier=\frac{1}{2n} \sum_{i} \sum_j (y_{ij}- \hat{P_i}(Class_j))^2\)`
+    
+
+.footnote[
+mtry: The number of randomly selected predictors that go into the Classification Tree.
+
+Brier `\(\tilde\)` Sum of Squared Errors 
+]
+
+---
+# Methods Detail II   
+
+- With the optimum *mtry*, **train** the final random forest model.
+
+- **Validate** on the 10\% hold-out sample.
+
+- CAMS data for the four principle classes (Jumbo, Large, Medium, and Small).
+
+- Frequency weight observations : Landed Pounds.
+
+
+---
+# Predictors
+
+.pull-left[
+Factor Variables:
+
+   - Gear : Trawl, Line, Pot/Trap, Gillnet, Other
+   - Stock: North or South
+   - State of Landing: North Carolina to Maine
+   - Year: 2015-2025 
+   - Month
+   - Semester
+   - Live or Dead  
+]
+
+.pull-right[
+Continuous: 
+  - Real Price
+  - Trip landings
+  - Trip landings by market cat 
+  - Proxies for "what is out there" 
+      - State landings by market cat on other trips*
+      - Stock area landings by market cat on other trips*
+      - 7 day moving average landings by market category
+  - Dealer specific effects: "modified target encoding" (dealer share of previous purchases by market category) 
+]   
+
+Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. &lt;a name=cite-Mullainathan2017&gt;&lt;/a&gt;([Mullainathan et al., 2017](https://doi.org/10.1257/jep.31.2.87))
+
+---
+# Assumptions, Potential Problems, and Some Solutions
+
+Assumption 1 -  Out-of-sample prediction is valid
+  
+  - Unclassified fish just like classified fish, except we don't observe their class.
+  - Concern: There are some transactions by non-federally permitted vessels.
+
+--
+
+Assumption 2 - Dealers have persistent tendencies in terms of how they classify fish.
+
+  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22."
+  - Example 2: Dealer C only grades into "Large" or "Small."
+  - Solution: Dealer ID should go into the model as a factor variable.
+      - Modified "target encoding" instead of "one-hot"  &lt;a name=cite-Strobl2007&gt;&lt;/a&gt;([Strobl et al., 2007](https://doi.org/10.1186/1471-2105-8-25)).
+
+&lt;!---
+- If these are transactions (trip/subtrip) with true value, this is fine.
+      - If these are transactions (trip/subtrip) with "imputed" or "assigned" value, they *probably cannot* be included in the model.
+      - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
+---&gt;
+
+
+
+---
+# Market Categories: Lengths and Prices
+
+.pull-left[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_categories.png" alt="Length Frequencies by Market Category, 1997-2023" width="auto" height="500"  /&gt;
+]
+
+.pull-right[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/wprice_histograms_vertical.png" alt="Prices by Market Category, 2010-2024" width="auto" height="500"  /&gt;
+]
+
+---
+
+# Variable Importance
+.center[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/vipnocluster2025-05-24.png" alt="Variable Importance Plots" width="auto" height="500"  /&gt;
+]
+
+---
+# Validation
+.pull-left[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="400"  /&gt;
+Receiver Operating Characteristic Curve for the 10% validation hold-out sample.
+]
+.pull-right[
+
+* Recall: we fit the model on one dataset and this ROC curve is based on the 10% validation sample.
+* Looks really good.  Too good?
+* True positive rate (vertical axis) vs false positive rate (horizontal axis) for every possible probability cutoff.
+]
+
+
+---
+# Validation II -- Underpredicting the Jumbo Class
+
+
+
+Table: Predictions on the 10% Holdout Sample (mt).
+
+|stockarea | market_desc| predicted_mt| true_mt| error|
+|:---------|-----------:|------------:|-------:|-----:|
+|South     |       Jumbo|           71|      80|  -11%|
+|South     |       Large|          131|     126|    4%|
+|South     |      Medium|          174|     171|    1%|
+|South     |       Small|           17|      17|    0%|
+|North     |       Jumbo|          473|     515|   -9%|
+|North     |       Large|          531|     526|    0%|
+|North     |      Medium|          273|     240|   13%|
+|North     |       Small|           33|      28|   14%|
+.footnote[
+Predict the probability of class membership. Multiply by the landed pounds. Aggregate up.
+]
+
+---
+
+#  Predictions
+
+Overly optimistic, since 90% of the data was used to train the model.  
+
+
+Table: Predictions on the Full Sample (mt).
+
+|stockarea | market_desc| predicted_mt| true_mt| error|
+|:---------|-----------:|------------:|-------:|-----:|
+|South     |       Jumbo|          646|     672|   -4%|
+|South     |       Large|        1,176|   1,150|    2%|
+|South     |      Medium|        1,805|   1,809|   -1%|
+|South     |       Small|          167|     164|    1%|
+|North     |       Jumbo|        4,867|   5,042|   -4%|
+|North     |       Large|        5,135|   5,157|   -1%|
+|North     |      Medium|        2,442|   2,266|    7%|
+|North     |       Small|          309|     289|    6%|
+---
+
+#  Out of Sample Predictions
+
+
+&lt;img src="20250612_EconomicInformedStockAssessments_files/figure-html/nocluster_oos_predictions-1.png" width="504" /&gt;
+
+---
+
+# Next steps
+
+
+.pull-left[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_category_2018_2022.png" alt="Length Frequencies by Market Category, 2018-2022" height="350" width="350"  /&gt;
+]
+
+.pull-right[
+
+Table: Predicted Categories of North Unclassified, 2018-2022 (mt)
+
+|market_desc | predicted_mt| percentage|
+|:-----------|------------:|----------:|
+|Small       |            8|         1%|
+|Medium      |          118|        24%|
+|Large       |          196|        41%|
+|Jumbo       |          155|        32%|
+]
+
+ - We observe the lengths of Unclassified black sea bass from 2018-2022  How well does the "Price Informed" allocation method work?  
+ - Sample size is kind of small for the Unclassified lengths -- enough to be comfortable?
+
+
+---
+
+# Extensions
+.pull-left[
+  - Should we collect age and length data for all
+market catgories?
+
+- Can we modify the way lengths have been borrowed?
+
+- Can we apply these methods to other stocks? 
+]
+
+.pull-right[
+&lt;img src="./20250612_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_pct.jpg" alt="Proportion of 'borrowed' age-length data" height="500" width="500"  /&gt;
+]
+
+---
+# Further Reading
+
+-  Machine Learning for Economists: &lt;a name=cite-Varian2014&gt;&lt;/a&gt;&lt;a name=cite-Athey2019&gt;&lt;/a&gt;&lt;a name=cite-Storm2020&gt;&lt;/a&gt;[Varian (2014)](https://doi.org/10.1257/jep.28.2.3); [Mullainathan et al. (2017)](https://doi.org/10.1257/jep.31.2.87); [Athey et al. (2019)](https://doi.org/10.1146/annurev-economics-080217-053433); [Storm et al. (2020)](https://doi.org/10.1093/erae/jbz033)
+
+-  Machine Learning:  &lt;a name=cite-Breiman1984&gt;&lt;/a&gt;&lt;a name=cite-Hastie2009&gt;&lt;/a&gt;&lt;a name=cite-Kuhn2013a&gt;&lt;/a&gt;&lt;a name=cite-Bates2024&gt;&lt;/a&gt;[Breiman et al. (1984)](https://doi.org/https://doi.org/10.1201/9781315139470); [Breiman (2001)](#bib-Breiman2001); [Hastie et al. (2013)](https://doi.org/10.1111/j.1532-5415.1984.tb02220.x); [Kuhn et al. (2024)](http://appliedpredictivemodeling.com/s/Applied_Predictive_Modeling_in_R.pdf); [Bates et al. (1984)](https://doi.org/10.1080/01621459.2023.2197686) 
+
+- http://www.tidymodels.org/
+---
+# References
+.contrib[
+&lt;a name=bib-Athey2019&gt;&lt;/a&gt;[Athey, S. and G. W. Imbens](#cite-Athey2019)
+(2019). "Machine Learning Methods That Economists Should Know about".
+In: _Annual Review of Economics_ 11, pp. 685-725. ISSN: 19411391. DOI:
+[10.1146/annurev-economics-080217-053433](https://doi.org/10.1146%2Fannurev-economics-080217-053433).
+eprint: 1903.10075.
+
+&lt;a name=bib-Bates2024&gt;&lt;/a&gt;[Bates, S., T. Hastie, and R.
+Tibshirani](#cite-Bates2024) (2024). "Cross-Validation: What Does It
+Estimate and How Well Does It Do It?". In: _Journal of the American
+Statistical Association_ 119.546, pp. 1434-1445. ISSN: 1537274X. DOI:
+[10.1080/01621459.2023.2197686](https://doi.org/10.1080%2F01621459.2023.2197686).
+eprint: 2104.00673.
+
+&lt;a name=bib-Breiman2001&gt;&lt;/a&gt;[Breiman, L.](#cite-Breiman2001) (2001).
+"Random Forests". In: _Machine Learning_ 45, pp. 5-32.
+
+&lt;a name=bib-Breiman1984&gt;&lt;/a&gt;[Breiman, L., J. Friedman, R. Olshen, et
+al.](#cite-Breiman1984) (1984). _Classification and regression trees_.
+Routledge, p. 368. ISBN: 9780412048418. DOI:
+[https://doi.org/10.1201/9781315139470](https://doi.org/https%3A%2F%2Fdoi.org%2F10.1201%2F9781315139470).
+
+&lt;a name=bib-Hastie2009&gt;&lt;/a&gt;[Hastie, T., R. Tibshirani, and J.
+Friedman](#cite-Hastie2009) _The Elements of Statistical Learning: Data
+Mining, Inference, and Prediction_. Springer, p. 745. DOI:
+[10.1111/j.1532-5415.1984.tb02220.x](https://doi.org/10.1111%2Fj.1532-5415.1984.tb02220.x).
+
+&lt;a name=bib-Kuhn2013a&gt;&lt;/a&gt;[Kuhn, M. and K. Johnson](#cite-Kuhn2013a)
+(2013). _Applied Predictive Modeling with Applications in R_. Vol. 26 ,
+p. 615. ISBN: 9781461468486. URL:
+[http://appliedpredictivemodeling.com/s/Applied_Predictive_Modeling_in_R.pdf](http://appliedpredictivemodeling.com/s/Applied_Predictive_Modeling_in_R.pdf).
+
+&lt;a name=bib-Mullainathan2017&gt;&lt;/a&gt;[Mullainathan, S. and J.
+Spiess](#cite-Mullainathan2017) (2017). "Machine learning: An applied
+econometric approach". In: _Journal of Economic Perspectives_ 31.2, pp.
+87-106. ISSN: 08953309. DOI:
+[10.1257/jep.31.2.87](https://doi.org/10.1257%2Fjep.31.2.87).
+
+&lt;a name=bib-Storm2020&gt;&lt;/a&gt;[Storm, H., K. Baylis, and T.
+Heckelei](#cite-Storm2020) (2020). "Machine learning in agricultural
+and applied economics". In: _European Review of Agricultural Economics_
+47.3, pp. 849-892. ISSN: 14643618. DOI:
+[10.1093/erae/jbz033](https://doi.org/10.1093%2Ferae%2Fjbz033).
+
+&lt;a name=bib-Strobl2007&gt;&lt;/a&gt;[Strobl, C., A. L. Boulesteix, A. Zeileis,
+et al.](#cite-Strobl2007) (2007). "Bias in random forest variable
+importance measures: Illustrations, sources and a solution". In: _BMC
+Bioinformatics_ 8. ISSN: 14712105. DOI:
+[10.1186/1471-2105-8-25](https://doi.org/10.1186%2F1471-2105-8-25).
+
+&lt;a name=bib-Varian2014&gt;&lt;/a&gt;[Varian, H. R.](#cite-Varian2014) (2014).
+"Big data: New tricks for econometrics". In: _Journal of Economic
+Perspectives_ 28.2, pp. 3-28. ISSN: 08953309. DOI:
+[10.1257/jep.28.2.3](https://doi.org/10.1257%2Fjep.28.2.3).
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="libs/macros.js"></script>
+<script>var slideshow = remark.create({
+  "ratio": "16:9",
+  "highlightStyle": "githubp",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
