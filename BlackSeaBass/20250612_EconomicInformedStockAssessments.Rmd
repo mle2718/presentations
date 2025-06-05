@@ -51,6 +51,7 @@ library(DT)
 library(widgetframe)
 here::i_am("BlackSeaBass/20250612_EconomicInformedStockAssessments.Rmd")
 
+options(scipen=0)
 
 lbs_per_mt<-2204.62
 
@@ -141,17 +142,10 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 ## Research Question
 Can we use prices to infer the size of Unclassified Black Sea Bass? 
 
---
-**Yes we can**.
-
---
 ## Motivation
 
 - No biosampling of the Unclassified fish from 2020-2023
 - 7-8% of total black sea bass landings during this time
-
---
-
 - Collecting length and age information is costly.  Should we collect it for all
 market categories?
 
@@ -184,77 +178,46 @@ market categories?
 
 ---
 
-# Methods Overview I
+# Methods Overview 
 
-- Train a random forest classification model using transaction-level data  `r Cite(myBib, "Breiman2001")`.  Predict whether an observation is Jumbo, Large, Medium, or Small.
+- Train a random forest classification model  `r Cite(myBib, "Breiman2001")`  using CAMS data for the four principle classes (Jumbo, Large, Medium, and Small).
 
-.footnote[
 
-Data comes from GARFO's Catch Accounting and Monitoring System (CAMS): stockarea-gear allocated landings at the vessel-dealer-market category level
-
-Random Forests are "bootstraps" of classification trees, where a subset of explanatory factors are used in each bootstrap.
-
-Classification trees perform recursive binary splitting.  The dependent variable is repeatedly partitioned into two groups based on a single explanatory variable based on minimizing within group variation.
-]
-
-  - **Tune** and **train** with a $k-$fold cross-validation
-  - **Validate** on a hold-out sample
-  - Finalize (retrain) on the entire dataset
-
---
-  
 - **Predict** out of sample on the "Unclassified"
 
---
 
 - Use the results to construct a new length distribution of the landed black sea bass
 
-
 ---
-# Assumptions, Potential Problems, and Some Solutions
+# Methods Detail I   
 
-Assumption 1 -  Out-of-sample prediction is valid
-  
-  - Unclassified fish are the same as classified fish, we just don't observe their class
-  - Concern: There are some transactions by non-federally permitted vessels
+- Classification trees perform recursive binary splitting.  The dependent variable is repeatedly partitioned into two groups based on a single explanatory variable based on minimizing within group variation.
 
---
 
-Assumption 2 - Dealers have persistent tendencies in terms of how they classify fish
+- Random Forests are "bootstraps" of classification trees, where a different subset of explanatory factors is used in each bootstrap.
 
-  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
-  - Example 2: Dealer C only grades into "Large" or "Small"
-  - Dealer ID should go into the model as a factor variable
-      - Modified "target encoding" instead of "one-hot"  `r Cite(myBib, "Strobl2007")`
 
---
-
-Assumption 3 -  Fishing vessels also have these tendencies 
-
-  - Fishing vessels do not perform the classification, therefore
-  - We should **not** include vessel ID as factor variables
-
-<!---
-- If these are transactions (trip/subtrip) with true value, this is fine.
-      - If these are transactions (trip/subtrip) with "imputed" or "assigned" value, they *probably cannot* be included in the model.
-      - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
---->
-
----
-# Machine Learning with Random Forest
-
-- Tune (select *mtry*)  train a Random Forest on 90% of our data  (2015-2024)
-  - Brier classification as the criteria function
-  - $Brier=\frac{1}{2n} \sum_{i} \sum_j (y_{ij}- \hat{P_i}(Class_j))^2$
-  
-- 10-fold cross validation to find optimal *mtry* hyperparameter
-
--  Frequency weight observations : Landed Pounds
+- **Tune** with a $10-$fold cross-validation on 90% of the data (2015-2024).
+    - select *mtry* (number of factors) using Brier classification as the criteria function.
+    - $Brier=\frac{1}{2n} \sum_{i} \sum_j (y_{ij}- \hat{P_i}(Class_j))^2$
+    
 
 .footnote[
 mtry: The number of randomly selected predictors that go into the Classification Tree.
+Brier $\approx$ Sum of Squared Errors 
+]
 
-k-fold cross validation: Assign all observations to exactly 1 fold.  Run the Random Forest on all but 1 fold, compute Brier classification score.  Repeat.]
+---
+# Methods Detail II   
+
+- With the optimum *mtry*, **train** the final random forest model
+
+- **Validate** on the 10\% hold-out sample
+
+- CAMS data for the four principle classes (Jumbo, Large, Medium, and Small)
+
+- Frequency weight observations : Landed Pounds
+
 
 ---
 # Predictors
@@ -285,8 +248,44 @@ Continuous:
 
 Economic theory and content expertise play a crucial role in guiding where the algorithm looks for structure first. `r Cite(myBib, "Mullainathan2017")`
 
+---
+# Assumptions, Potential Problems, and Some Solutions
+
+Assumption 1 -  Out-of-sample prediction is valid
+  
+  - Unclassified fish just like classified fish, except we don't observe their class
+  - Concern: There are some transactions by non-federally permitted vessels
+
+--
+
+Assumption 2 - Dealers have persistent tendencies in terms of how they classify fish
+
+  - Example 1: Dealer A's Large is 17-20" while Dealer B's Large is 19-22"
+  - Example 2: Dealer C only grades into "Large" or "Small"
+  - Solution: Dealer ID should go into the model as a factor variable
+      - Modified "target encoding" instead of "one-hot"  `r Cite(myBib, "Strobl2007")`
+
+<!---
+- If these are transactions (trip/subtrip) with true value, this is fine.
+      - If these are transactions (trip/subtrip) with "imputed" or "assigned" value, they *probably cannot* be included in the model.
+      - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
+--->
+
+
 
 ---
+# Market Categories: Lengths and Prices
+
+.pull-left[
+<img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_categories.png" alt="Length Frequencies by Market Category, 1997-2023" width="auto" height="500"  />
+]
+
+.pull-right[
+<img src="./20250612_EconomicInformedStockAssessments/images/wprice_histograms_vertical.png" alt="Prices by Market Category, 2010-2024" width="auto" height="500"  />
+]
+
+---
+
 # Variable Importance
 .center[
 <img src="./20250612_EconomicInformedStockAssessments/images/vipnocluster2025-05-24.png" alt="Variable Importance Plots" width="auto" height="500"  />
@@ -295,19 +294,20 @@ Economic theory and content expertise play a crucial role in guiding where the a
 ---
 # Validation
 .pull-left[
-Receiver Operating Characteristic Curve for our 10% validation hold out sample.
 <img src="./20250612_EconomicInformedStockAssessments/images/roc_nocluster2025-05-24.png" alt="ROC curve" width="auto" height="400"  />
+Receiver Operating Characteristic Curve for the 10% validation hold-out sample.
 ]
 .pull-right[
 
+* Recall: we fit the model on one dataset and this ROC curve is based on the 10% validation sample.
 * Looks really good.  Too good?
-* True positive rate (vertical) vs false positive rate (horizontal) for every possible probability cutoff.
-
+* True positive rate (vertical-axis) vs false positive rate (horizontal) for every possible probability cutoff.
 ]
 
 
 ---
 # Validation II 
+
 
 ```{r nocluster_predictions}
 
@@ -345,12 +345,15 @@ mkt_preds$error=paste0(mkt_preds$error,"%")
 
 knitr::kable(mkt_preds, caption='Predictions on the 10% Holdout Sample (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
 ```
+.footnote[
+Predict the probability of class membership. Multiply by the landed pounds. Aggregate up.
+]
 
 ---
 
 #  Predictions
 
-Overly optimistic, since 90\% of the data was used to train the model.  
+Overly optimistic, since 90% of the data was used to train the model.  
 
 ```{r nocluster_full_predictions}
 
@@ -414,42 +417,35 @@ mkt_preds<-mkt_preds %>%
          stockarea=as.character(stockarea)) %>%
   mutate(predicted_mt=predicted/lbs_per_mt)
 
-test<-mkt_preds %>%
-#  filter(market_desc=="Jumbo") %>%
- #  filter(stockarea=="South") %>%
+mkt_preds<-mkt_preds %>%
   group_by(stockarea, market_desc) %>%
   arrange(stockarea, market_desc, year)
 
-
  
-ggplot(test, aes(x=year, y=predicted, group=market_desc))+
+ggplot(mkt_preds, aes(x=year, y=predicted_mt, group=market_desc))+
     geom_line() +
   scale_x_continuous(name="year", limits=c(2016,2024))  + 
   facet_grid(vars(stockarea), vars(market_desc)) 
 
-
-
-
-# knitr::kable(mkt_preds, caption='Predicted Class Membership of the Unclassified Market category, by year and stock area',format.args = list(big.mark = ","), digits=0)  
 ``` 
 
 ---
+
 # Next steps
 
-.pull-left[
-  - We observe the lengths of Unclassified black sea bass from 2018-2022?  How well does the "Price Informed" allocation method work?  
 
-<img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_category_2018_2022.png" alt="Length Frequencies by Market Category, 2018-2022" height="400" width="400"  />
+.pull-left[
+<img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_category_2018_2022.png" alt="Length Frequencies by Market Category, 2018-2022" height="350" width="350"  />
 ]
 
 .pull-right[
-
 ```{r econ_informed_allocation}
 
 econ_informed<-mkt_preds %>%
   mutate(year=as.numeric(as.character(year)),
          stockarea=as.character(stockarea)) %>%
   filter(year>=2018 & year<=2022) %>%
+  filter(stockarea=="North") %>%
   group_by(stockarea, market_desc) %>%
   summarise(predicted=sum(predicted)) %>%
   ungroup() %>%
@@ -458,20 +454,20 @@ econ_informed<-mkt_preds %>%
   ungroup() %>%
   mutate(predicted_mt=predicted/lbs_per_mt,
          percentage=floor(100*(predicted/total))) %>%
-  select(-predicted,-total) 
+  select(-stockarea,-predicted,-total) 
   
-
 econ_informed$percentage=paste0(econ_informed$percentage,"%")
 
-
-knitr::kable(econ_informed, caption='Predictions Market Categories of the Unclassified Fish, 2018-2022 (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
-
-
+knitr::kable(econ_informed, caption='Predicted Categories of North Unclassified, 2018-2022 (mt)',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4))) 
 ```
 ]
 
+ - We observe the lengths of Unclassified black sea bass from 2018-2022  How well does the "Price Informed" allocation method work?  
+ - Sample size is kind of small for the Unclassified lengths -- enough to be comfortable?
 
---- 
+
+---
+
 # Extensions
 .pull-left[
   - Should we collect age and length data for all
@@ -483,8 +479,8 @@ market catgories?
 ]
 
 .pull-right[
-]<img src="./20250612_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_pct.jpg" alt="Proportion of 'borrowed' age-length data" height="500" width="500"  />
-
+<img src="./20250612_EconomicInformedStockAssessments/images/2023_BSB_UNIT_TOR2_pct.jpg" alt="Proportion of 'borrowed' age-length data" height="500" width="500"  />
+]
 
 ---
 # Further Reading
