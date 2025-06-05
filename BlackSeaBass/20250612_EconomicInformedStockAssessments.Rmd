@@ -125,7 +125,7 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 - Scott Steinback (NEFSC)
 - Geret DePiper (NEFSC)
 
-## Today, we are looking for:
+## Today, we are looking for
 
 - Feedback on data, methods.
 - Other species and stocks where this might work.
@@ -162,7 +162,7 @@ Can we use prices to infer the size of Unclassified Black Sea Bass?
 
 --
 
-- Stock Assessment Enterprise : 
+- Stock Assessment Enterprise: 
     - Measure lots of fish.
     - Collect otoliths from some fish.
     - Numbers-at-age and numbers-at-length are inputs into stock assessment.
