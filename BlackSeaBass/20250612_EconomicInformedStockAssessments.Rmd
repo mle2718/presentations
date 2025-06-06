@@ -207,7 +207,7 @@ Can we use prices to infer the size of Unclassified Black Sea Bass?
 .footnote[
 mtry: The number of randomly selected predictors that go into the Classification Tree.
 
-Brier $\tilde$ Sum of Squared Errors 
+Brier ~ Sum of Squared Errors 
 ]
 
 ---
