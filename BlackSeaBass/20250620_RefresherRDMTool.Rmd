@@ -1,6 +1,5 @@
 ---
-title: "Changes for the RDM Tool:"
-subtitle: "Summer Flounder, Scup, and Black Sea Bass"
+title: "Mid-Atlantic RDM Changes"
 author: "Min-Yang Lee<br />   Northeast Fisheries Science Center<br /> 20 June 2025"
 output:
   xaringan::moon_reader:
