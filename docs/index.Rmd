@@ -10,8 +10,10 @@ output: html_document
 </button>
  
 ### 2025
-<a href="https://mle2718.github.io/presentations/20250612_EconomicInformedStockAssessments" target="_blank"> Economic Informed Stock Assessments. June 2025</a>
+<a href="https://mle2718.github.io/presentations/20250620_RefresherRDMTool" target="_blank"> Mid-Atlantic RDM Changes. June 2025</a>
 
+
+<a href="https://mle2718.github.io/presentations/20250612_EconomicInformedStockAssessments" target="_blank"> Economic Informed Stock Assessments. June 2025</a>
 
 
 <a href="https://mle2718.github.io/presentations/20250417_EconomicInformedStockAssessments" target="_blank"> Economic Informed Stock Assessments. April 2025</a>
