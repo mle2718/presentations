@@ -212,7 +212,7 @@ Brier ~ Essentially Sum of Squared Errors
 
 - With the optimum *mtry*, **train** the final random forest model.
 
-- **Validate** on the 10\% hold-out sample.
+- **Validate** on the 10% hold-out sample.
 
 - CAMS data for the four principle classes (Jumbo, Large, Medium, and Small).
 

@@ -164,7 +164,7 @@ Brier ~ Essentially Sum of Squared Errors
 
 - With the optimum *mtry*, **train** the final random forest model.
 
-- **Validate** on the 10\% hold-out sample.
+- **Validate** on the 10% hold-out sample.
 
 - CAMS data for the four principle classes (Jumbo, Large, Medium, and Small).
 
@@ -274,6 +274,10 @@ Table: Predictions on the 10% Holdout Sample (mt).
 |North     |       Large|          531|     526|    0%|
 |North     |      Medium|          273|     240|   13%|
 |North     |       Small|           33|      28|   14%|
+
+South is probably fine.
+North is worrying - we need to look at the north data a little closer and refine the model.
+
 .footnote[
 Predict the probability of class membership. Multiply by the landed pounds. Aggregate up.
 ]
