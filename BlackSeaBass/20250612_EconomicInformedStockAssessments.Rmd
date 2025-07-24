@@ -143,7 +143,7 @@ in-line cite with:  `r Cite(myBib, "carr2020expected")`
 # Research Question and Motivation
 
 ## Research Question
-Can we use prices to infer the size of Unclassified Black Sea Bass? 
+Can we use prices to infer the length of Unclassified Black Sea Bass? 
 
 ## Motivation
 
@@ -165,7 +165,7 @@ Can we use prices to infer the size of Unclassified Black Sea Bass?
 - Stock Assessment Enterprise: 
     - Measure lots of fish.
     - Collect otoliths from some fish.
-    - Numbers-at-age and numbers-at-length are inputs into stock assessment.
+    - Commercial numbers-at-age and numbers-at-length are two of many inputs into stock assessment.
     
 ---
 # Market Categories: Lengths and Prices
@@ -225,7 +225,7 @@ Brier ~ Essentially Sum of Squared Errors
 .pull-left[
 Factor Variables:
 
-   - Gear : Trawl, Line, "Alive" Gear - Pot/Trap/Weir/Fyke, Gillnet, Other
+   - Gear : Trawl, Line, "Pot/Trap+", Gillnet, Other
    - Stock Area: North or South
    - State of Landing: North Carolina to Maine
    - Year: 2015-2025 
@@ -236,7 +236,7 @@ Factor Variables:
 
 .pull-right[
 Continuous: 
-  - Real Price
+  - Real Price (*priceR_CPI*)
   - Trip landings
   - Trip landings by market cat 
   - Proxies for "what is out there" 
@@ -271,18 +271,6 @@ Assumption 2 - Dealers have persistent tendencies in terms of how they classify 
       - If these are aggregates of multiple transactions, they *probably cannot* be included, even if the true value reported.
 --->
 
-
-
----
-# Market Categories: Lengths and Prices
-
-.pull-left[
-<img src="./20250612_EconomicInformedStockAssessments/images/length_frequencies_by_market_categories.png" alt="Length Frequencies by Market Category, 1997-2023" width="auto" height="500"  />
-]
-
-.pull-right[
-<img src="./20250612_EconomicInformedStockAssessments/images/wprice_histograms_vertical.png" alt="Prices by Market Category, 2010-2024" width="auto" height="500"  />
-]
 
 ---
 
@@ -354,12 +342,14 @@ Predict the probability of class membership. Multiply by the landed pounds. Aggr
 ]
 
 ---
+<!---
 
 #  Predictions
 
 Overly optimistic, since 90% of the data was used to train the model.  
+--->
 
-```{r nocluster_full_predictions}
+```{r nocluster_full_predictions, eval=FALSE}
 
 # "confusion matrix" predictions, in pounds, by stockarea and market_category
 full_predictions<-nocluster_full_predictions %>%
@@ -396,7 +386,8 @@ mkt_preds$error=paste0(mkt_preds$error,"%")
 
 knitr::kable(mkt_preds, caption='Predictions on the Full Sample (mt).',format.args = list(big.mark = ","), digits=0, align=c("l",rep('r',times=4)))  
 ``` 
----
+
+
 
 #  Out of Sample Predictions
 
